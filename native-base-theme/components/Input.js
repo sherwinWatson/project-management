@@ -10,7 +10,8 @@ export default (variables = variable) => {
     paddingRight: 5,
     flex: 1,
     fontSize: variables.inputFontSize,
-    lineHeight: variables.inputLineHeight,
+    lineHeight: 24,
+    borderBottomWidth: 0.5,
   };
 
 

@@ -42,6 +42,9 @@ class Timeline extends React.Component {
       promptVisible: false,
       isEditing: false,
       selectedId: null,
+      defaultValue: '',
+      defaultValue2: '',
+      defaultValue3: '',
     }
   }
 
@@ -107,6 +110,9 @@ class Timeline extends React.Component {
               this.setState({
                 selectedId: e.id,
                 isEditing: true,
+                defaultValue: e.title,
+                defaultValue2: e.description,
+                defaultValue3: e.time,
               })
             }}
           />
@@ -116,14 +122,20 @@ class Timeline extends React.Component {
               this.setState({
                 promptVisible: true,
                 isEditing: false,
+                defaultValue: '',
+                defaultValue2: '',
+                defaultValue3: '',
               })
             }}
           />
           <Prompt
-            title="New Storyboard"
+            title="New Detail"
             placeholder="Subject"
             placeholder2="Description"
             placeholder3="Target Date"
+            defaultValue={this.state.defaultValue}
+            defaultValue2={this.state.defaultValue2}
+            defaultValue3={this.state.defaultValue3}
             visible={ this.state.promptVisible }
             onCancel={ () => this.setState({
               promptVisible: false,

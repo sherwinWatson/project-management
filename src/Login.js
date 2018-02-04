@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Alert, InteractionManager } from 'react-native'
+import { View, Image } from 'react-native'
 import { StyleProvider, Container, Content, Form, Item, Label, InputGroup, Input, Button, Text } from 'native-base'
 import theme from './styles/theme'
 import color from './styles/color'
@@ -12,10 +12,9 @@ import DialogView from './components/DialogView'
 import { login } from './redux/user/actions'
 
 class Login extends React.Component {
-  // static navigationOptions = {
-  //   ...headerConfig(),
-  //   header: null,
-  // }
+  static navigationOptions = {
+    header: null,
+  }
 
   constructor(props) {
     super(props)
@@ -53,11 +52,15 @@ class Login extends React.Component {
     const labelHeight = labelWidth * 3 / 10
     return (
       <StyleProvider style={theme}>
-        <Container>
+        <Container style={{backgroundColor: '#2b689c'}}>
           <DialogView  ref={(ref) => {this.dialog = ref}}/>
           <LoadingView isShown={isLoading} noBack />
           <Content padder contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always' >
             <View>
+              <Image
+                style={{alignSelf: 'center', marginTop: 180, marginBottom: 30, width: 80, height: 120}}
+                source={require('./img/kamiLogo.png')}
+              />
               <Item>
                 <Input
                   autoFocus={true}
@@ -73,7 +76,7 @@ class Login extends React.Component {
                 />
               </Item>
 
-              <Item style={{marginTop: margin.s16, marginBottom: margin.s4}}>
+              <Item style={{marginTop: margin.s24, marginBottom: margin.s8}}>
                 <Input
                   placeholder='Password'
                   placeholderTextColor={color.lightText}

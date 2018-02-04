@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   dialog: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dialogOverlay: {
     // backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -11,7 +11,7 @@ export default StyleSheet.create({
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   dialogContent: {
     elevation: 5,
@@ -20,23 +20,24 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 5,
     borderWidth: 1,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   dialogTitle: {
     borderBottomWidth: 1,
     paddingVertical: 10,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   dialogTitleText: {
     fontSize: 18,
-    fontWeight: '600'
+    fontWeight: '600',
   },
   dialogBody: {
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   dialogInput: {
     height: 50,
-    fontSize: 18
+    fontSize: 18,
+    borderBottomWidth: 0.5,
   },
   dialogFooter: {
     borderTopWidth: 1,
@@ -44,11 +45,11 @@ export default StyleSheet.create({
   },
   dialogAction: {
     flex: 1,
-    padding: 15
+    padding: 15,
   },
   dialogActionText: {
     fontSize: 18,
     textAlign: 'center',
-    color: '#006dbf'
-  }
-});
+    color: '#006dbf',
+  },
+})

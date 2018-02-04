@@ -17,6 +17,8 @@ export default class Prompt extends Component {
     title: PropTypes.string.isRequired,
     visible: PropTypes.bool,
     defaultValue: PropTypes.string,
+    defaultValue2: PropTypes.string,
+    defaultValue3: PropTypes.string,
     placeholder: PropTypes.string,
     onCancel: PropTypes.func.isRequired,
     cancelText: PropTypes.string,
@@ -39,6 +41,8 @@ export default class Prompt extends Component {
   static defaultProps = {
     visible: false,
     defaultValue: '',
+    defaultValue2: '',
+    defaultValue3: '',
     cancelText: 'Cancel',
     submitText: 'OK',
     borderColor:'#ccc',
@@ -114,6 +118,8 @@ export default class Prompt extends Component {
       placeholder2,
       placeholder3,
       defaultValue,
+      defaultValue2,
+      defaultValue3,
       cancelText,
       submitText,
       borderColor,
@@ -125,8 +131,8 @@ export default class Prompt extends Component {
       submitButtonTextStyle,
       cancelButtonStyle,
       cancelButtonTextStyle,
-      inputStyle
-    } = this.props;
+      inputStyle,
+    } = this.props
     return (
       <View style={styles.dialog} key="prompt">
         <View style={styles.dialogOverlay}/>
@@ -147,7 +153,7 @@ export default class Prompt extends Component {
               {...this.props.textInputProps} />
             <TextInput
               style={[styles.dialogInput, inputStyle]}
-              defaultValue={defaultValue}
+              defaultValue={defaultValue2}
               onChangeText={this._onChangeText2}
               placeholder={placeholder2}
               autoFocus={true}
@@ -156,6 +162,7 @@ export default class Prompt extends Component {
             <View style={{flexDirection: 'row'}}>
               <TextInput
                 style={[styles.dialogInput, inputStyle, {flex: 1}]}
+                defaultValue={defaultValue3}
                 placeholder={placeholder3}
                 autoFocus={true}
                 editable={false}
