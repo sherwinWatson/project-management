@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { View, Platform } from 'react-native'
 import Modal from 'react-native-modal'
 import color from './../styles/color'
-// import Animation from 'lottie-react-native'
+import Animation from 'lottie-react-native'
 import { Icon, Button, Header } from 'native-base'
 // import { back } from './../redux/navigation/actions'
 
@@ -18,21 +18,21 @@ const style = {
 
 class LoadingView extends React.Component {
   componentWillReceiveProps(nextProps) {
-    // if (this.animation) {
-    //   if (nextProps.isShown) {
-    //     this.animation.play()
-    //   } else {
-    //     this.animation.reset()
-    //   }
-    // }
+    if (this.animation) {
+      if (nextProps.isShown) {
+        this.animation.play()
+      } else {
+        this.animation.reset()
+      }
+    }
   }
 
-  // componentDidMount() {
-  //   const { isShown, isModal } = this.props
-  //   if (!isModal && isShown && this.animation) {
-  //     this.animation.play()
-  //   }
-  // }
+  componentDidMount() {
+    const { isShown, isModal } = this.props
+    if (!isModal && isShown && this.animation) {
+      this.animation.play()
+    }
+  }
 
   renderContent() {
     const { isModal, solid, noBack } = this.props
@@ -50,6 +50,12 @@ class LoadingView extends React.Component {
           alignItems: 'center',
           justifyContent: 'center' }}
         >
+          <Animation
+            loop={true}
+            ref={(animation) => {this.animation = animation}}
+            style={{ width: this.props.isShown ? 36 : 0, height: this.props.isShown ? 36 : 0 }}
+            source={require('./../img/loading.json')}
+          />
         </View>
       </View>
     )

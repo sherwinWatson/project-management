@@ -7,7 +7,7 @@ import Router from './src/router'
 import axios from 'axios'
 
 // export const IS_DEBUG = Platform.OS === 'ios' ? process.env.NODE_ENV === 'development' :  NativeModules.RNConfig.BUILD_ENV === 'development'
-export const IS_DEBUG = false
+export const IS_DEBUG = true
 
 export default class App extends Component<{}> {
   constructor() {
@@ -18,7 +18,7 @@ export default class App extends Component<{}> {
       notification: null,
     }
 
-    axios.defaults.baseURL = IS_DEBUG ? 'http://localhost:5000/' : 'https://kami-193714.appspot.com/'
+    axios.defaults.baseURL = 'https://kami-193714.appspot.com/'
     axios.defaults.timeout = 1500000
   }
 
