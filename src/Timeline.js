@@ -88,6 +88,7 @@ class Timeline extends React.Component {
       time: item.target_date ? moment(item.target_date).format('DD MMM') : 'n/a',
       title: item.subject,
       description: item.details,
+      icon: item.isDone ? require('./img/ic_done_white.png') : null,
     }))
 
     return (
@@ -97,6 +98,7 @@ class Timeline extends React.Component {
           <TimelineComponent
             style={styles.timeline}
             data={data}
+            innerCircle={'icon'}
             circleSize={20}
             circleColor='rgb(45,156,219)'
             lineColor='rgb(45,156,219)'
