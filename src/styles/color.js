@@ -1,5 +1,5 @@
 const initial = {
-  'paprika': '#F04F57',
+  'green': '#1EC656',
   'teal': '#42B6AC',
   'dark_grey': '#383838',
   'space_grey': '#888888',

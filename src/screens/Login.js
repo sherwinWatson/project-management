@@ -2,14 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, Image } from 'react-native'
 import { StyleProvider, Container, Content, Form, Item, Label, InputGroup, Input, Button, Text } from 'native-base'
-import theme from './styles/theme'
-import color from './styles/color'
-import margin, { screen } from './styles/margin'
-import LoadingView from './components/LoadingView'
-import { selectLoginRefreshing, selectMeError, selectLoginError } from './redux/user/selectors'
-import DialogView from './components/DialogView'
+import theme from './../styles/theme'
+import color from './../styles/color'
+import margin, { screen } from './../styles/margin'
+import LoadingView from './../components/LoadingView'
+import { selectLoginRefreshing, selectMeError, selectLoginError } from './../redux/user/selectors'
+import DialogView from './../components/DialogView'
 
-import { login } from './redux/user/actions'
+import { login } from './../redux/user/actions'
 
 class Login extends React.Component {
   static navigationOptions = {
@@ -59,7 +59,7 @@ class Login extends React.Component {
             <View>
               <Image
                 style={{alignSelf: 'center', marginTop: 180, marginBottom: 30, width: 80, height: 120}}
-                source={require('./img/kamiLogo.png')}
+                source={require('./../img/kamiLogo.png')}
               />
               <Item>
                 <Input

@@ -1,6 +1,6 @@
 import { StackNavigator } from 'react-navigation'
-import Timeline from './Timeline'
-import Login from './Login'
+import Timeline from './screens/Timeline'
+import Login from './screens/Login'
 import Storyboard from './screens/Storyboard'
 
 const stackNavigator = StackNavigator

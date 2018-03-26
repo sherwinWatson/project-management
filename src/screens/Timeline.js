@@ -2,14 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import TimelineComponent from 'react-native-timeline-listview'
 import {StyleSheet, Platform, Picker} from 'react-native'
-import {getStoryboardDetail, addStoryboardDetail, modifyStoryboardDetail, removeStoryboardDetail} from './redux/storyboard/actions'
-import LoadingView from './components/LoadingView'
+import {getStoryboardDetail, addStoryboardDetail, modifyStoryboardDetail, removeStoryboardDetail} from './../redux/storyboard/actions'
+import LoadingView from './../components/LoadingView'
 import { View, StyleProvider, Container, Content, Button, Icon } from 'native-base'
-import theme from './styles/theme'
-import color from './styles/color'
+import theme from './../styles/theme'
+import color from './../styles/color'
 import moment from 'moment'
-import TitleView from './components/TitleView'
-import Prompt from './components/Prompt2'
+import TitleView from './../components/TitleView'
+import Prompt from './../components/PromptWithDatePicker'
 import ActionButton from 'react-native-action-button'
 
 const styles = StyleSheet.create({
@@ -88,7 +88,7 @@ class Timeline extends React.Component {
       time: item.target_date ? moment(item.target_date).format('DD MMM') : 'n/a',
       title: item.subject,
       description: item.details,
-      icon: item.isDone ? require('./img/ic_done_white.png') : null,
+      icon: item.isDone ? require('./../img/ic_done_white.png') : null,
     }))
 
     return (

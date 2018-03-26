@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleProvider, Container, List, Spinner, Text, ListItem, Button } from 'native-base'
+import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body } from 'native-base'
 import {Platform, RefreshControl, View, TouchableOpacity} from 'react-native'
 import theme from './../styles/theme'
 import margin from '../styles/margin'
@@ -11,6 +11,12 @@ import color from '../styles/color'
 import TitleView from './../components/TitleView'
 import Prompt from './../components/Prompt'
 import ActionButton from 'react-native-action-button'
+
+const getThumbnail = (data) => {
+  return data.imageUrl
+    ? { uri: data.imageUrl }
+    : require('./../img/no_avatar.png')
+}
 
 class Storyboard extends React.Component {
   constructor(props) {
@@ -66,6 +72,16 @@ class Storyboard extends React.Component {
         alignSelf: 'flex-start',
         ...font.bold,
       },
+      content: {
+        flexDirection: 'row',
+        flexShrink: 1,
+        justifyContent: 'space-between',
+        marginLeft: 10,
+      },
+      contentBody: {
+        flexShrink: 1,
+        justifyContent: 'space-between',
+      },
     }
 
     const renderRefreshControl = () => {
@@ -82,13 +98,17 @@ class Storyboard extends React.Component {
     }, 1200, {trailing: false})
 
 
-    const renderListItem = (data, sectionId, index) => {
-      // const marginStyle = {
-      //   marginTop: index === 0 || index === '0' ? 0 : margin.s8,
-      // }
+    const renderListItem = (data) => {
       return (
-        <ListItem style={{ ...styles.container }} onPress={() => openDetail(navigation, data)}>
-          <Text style={{ ...styles.text }}>{data.name}</Text>
+        <ListItem style={{ ...styles.container }} onPress={() => openDetail(navigation, data)} avatar>
+          <Left>
+            <Thumbnail small source={getThumbnail(data)} />
+          </Left>
+          <View style={{...styles.content}}>
+            <Body style = {{...styles.contentBody}}>
+              <Text style={{ ...styles.text }}>{data.name}</Text>
+            </Body>
+          </View>
         </ListItem>
       )
     }
@@ -126,7 +146,7 @@ class Storyboard extends React.Component {
         <Container>
           {renderContent()}
           <ActionButton
-            buttonColor="rgba(231,76,60,1)"
+            buttonColor={color.green}
             onPress={() => {
               this.setState({
                 promptVisible: true,
