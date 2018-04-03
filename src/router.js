@@ -1,7 +1,7 @@
 import { StackNavigator } from 'react-navigation'
 import Timeline from './screens/Timeline'
 import Login from './screens/Login'
-import Storyboard from './screens/Storyboard'
+import MainTabs from './screens/MainTabs'
 
 const stackNavigator = StackNavigator
 
@@ -15,7 +15,7 @@ const UnAuthenticatedNavigator = stackNavigator(
 
 const AuthenticatedNavigator = stackNavigator(
   {
-    Main: { screen: Storyboard },
+    Main: { screen: MainTabs },
     Detail: { screen: Timeline },
   }, {
     headerMode: 'screen',

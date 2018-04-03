@@ -1,14 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body } from 'native-base'
+import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab } from 'native-base'
 import {Platform, RefreshControl, View, TouchableOpacity} from 'react-native'
-import theme from './../styles/theme'
 import margin from '../styles/margin'
 import font from './../styles/font'
 
 import { getStoryboard, addStoryboard } from './../redux/storyboard/actions'
 import color from '../styles/color'
-import TitleView from './../components/TitleView'
 import Prompt from './../components/Prompt'
 import ActionButton from 'react-native-action-button'
 
@@ -29,20 +27,6 @@ class Storyboard extends React.Component {
   componentWillMount() {
     const {loadStoryboards} = this.props
     loadStoryboards()
-  }
-
-  static navigationOptions = {
-    headerTitleStyle: {
-      alignSelf: 'center',
-      color: color.toolbarItem,
-    },
-    headerStyle: {
-      borderBottomWidth: Platform.OS === 'android' && Platform.Version < 21 ? 0.5 : 0,
-      borderBottomColor: Platform.OS === 'ios' ? '#a7a6ab' : color.border,
-      backgroundColor: color.pale_white,
-    },
-    headerTitle: <TitleView title={'KAMI'} />,
-    gesturesEnabled: true,
   }
 
   render() {
@@ -142,32 +126,30 @@ class Storyboard extends React.Component {
     }
 
     return (
-      <StyleProvider style={theme}>
-        <Container>
-          {renderContent()}
-          <ActionButton
-            buttonColor={color.green}
-            onPress={() => {
-              this.setState({
-                promptVisible: true,
-              })
-            }}
-          />
-          <Prompt
-            title="New Storyboard"
-            placeholder="Name"
-            visible={ this.state.promptVisible }
-            onCancel={ () => this.setState({
+      <View style={{backgroundColor: color.pale_white}}>
+        {renderContent()}
+        <ActionButton
+          buttonColor={color.green}
+          onPress={() => {
+            this.setState({
+              promptVisible: true,
+            })
+          }}
+        />
+        <Prompt
+          title="New Storyboard"
+          placeholder="Name"
+          visible={ this.state.promptVisible }
+          onCancel={ () => this.setState({
+            promptVisible: false,
+          }) }
+          onSubmit={ (value) => {
+            this.setState({
               promptVisible: false,
-            }) }
-            onSubmit={ (value) => {
-              this.setState({
-                promptVisible: false,
-              })
-              dispatchAddStoryboard(value)
-            }}/>
-        </Container>
-      </StyleProvider>
+            })
+            dispatchAddStoryboard(value)
+          }}/>
+      </View>
     )
   }
 }

@@ -17,7 +17,7 @@ const initial = {
 const color = {
   ...initial,
   'primary': initial.teal,
-  'toolbarItem': initial.dark_grey,
+  'toolbarItem': initial.white,
   'darkText': initial.dark_grey,
   'defaultText': initial.space_grey,
   'lightText': initial.light_grey,
