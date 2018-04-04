@@ -88,7 +88,7 @@ class Login extends React.Component {
                   autoFocus={true}
                   blurOnSubmit={false}
                   onSubmitEditing={(event) => {
-                    this._passwordView._root.focus()
+                    this._passwordView.focus()
                   }}
                   onChangeText={(value) => this.setState({username: value})}
                   placeholder='Username'

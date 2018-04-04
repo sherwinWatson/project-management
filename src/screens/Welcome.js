@@ -45,6 +45,10 @@ class Welcome extends React.Component {
       navigationn.navigate('Login')
     }, 1200, {trailing: false})
 
+    const openSignUp = _.throttle((navigationn) => {
+      navigationn.navigate('SignUp')
+    }, 1200, {trailing: false})
+
     return (
       <StyleProvider style={theme}>
         <Container style={{flexGrow: 1}}>
@@ -63,7 +67,7 @@ class Welcome extends React.Component {
               <Text>Login</Text>
             </Button>
             <View style={styles.separator}/>
-            <Button block style={styles.button}>
+            <Button block style={styles.button} onPress={() => openSignUp(navigation)}>
               <Text>Sign Up</Text>
             </Button>
           </View>
