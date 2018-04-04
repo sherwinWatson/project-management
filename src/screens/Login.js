@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Image } from 'react-native'
+import { View, Image, TextInput } from 'react-native'
 import { StyleProvider, Container, Content, Form, Item, Label, InputGroup, Input, Button, Text } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
@@ -10,6 +10,28 @@ import { selectLoginRefreshing, selectMeError, selectLoginError } from './../red
 import DialogView from './../components/DialogView'
 
 import { login } from './../redux/user/actions'
+import IconPerson from '../img/IconPerson'
+import IconLock from '../img/IconLock'
+
+const styles = {
+  input: {
+    backgroundColor: color.darkText,
+    borderRadius: 30,
+    paddingHorizontal: margin.s24,
+    marginTop: margin.s24,
+  },
+  textInput: {
+    marginLeft: margin.s12,
+    flex: 1,
+    color: color.lightText,
+  },
+  button: {
+    backgroundColor: color.space_grey,
+    borderRadius: 30,
+    paddingHorizontal: margin.s24,
+    marginTop: margin.s48,
+  },
+}
 
 class Login extends React.Component {
   static navigationOptions = {
@@ -49,20 +71,20 @@ class Login extends React.Component {
   render() {
     const { doLogin, isLoading } = this.props
     const labelWidth = screen.width * 2 / 3
-    const labelHeight = labelWidth * 3 / 10
     return (
       <StyleProvider style={theme}>
-        <Container style={{backgroundColor: '#2b689c'}}>
+        <Container style={{backgroundColor: 'black'}}>
           <DialogView  ref={(ref) => {this.dialog = ref}}/>
           <LoadingView isShown={isLoading} noBack />
           <Content padder contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always' >
             <View>
               <Image
-                style={{alignSelf: 'center', marginTop: 180, marginBottom: 30, width: 80, height: 120}}
+                style={{alignSelf: 'center', marginTop: 80, marginBottom: 30, width: 80, height: 120}}
                 source={require('./../img/kamiLogo.png')}
               />
-              <Item>
-                <Input
+              <Item style={styles.input}>
+                <IconPerson color={color.lightText} width={margin.s16} height={margin.s16} style={{marginLeft: margin.s24}}/>
+                <TextInput
                   autoFocus={true}
                   blurOnSubmit={false}
                   onSubmitEditing={(event) => {
@@ -73,11 +95,14 @@ class Login extends React.Component {
                   placeholderTextColor={color.lightText}
                   returnKeyType = {'next'}
                   value={this.state.username}
+                  style={styles.textInput}
+                  underlineColorAndroid={color.darkText}
                 />
               </Item>
 
-              <Item style={{marginTop: margin.s24, marginBottom: margin.s8}}>
-                <Input
+              <Item style={styles.input}>
+                <IconLock color={color.lightText} width={margin.s16} height={margin.s16} style={{marginLeft: margin.s24}}/>
+                <TextInput
                   placeholder='Password'
                   placeholderTextColor={color.lightText}
                   onSubmitEditing={(event) => {
@@ -88,10 +113,12 @@ class Login extends React.Component {
                   returnKeyType = {'done'}
                   secureTextEntry
                   value={this.state.password}
+                  style={styles.textInput}
+                  underlineColorAndroid={color.darkText}
                 />
               </Item>
 
-              <Button block style={{ marginTop: margin.s16 }} onPress={() => doLogin(this.state.username, this.state.password)}>
+              <Button block style={styles.button} onPress={() => doLogin(this.state.username, this.state.password)}>
                 <Text>Login</Text>
               </Button>
             </View>

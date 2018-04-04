@@ -19,7 +19,7 @@ export default class App extends Component<{}> {
     }
 
     axios.defaults.baseURL = 'https://kami-193714.appspot.com/'
-    axios.defaults.timeout = 1500000
+    axios.defaults.timeout = 15000
   }
 
   render() {

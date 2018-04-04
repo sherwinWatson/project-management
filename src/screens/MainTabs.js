@@ -8,12 +8,6 @@ import {Platform} from 'react-native'
 import color from '../styles/color'
 import TitleView from './../components/TitleView'
 
-const styles = {
-  container: {
-    backgroundColor: color.black,
-  },
-}
-
 class MainTabs extends React.Component {
   static navigationOptions = {
     headerTitleStyle: {
@@ -36,13 +30,13 @@ class MainTabs extends React.Component {
     } = this.props
 
     return (
-      <StyleProvider>
+      <StyleProvider style={theme}>
         <Container>
           <Tabs initialPage={0}>
             <Tab heading="BOARD">
               <Storyboard navigation={navigation}/>
             </Tab>
-            <Tab heading="PERSONAL CHAT" style={{color: 'white'}}>
+            <Tab heading="PERSONAL CHAT">
               <Storyboard navigation={navigation}/>
             </Tab>
           </Tabs>
