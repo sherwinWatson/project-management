@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab } from 'native-base'
+import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab, TabHeading } from 'native-base'
 import theme from './../styles/theme'
 import Storyboard from './Storyboard'
 import Conversation from './Conversation'
@@ -31,12 +31,16 @@ class MainTabs extends React.Component {
 
     return (
       <StyleProvider style={theme}>
-        <Container>
-          <Tabs initialPage={0}>
-            <Tab heading="BOARD">
+        <Container style={{backgroundColor: color.black}}>
+          <Tabs initialPage={0} >
+            <Tab
+              heading={ <TabHeading><Text style={{color: color.white}}>BOARD</Text></TabHeading>}
+            >
               <Storyboard navigation={navigation}/>
             </Tab>
-            <Tab heading="PERSONAL CHAT">
+            <Tab
+              heading={ <TabHeading><Text style={{color: color.white}}>PERSONAL CHAT</Text></TabHeading>}
+            >
               <Storyboard navigation={navigation}/>
             </Tab>
           </Tabs>

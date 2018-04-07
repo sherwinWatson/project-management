@@ -38,7 +38,7 @@ class Welcome extends React.Component {
 
   render() {
     const {
-      navigation
+      navigation,
     } = this.props
 
     const openLogin = _.throttle((navigationn) => {
