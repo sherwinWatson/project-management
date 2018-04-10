@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Image, TextInput } from 'react-native'
+import { View, Image, TextInput, Alert } from 'react-native'
 import { StyleProvider, Container, Content, Form, Item, Label, InputGroup, Input, Button, Text } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
@@ -46,35 +46,36 @@ class Login extends React.Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   const { error, meError, logout } = this.props
-  //
-  //   if (nextProps.error !== error) {
-  //     if (nextProps.error && nextProps.error.message) {
-  //       this.dialog._show('Login Error', nextProps.error.message)
-  //     }
-  //   }
-  //
-  //   if (nextProps.meError !== meError) {
-  //     if (nextProps.meError && nextProps.meError.message) {
-  //       this.dialog._show(null, nextProps.meError.message)
-  //     }
-  //   }
-  //
-  //   if (nextProps.logout !== logout) {
-  //     if (nextProps.logout.message) {
-  //       this.dialog._show(null, nextProps.logout.message, nextProps.logout.action)
-  //     }
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    const { error, meError, logout } = this.props
+
+    if (nextProps.error !== error) {
+      // if (nextProps.error && nextProps.error.message) {
+      if (nextProps.error) {
+        this.dialog._show('Login Error', 'Username atau password salah')
+      }
+    }
+
+    if (nextProps.meError !== meError) {
+      if (nextProps.meError && nextProps.meError.message) {
+        this.dialog._show(null, nextProps.meError.message)
+      }
+    }
+
+    if (nextProps.logout !== logout) {
+      if (nextProps.logout.message) {
+        this.dialog._show(null, nextProps.logout.message, nextProps.logout.action)
+      }
+    }
+  }
 
   render() {
-    const { doLogin, isLoading, error } = this.props
-    const labelWidth = screen.width * 2 / 3
+    const { doLogin, isLoading } = this.props
     return (
       <StyleProvider style={theme}>
         <Container style={{backgroundColor: 'black'}}>
-          <DialogView  ref={(ref) => {this.dialog = ref}} visibility={nextProps.error && nextProps.error.message}/>
+          <DialogView  ref={(ref) => {this.dialog = ref}}/>
+          <LoadingView isShown={isLoading} noBack />
           <Content padder contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always' >
             <View>
               <Image
@@ -84,7 +85,7 @@ class Login extends React.Component {
               <Item style={styles.input}>
                 <IconPerson color={color.lightText} width={margin.s16} height={margin.s16} style={{marginLeft: margin.s24}}/>
                 <TextInput
-                  // autoFocus={true}
+                  autoFocus={true}
                   blurOnSubmit={false}
                   onSubmitEditing={(event) => {
                     this._passwordView.focus()

@@ -8,7 +8,7 @@ class Main extends React.Component {
   _onBackPress() {
     const { isLoggedIn, authenticatedNav, unAuthenticatedNav } = this.props
     const nav = isLoggedIn ? authenticatedNav : unAuthenticatedNav
-    const authCanPop = isLoggedIn && (nav.index > 0 || nav.routes[0].routes[nav.routes[0].index].index > 0)
+    const authCanPop = isLoggedIn && (nav.index > 0)
     const unAuthCanPop = !isLoggedIn && nav.index > 0
     if (authCanPop || unAuthCanPop) {
       this.props.dispatch(NavigationActions.back({ key: null }))

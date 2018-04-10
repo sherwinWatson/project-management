@@ -75,15 +75,14 @@ export default class DialogView extends React.Component {
           })
         },
       })
-    }, 250)
+    }, 500)
   }
 
   render() {
     const { title, message, visibility, action } = this.state
-    const { prtitle, prmessage, prvisibility } = this.props
     return (
       <Modal
-        isVisible={visibility || prvisibility}
+        isVisible={visibility}
         onRequestClose={() => this._setVisibility(false)}
         animationIn='fadeIn'
         animationInTiming={50}

@@ -44,8 +44,6 @@ class Storyboard extends React.Component {
     const styles = {
       container: {
         margin: margin.s12,
-        borderBottom: 1,
-        borderBottomColor: color.darkText,
       },
       addNewButton: {
         flex: 1,
