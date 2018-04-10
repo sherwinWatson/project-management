@@ -64,6 +64,10 @@ class SignUp extends React.Component {
     }
   }
 
+  componentDidMount() {
+
+  }
+
   componentWillReceiveProps(nextProps) {
     const { error, meError, logout } = this.props
 
@@ -205,7 +209,7 @@ class SignUp extends React.Component {
                   placeholder='Email'
                   placeholderTextColor={color.lightText}
                   returnKeyType = {'next'}
-                  value={this.state.username}
+                  value={this.state.email}
                   style={styles.textInput}
                   underlineColorAndroid={color.darkText}
                   keyboardType='email-address'
@@ -223,7 +227,6 @@ class SignUp extends React.Component {
                   onChangeText={(value) => this.setState({profession: value})}
                   ref={(ref) => {this._professionView = ref}}
                   returnKeyType = {'done'}
-                  secureTextEntry
                   value={this.state.profession}
                   style={styles.textInput}
                   underlineColorAndroid={color.darkText}

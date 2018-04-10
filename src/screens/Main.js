@@ -2,8 +2,25 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { addNavigationHelpers, NavigationActions } from 'react-navigation'
 import { selectToken, selectUser } from './../redux/user/selectors'
+import {BackHandler} from 'react-native'
 
 class Main extends React.Component {
+  _onBackPress() {
+    const { isLoggedIn, authenticatedNav, unAuthenticatedNav } = this.props
+    const nav = isLoggedIn ? authenticatedNav : unAuthenticatedNav
+    const authCanPop = isLoggedIn && (nav.index > 0 || nav.routes[0].routes[nav.routes[0].index].index > 0)
+    const unAuthCanPop = !isLoggedIn && nav.index > 0
+    if (authCanPop || unAuthCanPop) {
+      this.props.dispatch(NavigationActions.back({ key: null }))
+      return true
+    }
+    return false
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => this._onBackPress())
+  }
+
   render() {
     const { router: Router, isLoggedIn, user } = this.props
     const AuthenticatedNavigator = Router.AuthenticatedNavigator

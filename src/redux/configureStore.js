@@ -8,9 +8,6 @@ import IS_DEBUG from './../../App'
 
 export const IS_WEB = false
 
-// export const IS_DEBUG = Platform.OS === 'ios' ? process.env.NODE_ENV === 'development' :  NativeModules.RNConfig.BUILD_ENV === 'development'
-// export const IS_DEBUG = true
-
 export default (Router, onComplete) => {
   let composeEnhancers
 

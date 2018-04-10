@@ -47,6 +47,9 @@ export default class DialogView extends React.Component {
       visibility: false,
       title: null,
       message: null,
+      action: () => {
+        this._setVisibility(false)
+      },
     }
   }
 
@@ -58,6 +61,7 @@ export default class DialogView extends React.Component {
 
   _show = (title, message, action) => {
     setTimeout(() => {
+    //   this._setVisibility(true)
       this.setState({
         visibility: true,
         title: title,
@@ -76,9 +80,10 @@ export default class DialogView extends React.Component {
 
   render() {
     const { title, message, visibility, action } = this.state
+    const { prtitle, prmessage, prvisibility } = this.props
     return (
       <Modal
-        isVisible={visibility}
+        isVisible={visibility || prvisibility}
         onRequestClose={() => this._setVisibility(false)}
         animationIn='fadeIn'
         animationInTiming={50}
@@ -129,5 +134,5 @@ export const transformError = (error) => {
 
 DialogView.propTypes = {
   message: PropTypes.string,
-  tite: PropTypes.string,
+  title: PropTypes.string,
 }
