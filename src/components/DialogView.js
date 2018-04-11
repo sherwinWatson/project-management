@@ -61,7 +61,6 @@ export default class DialogView extends React.Component {
 
   _show = (title, message, action) => {
     setTimeout(() => {
-    //   this._setVisibility(true)
       this.setState({
         visibility: true,
         title: title,
@@ -75,7 +74,7 @@ export default class DialogView extends React.Component {
           })
         },
       })
-    }, 500)
+    }, 250)
   }
 
   render() {

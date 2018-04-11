@@ -9,7 +9,7 @@ import LoadingView from './../components/LoadingView'
 import { selectLoginRefreshing, selectMeError, selectLoginError } from './../redux/user/selectors'
 import DialogView from './../components/DialogView'
 
-import { login } from './../redux/user/actions'
+import { login, removeError } from './../redux/user/actions'
 import IconPerson from '../img/IconPerson'
 import IconLock from '../img/IconLock'
 
@@ -47,12 +47,12 @@ class Login extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { error, meError, logout } = this.props
+    const { error, meError, logout, doRemoveError } = this.props
 
     if (nextProps.error !== error) {
       // if (nextProps.error && nextProps.error.message) {
       if (nextProps.error) {
-        this.dialog._show('Login Error', 'Username atau password salah')
+        this.dialog._show('Login Error', 'Username atau password salah', doRemoveError())
       }
     }
 
@@ -75,7 +75,7 @@ class Login extends React.Component {
       <StyleProvider style={theme}>
         <Container style={{backgroundColor: 'black'}}>
           <DialogView  ref={(ref) => {this.dialog = ref}}/>
-          <LoadingView isShown={isLoading} noBack />
+          <LoadingView isShown={isLoading} noBack isModal={false} />
           <Content padder contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always' >
             <View>
               <Image
@@ -138,6 +138,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   doLogin(username, password) {
     dispatch(login(username, password))
+  },
+  doRemoveError() {
+    dispatch(removeError())
   },
 })
 

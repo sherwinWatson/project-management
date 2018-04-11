@@ -17,7 +17,7 @@ import {
   CHANGE_OUTLET,
   CHANGE_PIN,
   CHANGE_PIN_SUCCESS,
-  CHANGE_PIN_ERROR,
+  CHANGE_PIN_ERROR, REMOVE_ERROR,
 } from './actions'
 
 const initialState = {
@@ -142,6 +142,15 @@ export default (state = initialState, action) => {
 
     case GET_OUTLETS_ERROR:
       return handleRequestErrorReducer(state, action, 'outlets')
+
+    case REMOVE_ERROR:
+      return {
+        ...state,
+        login: {
+          ...state.login,
+          error: null,
+        },
+      }
 
     default:
       return state

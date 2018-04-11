@@ -11,6 +11,7 @@ export const CHANGE_OUTLET = 'USER::CHANGE_OUTLET'
 export const CHANGE_PIN = 'USER::CHANGE_PIN'
 export const CHANGE_PIN_SUCCESS = 'USER::CHANGE_PIN_SUCCESS'
 export const CHANGE_PIN_ERROR = 'USER::CHANGE_PIN_ERROR'
+export const REMOVE_ERROR = 'USER::REMOVE_ERROR'
 
 export const login = (username, password) => {
   return {
@@ -55,5 +56,11 @@ export const logout = (message, onOkAction) => {
 export const getOutlets = () => {
   return {
     type: GET_OUTLETS,
+  }
+}
+
+export const removeError = () => {
+  return {
+    type: REMOVE_ERROR,
   }
 }
