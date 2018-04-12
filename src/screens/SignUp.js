@@ -6,10 +6,9 @@ import theme from './../styles/theme'
 import color from './../styles/color'
 import margin, { screen } from './../styles/margin'
 import LoadingView from './../components/LoadingView'
-import { selectLoginRefreshing, selectMeError, selectLoginError } from './../redux/user/selectors'
 import DialogView from './../components/DialogView'
 
-import { login } from './../redux/user/actions'
+import { login, signup } from './../redux/user/actions'
 import IconPerson from '../img/IconPerson'
 import IconLock from '../img/IconLock'
 import IconPhone from '../img/IconPhone'
@@ -64,22 +63,15 @@ class SignUp extends React.Component {
     }
   }
 
-  componentDidMount() {
-
-  }
-
   componentWillReceiveProps(nextProps) {
-    const { error, meError, logout } = this.props
+    const { error, signupSuccess, logout, navigation } = this.props
+    const openLogin = _.throttle((navigationn) => {
+      navigationn.navigate('Login')
+    }, 1200, {trailing: false})
 
     if (nextProps.error !== error) {
       if (nextProps.error && nextProps.error.message) {
-        this.dialog._show('Login Error', nextProps.error.message)
-      }
-    }
-
-    if (nextProps.meError !== meError) {
-      if (nextProps.meError && nextProps.meError.message) {
-        this.dialog._show(null, nextProps.meError.message)
+        this.dialog._show('Signup Error', nextProps.error.message)
       }
     }
 
@@ -88,15 +80,21 @@ class SignUp extends React.Component {
         this.dialog._show(null, nextProps.logout.message, nextProps.logout.action)
       }
     }
+    if (nextProps.signupSuccess !== signupSuccess) {
+      if (nextProps.signupSuccess === 'ok') {
+        openLogin(navigation)
+      }
+    }
   }
 
   render() {
-    const { doLogin, isLoading } = this.props
+    const { doSignup, isLoading } = this.props
+    const {username, password, email, phone, firstName, lastName, profession} = this.state
     return (
       <StyleProvider style={theme}>
         <Container style={{backgroundColor: 'black'}}>
           <DialogView  ref={(ref) => {this.dialog = ref}}/>
-          <LoadingView isShown={isLoading} noBack />
+          <LoadingView isShown={isLoading} noBack isModal={false} />
           <Content padder contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always' >
             <View>
               <Image
@@ -116,7 +114,7 @@ class SignUp extends React.Component {
                     placeholder='First Name'
                     placeholderTextColor={color.lightText}
                     returnKeyType = {'next'}
-                    value={this.state.firstName}
+                    value={firstName}
                     style={styles.textInput}
                     underlineColorAndroid={color.darkText}
                   />
@@ -135,7 +133,7 @@ class SignUp extends React.Component {
                     placeholder='Last Name'
                     placeholderTextColor={color.lightText}
                     returnKeyType = {'next'}
-                    value={this.state.lastName}
+                    value={lastName}
                     style={styles.textInput}
                     underlineColorAndroid={color.darkText}
                   />
@@ -154,7 +152,7 @@ class SignUp extends React.Component {
                   placeholder='Username'
                   placeholderTextColor={color.lightText}
                   returnKeyType = {'next'}
-                  value={this.state.username}
+                  value={username}
                   style={styles.textInput}
                   underlineColorAndroid={color.darkText}
                 />
@@ -172,7 +170,7 @@ class SignUp extends React.Component {
                   ref={(ref) => {this._passwordView = ref}}
                   returnKeyType = {'done'}
                   secureTextEntry
-                  value={this.state.password}
+                  value={password}
                   style={styles.textInput}
                   underlineColorAndroid={color.darkText}
                 />
@@ -190,7 +188,7 @@ class SignUp extends React.Component {
                   placeholder='Phone Number'
                   placeholderTextColor={color.lightText}
                   returnKeyType = {'next'}
-                  value={this.state.phone}
+                  value={phone}
                   style={styles.textInput}
                   underlineColorAndroid={color.darkText}
                   keyboardType='phone-pad'
@@ -209,7 +207,7 @@ class SignUp extends React.Component {
                   placeholder='Email'
                   placeholderTextColor={color.lightText}
                   returnKeyType = {'next'}
-                  value={this.state.email}
+                  value={email}
                   style={styles.textInput}
                   underlineColorAndroid={color.darkText}
                   keyboardType='email-address'
@@ -222,17 +220,19 @@ class SignUp extends React.Component {
                   placeholder='Profession'
                   placeholderTextColor={color.lightText}
                   onSubmitEditing={(event) => {
-                    doLogin(this.state.username, this.state.password)
+                    doSignup(username, password, email, phone, firstName, lastName, profession)
                   }}
                   onChangeText={(value) => this.setState({profession: value})}
                   ref={(ref) => {this._professionView = ref}}
                   returnKeyType = {'done'}
-                  value={this.state.profession}
+                  value={profession}
                   style={styles.textInput}
                   underlineColorAndroid={color.darkText}
                 />
               </Item>
-              <Button block style={styles.button} onPress={() => doLogin('admin', 'password')}>
+              <Button block style={styles.button} onPress={() => {
+                doSignup(username, password, email, phone, firstName, lastName, profession)
+              }}>
                 <Text>Sign Up</Text>
               </Button>
             </View>
@@ -244,14 +244,17 @@ class SignUp extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  isLoading: selectLoginRefreshing(state),
-  error: selectLoginError(state),
-  meError: selectMeError(state),
+  isLoading: state.user.signup.refreshing,
+  error: state.user.signup.error,
+  signupSuccess: state.user.signup.result.data,
   logout: state.user.logout,
 })
 const mapDispatchToProps = (dispatch) => ({
   doLogin(username, password) {
     dispatch(login(username, password))
+  },
+  doSignup(username, password, email, phone, firstName, lastName, profession) {
+    dispatch(signup(username, password, email, phone, firstName, lastName, profession))
   },
 })
 

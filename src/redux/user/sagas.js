@@ -14,19 +14,17 @@ import {
   LOGOUT,
   CHANGE_PIN,
   CHANGE_PIN_SUCCESS,
-  CHANGE_PIN_ERROR,
+  CHANGE_PIN_ERROR, SIGNUP, SIGNUP_ERROR, SIGNUP_SUCCESS,
 } from './actions'
 
 export function* login(action) {
   try {
     const response = yield axios({
-      url: 'login',
+      url: 'authenticate',
       method: 'post',
       data: {
-        _username: action.payload.username,
-        // _username: 'admin',
-        _password: action.payload.password,
-        // _password: 'password',
+        username: action.payload.username,
+        password: action.payload.password,
       },
     })
     yield put({ type: LOGIN_SUCCESS, payload: response.data })
@@ -38,25 +36,13 @@ export function* login(action) {
 export function* getMe(action) {
   try {
     const response = yield axios({
-      url: 'me/',
+      url: 'profile',
       method: 'get',
     })
 
     yield put({ type: GET_ME_SUCCESS, payload: response.data })
   } catch (error) {
     yield put({ type: GET_ME_ERROR, error})
-  }
-}
-
-export function* getOutlets() {
-  try {
-    const response = yield axios({
-      url: 'outletapi/me/outlets',
-      method: 'get',
-    })
-    yield put({ type: GET_OUTLETS_SUCCESS, payload: response.data })
-  } catch (error) {
-    yield put({ type: GET_OUTLETS_ERROR, error})
   }
 }
 
@@ -81,9 +67,31 @@ export function* changePin(action) {
   }
 }
 
+export function* signup(action) {
+  try {
+    const {username, password, email, phone, firstName, lastName, profession} = action.payload
+    const response = yield axios({
+      method: 'post',
+      url: 'register',
+      data: {
+        username,
+        password,
+        email,
+        phone_number: phone,
+        first_name: firstName,
+        last_name: lastName,
+        profession,
+      },
+    })
+    yield put({type: SIGNUP_SUCCESS})
+  } catch (error) {
+    yield put({type: SIGNUP_ERROR, error})
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(LOGIN, login)
   yield takeEvery(CHANGE_PIN, changePin)
   yield takeEvery(LOGIN_SUCCESS, getMe)
-  yield takeEvery(GET_OUTLETS, getOutlets)
+  yield takeEvery(SIGNUP, signup)
 }

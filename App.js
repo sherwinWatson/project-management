@@ -17,9 +17,6 @@ export default class App extends Component<{}> {
       store: configureStore(Router, () => { this.setState({ storeLoaded: true }) }),
       notification: null,
     }
-
-    axios.defaults.baseURL = 'https://kami-193714.appspot.com/'
-    axios.defaults.timeout = 15000
   }
 
   render() {

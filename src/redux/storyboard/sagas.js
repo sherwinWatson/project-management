@@ -25,7 +25,7 @@ import {
 export function* getStoryboard() {
   try {
     const response = yield axios({
-      url: 'storyboard',
+      url: 'storyboards',
       method: 'get',
     })
     yield put({ type: GET_STORYBOARD_SUCCESS, payload: response.data })

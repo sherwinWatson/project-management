@@ -3,8 +3,15 @@ import { connect } from 'react-redux'
 import { addNavigationHelpers, NavigationActions } from 'react-navigation'
 import { selectToken, selectUser } from './../redux/user/selectors'
 import {BackHandler} from 'react-native'
+import {axiosInit} from '../config/axios'
 
 class Main extends React.Component {
+  constructor(props) {
+    super(props)
+    const { token } = props
+    axiosInit(token)
+  }
+
   _onBackPress() {
     const { isLoggedIn, authenticatedNav, unAuthenticatedNav } = this.props
     const nav = isLoggedIn ? authenticatedNav : unAuthenticatedNav
@@ -19,6 +26,13 @@ class Main extends React.Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', () => this._onBackPress())
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const { token } = this.props
+    if (nextProps.token && (token !== nextProps.token)) {
+      axiosInit(nextProps.token)
+    }
   }
 
   render() {
@@ -51,7 +65,7 @@ const mapStateToProps = (state) => ({
   authenticatedNav: state.authenticatedNav,
   isLoggedIn: selectUser(state).id,
   user: selectUser(state),
-  // token: selectToken(state),
+  token: selectToken(state),
 })
 
 export default connect(

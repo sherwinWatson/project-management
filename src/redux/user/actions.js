@@ -12,6 +12,9 @@ export const CHANGE_PIN = 'USER::CHANGE_PIN'
 export const CHANGE_PIN_SUCCESS = 'USER::CHANGE_PIN_SUCCESS'
 export const CHANGE_PIN_ERROR = 'USER::CHANGE_PIN_ERROR'
 export const REMOVE_ERROR = 'USER::REMOVE_ERROR'
+export const SIGNUP = 'USER::SIGNUP'
+export const SIGNUP_SUCCESS = 'USER::SIGNUP_SUCCESS'
+export const SIGNUP_ERROR = 'USER::SIGNUP_ERROR'
 
 export const login = (username, password) => {
   return {
@@ -62,5 +65,20 @@ export const getOutlets = () => {
 export const removeError = () => {
   return {
     type: REMOVE_ERROR,
+  }
+}
+
+export const signup = (username, password, email, phone, firstName, lastName, profession) => {
+  return {
+    type: SIGNUP,
+    payload: {
+      username,
+      password,
+      email,
+      phone,
+      firstName,
+      lastName,
+      profession,
+    },
   }
 }

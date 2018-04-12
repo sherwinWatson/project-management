@@ -18,7 +18,7 @@ export const handleRequestReducer = (state, action, name) => {
 }
 
 export const handleRequestErrorReducer = (state, action, name) => {
-  let err = action.error.response ? action.error.response.data : action.error
+  let err = action.error
   err.createdAt = new Date()
   const loading = !state[name].loading || state[name].loading <= 0
     ? 0

@@ -11,13 +11,9 @@ import {
   LOGOUT,
   GET_ME_SUCCESS,
   GET_ME_ERROR,
-  GET_OUTLETS,
-  GET_OUTLETS_SUCCESS,
-  GET_OUTLETS_ERROR,
-  CHANGE_OUTLET,
   CHANGE_PIN,
   CHANGE_PIN_SUCCESS,
-  CHANGE_PIN_ERROR, REMOVE_ERROR,
+  CHANGE_PIN_ERROR, REMOVE_ERROR, SIGNUP, SIGNUP_SUCCESS, SIGNUP_ERROR,
 } from './actions'
 
 const initialState = {
@@ -48,6 +44,13 @@ const initialState = {
     isUpdate: false,
   },
   logout: {},
+  signup: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+  },
 }
 
 export default (state = initialState, action) => {
@@ -70,16 +73,21 @@ export default (state = initialState, action) => {
       }
 
     case LOGIN_SUCCESS:
-      const newState = {
+      return {
         ...state,
+        login: {
+          result: {
+            data: action.payload,
+          },
+          refreshing: false,
+          error: null,
+        },
         me: {
           ...state.me,
           refreshing: true,
         },
         logout: initialState.logout,
       }
-
-      return handleRequestSuccessReducer(newState, action, 'login')
 
     case LOGIN_ERROR:
       return handleRequestErrorReducer(state, action, 'login')
@@ -93,6 +101,24 @@ export default (state = initialState, action) => {
         login: {...initialState.login},
       }
       return handleRequestErrorReducer(prevState, action, 'me')
+
+    case SIGNUP:
+      return handleRequestReducer(state, action, 'signup')
+
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        signup: {
+          ...state.signup,
+          result: {
+            data: 'ok',
+          },
+          refreshing: false,
+        },
+      }
+
+    case SIGNUP_ERROR:
+      return handleRequestErrorReducer(state, action, 'signup')
 
     case CHANGE_PIN:
       const changePin = handleRequestReducer(state, action, 'changePin')
@@ -116,32 +142,6 @@ export default (state = initialState, action) => {
 
     case CHANGE_PIN_ERROR:
       return handleRequestErrorReducer(state, action, 'changePin')
-
-    case CHANGE_OUTLET:
-      return {
-        ...state,
-        me: {
-          ...state.me,
-          selectedOutlet: action.payload.selectedOutlet,
-        },
-      }
-
-    case GET_OUTLETS:
-      return handleRequestReducer(state, action, 'outlets')
-
-    case GET_OUTLETS_SUCCESS:
-      const outletSuccessResult =  handleRequestSuccessReducer(state, action, 'outlets')
-      return {
-        ...outletSuccessResult,
-        me: {
-          ...outletSuccessResult.me,
-          outlets: outletSuccessResult.outlets.result.data,
-        },
-        outlets: null,
-      }
-
-    case GET_OUTLETS_ERROR:
-      return handleRequestErrorReducer(state, action, 'outlets')
 
     case REMOVE_ERROR:
       return {
