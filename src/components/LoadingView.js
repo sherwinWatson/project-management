@@ -6,14 +6,15 @@ import Modal from 'react-native-modal'
 import color from './../styles/color'
 import Animation from 'lottie-react-native'
 import { Icon, Button, Header } from 'native-base'
+import {screen} from '../styles/margin'
 // import { back } from './../redux/navigation/actions'
 
 const style = {
   position: 'absolute',
-  left: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
+  width: screen.width,
+  height: screen.height,
+  flex: 1,
+  zIndex: 2,
 }
 
 class LoadingView extends React.Component {
@@ -35,12 +36,12 @@ class LoadingView extends React.Component {
   }
 
   renderContent() {
-    const { isModal, solid, noBack } = this.props
+    const { solid } = this.props
     return (
       <View style={[{
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: this.props.solid ? color.pale_white : '#FFFFFF80',
+        backgroundColor: solid ? color.pale_white : '#FFFFFF80',
       }, this.props.isShown ? style : null]}>
 
         <View style={{

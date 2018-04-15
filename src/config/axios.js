@@ -10,24 +10,24 @@ export const axiosInit = (token) => {
     }
 
     axios.interceptors.request.use((config) => {
-      let isSecured = false
-
-      const securedApi = [
-        /(.*)\/profile(.*)/,
-        /(.*)\/storyboards(.*)/,
-      ]
-
-      for (let i = 0; i < securedApi.length; i++) {
-        const url = securedApi[i]
-        if (config.url.match(url) !== null) {
-          isSecured = true
-          break
-        }
-      }
+      // let isSecured = false
+      //
+      // const securedApi = [
+      //   /(.*)\/profile(.*)/,
+      //   /(.*)\/storyboards(.*)/,
+      // ]
+      //
+      // for (let i = 0; i < securedApi.length; i++) {
+      //   const url = securedApi[i]
+      //   if (config.url.match(url) !== null) {
+      //     isSecured = true
+      //     break
+      //   }
+      // }
 
       // if (isSecured) {
-        config.headers.Authorization = 'Bearer ' + token
-        // config.headers['X-Requested-With'] = 'XMLHttpRequest'
+      config.headers.Authorization = 'Bearer ' + token
+      // config.headers['X-Requested-With'] = 'XMLHttpRequest'
       // }
 
       return config
