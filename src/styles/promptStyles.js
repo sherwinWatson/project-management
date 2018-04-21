@@ -6,7 +6,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   dialogOverlay: {
-    // backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -15,24 +15,25 @@ export default StyleSheet.create({
   },
   dialogContent: {
     elevation: 5,
-    marginTop: 80,
+    marginTop: 180,
     width: 300,
     backgroundColor: 'white',
     borderRadius: 5,
-    borderWidth: 1,
     overflow: 'hidden',
   },
   dialogTitle: {
-    borderBottomWidth: 1,
     paddingVertical: 10,
     paddingHorizontal: 15,
+    paddingTop: 30,
   },
   dialogTitleText: {
     fontSize: 18,
     fontWeight: '600',
+    textAlign: 'center',
   },
   dialogBody: {
     paddingHorizontal: 10,
+    paddingBottom: 30,
   },
   dialogInput: {
     height: 50,
