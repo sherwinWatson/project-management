@@ -44,6 +44,7 @@ class Storyboard extends React.Component {
     const styles = {
       container: {
         margin: margin.s12,
+        borderBottomColor: color.darkText,
       },
       addNewButton: {
         flex: 1,
@@ -126,7 +127,7 @@ class Storyboard extends React.Component {
     }
 
     return (
-      <View style={{backgroundColor: color.pale_white}}>
+      <View style={{backgroundColor: color.pale_white, flex: 1}}>
         {renderContent()}
         <ActionButton
           buttonColor={color.green}

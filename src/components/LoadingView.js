@@ -14,7 +14,7 @@ const style = {
   width: screen.width,
   height: screen.height,
   flex: 1,
-  zIndex: 2,
+  zIndex: 99,
 }
 
 class LoadingView extends React.Component {
