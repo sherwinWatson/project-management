@@ -3,6 +3,7 @@ import {
   Modal,
   Text,
   View,
+  TouchableOpacity,
 } from 'react-native'
 import styles from './../styles/promptStyles'
 import IconTemplate from '../img/IconTemplate'
@@ -44,14 +45,14 @@ class NewProject extends React.Component {
             </View>
             <View style={styles.dialogBody}>
               <View style={{flexDirection: 'row', justifyContent: 'space-around', marginVertical: margin.s12}}>
-                <View style={{alignItems: 'center'}}>
+                <TouchableOpacity style={{alignItems: 'center'}}>
                   <IconTemplate color={color.black} width={margin.s48} height={margin.s48}/>
-                  <Text style={{color: color.defaultText, marginTop: margin.s8}}>Template</Text>
-                </View>
-                <View style={{alignItems: 'center'}}>
+                  <Text style={{color: color.defaultText, marginTop: margin.s12}}>Template</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{alignItems: 'center'}}>
                   <IconBlank color={color.black} width={margin.s48} height={margin.s48}/>
-                  <Text style={{color: color.defaultText, marginTop: margin.s8}}>Blank</Text>
-                </View>
+                  <Text style={{color: color.defaultText, marginTop: margin.s12}}>Blank</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
