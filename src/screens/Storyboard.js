@@ -7,7 +7,7 @@ import font from './../styles/font'
 
 import { getStoryboard, addStoryboard } from './../redux/storyboard/actions'
 import color from '../styles/color'
-import NewProject from './../components/NewProject'
+import NewProjectPrompt from '../components/NewProjectPrompt'
 import ActionButton from 'react-native-action-button'
 
 const getThumbnail = (data) => {
@@ -122,7 +122,8 @@ class Storyboard extends React.Component {
           }}
           onEndReachedThreshold={10}
           renderHeader={renderFailView}
-          renderFooter={renderFooterLoading}/>
+          renderFooter={renderFooterLoading}
+        />
       )
     }
 
@@ -137,19 +138,16 @@ class Storyboard extends React.Component {
             })
           }}
         />
-        <NewProject
+        <NewProjectPrompt
           title="Create Board"
           visible={ this.state.promptVisible }
-          onCancel={ () => this.setState({
-            promptVisible: false,
-          }) }
-          onSubmit={ (value) => {
+          onChoose={ (value) => {
             this.setState({
               promptVisible: false,
             })
-            dispatchAddStoryboard(value)
+            // dispatchAddStoryboard(value)
+            navigation.navigate('Contacts')
           }}
-          navigation={navigation}
         />
       </View>
     )

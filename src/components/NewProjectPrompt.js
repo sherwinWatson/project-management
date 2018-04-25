@@ -11,7 +11,7 @@ import margin from '../styles/margin'
 import color from '../styles/color'
 import IconBlank from '../img/IconBlank'
 
-class NewProject extends React.Component {
+class NewProjectPrompt extends React.Component {
   state = {
     value: '',
     visible: false,
@@ -31,7 +31,7 @@ class NewProject extends React.Component {
       title,
       promptStyle,
       titleStyle,
-      navigation,
+      onChoose,
     } = this.props
     return (
       <Modal onRequestClose={() => this.close()} transparent={true} visible={this.props.visible}>
@@ -45,11 +45,15 @@ class NewProject extends React.Component {
             </View>
             <View style={styles.dialogBody}>
               <View style={{flexDirection: 'row', justifyContent: 'space-around', marginVertical: margin.s12}}>
-                <TouchableOpacity style={{alignItems: 'center'}}>
+                <TouchableOpacity style={{alignItems: 'center'}} onPress={() => {
+                  onChoose('template')
+                }}>
                   <IconTemplate color={color.black} width={margin.s48} height={margin.s48}/>
                   <Text style={{color: color.defaultText, marginTop: margin.s12}}>Template</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{alignItems: 'center'}}>
+                <TouchableOpacity style={{alignItems: 'center'}} onPress={() => {
+                  onChoose('blank')
+                }}>
                   <IconBlank color={color.black} width={margin.s48} height={margin.s48}/>
                   <Text style={{color: color.defaultText, marginTop: margin.s12}}>Blank</Text>
                 </TouchableOpacity>
@@ -62,4 +66,4 @@ class NewProject extends React.Component {
   }
 }
 
-export default NewProject
+export default NewProjectPrompt
