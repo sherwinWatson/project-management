@@ -10,6 +10,7 @@ import margin from '../styles/margin'
 import color from '../styles/color'
 import IconClose from '../img/IconClose'
 import TitleView from './../components/TitleView'
+import ActionButton from 'react-native-action-button'
 
 class Contacts extends React.Component {
   static navigationOptions = {
@@ -119,10 +120,16 @@ class Contacts extends React.Component {
       )
     }
 
-    const renderSelectedListItem = (data) => {
+    const renderSelectedListItem = (data, s, index) => {
       return (
-        <TouchableOpacity style={{margin: margin.s12, alignItems: 'center'}}>
-          <Thumbnail small source={getThumbnail(data)} />
+        <TouchableOpacity
+          style={{margin: margin.s12, alignItems: 'center'}}
+          onPress={() => {
+            const newValues2 = this.state.selectedContacts.slice(parseInt(index, 10) + 1)
+            const newValues1 = this.state.selectedContacts.slice(0, index)
+            this.setState({selectedContacts: newValues1.concat(newValues2)})
+          }}>
+          <Thumbnail style={{width: 50, height: 50}} source={getThumbnail(data)} />
           <Text style={{marginTop: margin.s4}}>{data.name}</Text>
           <View
             style={{
@@ -130,8 +137,8 @@ class Contacts extends React.Component {
               backgroundColor: color.space_grey,
               zIndex: 8,
               borderRadius: 20,
-              left: 20,
-              top: 20,
+              left: 28,
+              top: 30,
               borderWidth: 2,
               borderColor: color.pale_white,
               padding: margin.s4,
@@ -162,6 +169,12 @@ class Contacts extends React.Component {
         <Container>
           {renderSelected()}
           {renderContent()}
+          <ActionButton
+            buttonColor={color.green}
+            onPress={() => {
+              this.props.navigation.navigate('NewProject')
+            }}
+          />
         </Container>
       </StyleProvider>
     )

@@ -5,6 +5,7 @@ import MainTabs from './screens/MainTabs'
 import Welcome from './screens/Welcome'
 import SignUp from './screens/SignUp'
 import Contacts from './screens/Contacts'
+import NewProject from './screens/NewProject'
 
 const stackNavigator = StackNavigator
 
@@ -23,6 +24,7 @@ const AuthenticatedNavigator = stackNavigator(
     Main: { screen: MainTabs },
     Detail: { screen: Timeline },
     Contacts: { screen: Contacts },
+    NewProject: { screen: NewProject },
   }, {
     headerMode: 'screen',
   }
