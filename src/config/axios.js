@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const axiosInit = (token) => {
-  axios.defaults.baseURL = 'https://kami-laravel-196413.appspot.com/api/'
+  axios.defaults.baseURL = 'http://35.197.143.46/api/'
   axios.defaults.timeout = 15000
 
   if (token) {

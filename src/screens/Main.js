@@ -40,7 +40,7 @@ class Main extends React.Component {
     const AuthenticatedNavigator = Router.AuthenticatedNavigator
     const UnAuthenticatedNavigator = Router.UnAuthenticatedNavigator
 
-    // if (isLoggedIn) {
+    if (isLoggedIn) {
       return (
         <AuthenticatedNavigator
           navigation={addNavigationHelpers({
@@ -49,7 +49,7 @@ class Main extends React.Component {
           })}
         />
       )
-    // }
+    }
 
     return (
       <UnAuthenticatedNavigator navigation={addNavigationHelpers({
