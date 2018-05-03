@@ -11,6 +11,7 @@ import color from '../styles/color'
 import IconClose from '../img/IconClose'
 import TitleView from './../components/TitleView'
 import ActionButton from 'react-native-action-button'
+import LoadingView from './../components/LoadingView'
 
 class Contacts extends React.Component {
   static navigationOptions = {
@@ -33,10 +34,17 @@ class Contacts extends React.Component {
     this.state = {
       contacts: [],
       selectedContacts: [],
+      noPermission: false,
     }
   }
 
-  componentWillMount() {
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isRefreshing && !nextProps.error) {
+      this.props.navigation.goBack(null)
+    }
+  }
+
+  requestContactsPermission() {
     const getContacts = () => {
       Contact.getAll((err, contacts) => {
         if (err) throw err
@@ -49,11 +57,17 @@ class Contacts extends React.Component {
       requestContactsPermission().then((value) => {
         if (value) {
           getContacts()
+        } else {
+          this.setState({noPermission: true})
         }
       })
     } else {
       getContacts()
     }
+  }
+
+  componentWillMount() {
+    this.requestContactsPermission()
   }
 
   render() {
@@ -109,6 +123,17 @@ class Contacts extends React.Component {
       </View>
 
     const renderContent = () => {
+      if (this.state.noPermission) {
+        return (
+          <TouchableOpacity
+            style={{flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}
+            onPress={() => this.requestContactsPermission()}
+          >
+            <Text style={{textAlign: 'center'}}>{'No permission allowed.\nPlease allow permission from your phone settings.'}</Text>
+            <Button style={{alignSelf: 'center'}} onPress={() => this.requestContactsPermission()}><Text>Tap Here To Allow</Text></Button>
+          </TouchableOpacity>
+        )
+      }
       return (
         <List
           contentContainerStyle={{ flexGrow: 1 }}
@@ -167,6 +192,7 @@ class Contacts extends React.Component {
     return (
       <StyleProvider style={theme}>
         <Container>
+          <LoadingView isShown={this.state.contacts === [] && !this.state.noPermission} isModal={false} />
           {renderSelected()}
           {renderContent()}
           <ActionButton
@@ -182,7 +208,9 @@ class Contacts extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-
+  isRefreshing: state.storyboard.addStoryboard.refreshing,
+  done: state.storyboard.addStoryboard.result.data,
+  error: state.storyboard.addStoryboard.error,
 })
 
 const mapDispatchToProps = (dispatch, props) => ({

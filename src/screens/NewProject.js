@@ -9,6 +9,8 @@ import margin, {screen} from '../styles/margin'
 import moment from 'moment'
 import IconDropdown from '../img/IconDropdown'
 import CalendarPicker from 'react-native-calendar-picker'
+import {addStoryboard} from './../redux/storyboard/actions'
+import DialogView from './../components/DialogView'
 
 class NewProject extends React.Component {
   static navigationOptions = {
@@ -24,6 +26,21 @@ class NewProject extends React.Component {
       startDate: moment().format('DD MMM YYYY'),
       endDate: moment().add(1, 'month').format('DD MMM YYYY'),
       selectedDate: 1,
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { error, isRefreshing, navigation } = this.props
+
+    if (nextProps.error !== error) {
+      // if (nextProps.error && nextProps.error.message) {
+      if (nextProps.error) {
+        this.dialog._show('Add Storyboard Error', nextProps.error.message)
+      }
+    }
+
+    if (!nextProps.isRefreshing && !nextProps.error) {
+      navigation.goBack(null)
     }
   }
 
@@ -67,13 +84,20 @@ class NewProject extends React.Component {
       },
     }
 
+    const {
+      dispatchAddStoryboard,
+      navigation,
+      isRefreshing,
+    } = this.props
+
     return (
       <StyleProvider style={theme}>
         <Container>
-          <LoadingView isShown={false} solid />
+          <LoadingView isShown={isRefreshing} noBack isModal={false} />
+          <DialogView  ref={(ref) => {this.dialog = ref}}/>
           <Content contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always'>
             <Button
-              transparent onPress={() => this.props.navigation.goBack(null)}
+              transparent onPress={() => navigation.goBack(null)}
               style={{position: 'absolute', zIndex: 8}}>
               <Icon style={{ color: color.toolbarItem }} name="ios-arrow-back" />
             </Button>
@@ -91,6 +115,7 @@ class NewProject extends React.Component {
                   returnKeyType = {'next'}
                   style={styles.textInput}
                   underlineColorAndroid='transparent'
+                  onChangeText={(value) => this.setState({title: value})}
                 />
               </Item>
               <View style={styles.descriptionInput}>
@@ -103,6 +128,7 @@ class NewProject extends React.Component {
                   style={styles.textInput}
                   underlineColorAndroid='transparent'
                   multiline={true}
+                  onChangeText={(value) => this.setState({description: value})}
                 />
               </View>
               <View style={{flexDirection: 'row', marginTop: margin.s24}}>
@@ -133,6 +159,19 @@ class NewProject extends React.Component {
                 </View>
               </View>
             </View>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+              <Button
+                transparent onPress={() => navigation.goBack(null)}>
+                <Text style={{color: color.green}}>CANCEL</Text>
+              </Button>
+              <Button
+                transparent onPress={() => {
+                  this.props.dispatchAddStoryboard(this.state.title)
+                }}
+                disabled={this.state.title === ''}>
+                <Text style={{color: this.state.title !== '' ? color.green : color.defaultText}}>FINISH</Text>
+              </Button>
+            </View>
             {this.state.datePickerVisible &&
             <CalendarPicker
               onDateChange={(date) => {
@@ -158,11 +197,15 @@ class NewProject extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-
+  isRefreshing: state.storyboard.addStoryboard.refreshing,
+  done: state.storyboard.addStoryboard.result.data,
+  error: state.storyboard.addStoryboard.error,
 })
 
 const mapDispatchToProps = (dispatch, props) => ({
-
+  dispatchAddStoryboard(name) {
+    dispatch(addStoryboard(name))
+  },
 })
 
 export default connect(
