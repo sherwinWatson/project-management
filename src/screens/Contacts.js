@@ -53,7 +53,7 @@ class Contacts extends React.Component {
       })
     }
 
-    if (Platform.OS === 'android') {
+    if (Platform.OS === 'android' && Platform.Version >= 23) {
       requestContactsPermission().then((value) => {
         if (value) {
           getContacts()
