@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab } from 'native-base'
-import {Platform, RefreshControl, View, TouchableOpacity} from 'react-native'
+import {RefreshControl, View} from 'react-native'
 import margin from '../styles/margin'
 import font from './../styles/font'
 
@@ -79,9 +79,8 @@ class Storyboard extends React.Component {
     }
 
     const openDetail = _.throttle((navigationn, data) => {
-      navigationn.navigate('Detail', { id: data.id })
+      navigationn.navigate('SectionList', { id: data.id })
     }, 1200, {trailing: false})
-
 
     const renderListItem = (data) => {
       return (
