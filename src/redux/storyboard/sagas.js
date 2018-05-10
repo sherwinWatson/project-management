@@ -57,7 +57,7 @@ export function* getStoryboardDetails(action) {
     const { storyboardId } = action.payload
 
     const response = yield axios({
-      url: 'storyboarddetails',
+      url: 'storyboarddetails/storyboard_id/' + storyboardId,
       method: 'get',
     })
     yield put({ type: GET_STORYBOARD_DETAIL_SUCCESS, payload: response.data })

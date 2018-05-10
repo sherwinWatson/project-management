@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab } from 'native-base'
+import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab, Card, CardItem } from 'native-base'
 import {Platform, RefreshControl, View} from 'react-native'
 import {
   addStoryboardDetail,
@@ -68,7 +68,8 @@ class SectionList extends React.Component {
 
     const styles = {
       container: {
-        margin: margin.s12,
+        marginHorizontal: margin.s12,
+        marginVertical: margin.s4,
         borderBottomColor: color.darkText,
       },
       addNewButton: {
@@ -86,7 +87,6 @@ class SectionList extends React.Component {
         flexDirection: 'row',
         flexShrink: 1,
         justifyContent: 'space-between',
-        marginLeft: 10,
       },
       contentBody: {
         flexShrink: 1,
@@ -113,9 +113,22 @@ class SectionList extends React.Component {
       return (
         <ListItem style={{ ...styles.container }} onPress={() => openDetail(navigation, data)} avatar>
           <View style={{...styles.content}}>
-            <Body style = {{...styles.contentBody}}>
-              <Text style={{ ...styles.text }}>{data.subject}</Text>
-            </Body>
+            <Card style={{padding: margin.s12}}>
+              <CardItem header>
+                <Text style={{flexShrink: 1}} numberOfLines={1}>{data.subject}</Text>
+                <View style={{flex: 1, marginHorizontal:margin.s4}}/>
+                <Text>{moment(data.target_date).format('DD/MM/YYYY')}</Text>
+              </CardItem>
+              <CardItem>
+                <Body>
+                  <Text>
+                    //Your text here
+                  </Text>
+                </Body>
+                <View style={{flex: 1}}/>
+                <Text>Detail</Text>
+              </CardItem>
+            </Card>
           </View>
         </ListItem>
       )
