@@ -7,6 +7,7 @@ import SignUp from './screens/SignUp'
 import Contacts from './screens/Contacts'
 import NewProject from './screens/NewProject'
 import SectionList from './screens/SectionList'
+import TemplateList from './screens/TemplateList'
 
 const stackNavigator = StackNavigator
 
@@ -27,6 +28,7 @@ const AuthenticatedNavigator = stackNavigator(
     Contacts: { screen: Contacts },
     NewProject: { screen: NewProject },
     SectionList: { screen: SectionList },
+    TemplateList: { screen: TemplateList },
   }, {
     headerMode: 'screen',
   }

@@ -63,7 +63,7 @@ class Main extends React.Component {
 const mapStateToProps = (state) => ({
   unAuthenticatedNav: state.unAuthenticatedNav,
   authenticatedNav: state.authenticatedNav,
-  isLoggedIn: selectUser(state).id,
+  isLoggedIn: selectUser(state).user_id,
   user: selectUser(state),
   token: selectToken(state),
 })

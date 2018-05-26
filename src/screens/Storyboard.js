@@ -144,8 +144,11 @@ class Storyboard extends React.Component {
             this.setState({
               promptVisible: false,
             })
-            // dispatchAddStoryboard(value)
-            navigation.navigate('Contacts')
+            if (value === 'template') {
+              navigation.navigate('TemplateList')
+            } else {
+              navigation.navigate('Contacts')
+            }
           }}
         />
       </View>

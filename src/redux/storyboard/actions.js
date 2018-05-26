@@ -24,6 +24,11 @@ export const REMOVE_STORYBOARD_DETAIL = 'STORYBOARD::REMOVE_DETAIL'
 export const REMOVE_STORYBOARD_DETAIL_SUCCESS = 'STORYBOARD::REMOVE_SUCCESS_DETAIL'
 export const REMOVE_STORYBOARD_DETAIL_ERROR = 'STORYBOARD::REMOVE_ERROR_DETAIL'
 
+
+export const GET_TEMPLATE_LIST = 'STORYBOARD::GET_TEMPLATE'
+export const GET_TEMPLATE_LIST_SUCCESS = 'STORYBOARD::GET_TEMPLATE_SUCCESS'
+export const GET_TEMPLATE_LIST_ERROR = 'STORYBOARD::GET_TEMPLATE_ERROR'
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -78,5 +83,11 @@ export const removeStoryboardDetail = (storyboardId) => {
     payload: {
       storyboardId,
     },
+  }
+}
+
+export const getTemplateList = () => {
+  return {
+    type: GET_TEMPLATE_LIST,
   }
 }

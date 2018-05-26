@@ -23,6 +23,9 @@ import {
   REMOVE_STORYBOARD_DETAIL,
   REMOVE_STORYBOARD_DETAIL_SUCCESS,
   REMOVE_STORYBOARD_DETAIL_ERROR,
+  GET_TEMPLATE_LIST,
+  GET_TEMPLATE_LIST_SUCCESS,
+  GET_TEMPLATE_LIST_ERROR,
 } from './actions'
 
 const initialState = {
@@ -67,6 +70,14 @@ const initialState = {
     isUpdate: false,
   },
   removeStoryboardDetails: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
+  templateList: {
     result: {
       data: {},
     },
@@ -131,6 +142,15 @@ export default (state = initialState, action) => {
 
     case REMOVE_STORYBOARD_DETAIL_ERROR:
       return handleRequestErrorReducer(state, action, 'removeStoryboardDetails')
+
+    case GET_TEMPLATE_LIST:
+      return handleRequestReducer(state, action, 'templateList')
+
+    case GET_TEMPLATE_LIST_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'templateList')
+
+    case GET_TEMPLATE_LIST_ERROR:
+      return handleRequestErrorReducer(state, action, 'templateList')
 
     default:
       return state

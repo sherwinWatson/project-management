@@ -20,6 +20,9 @@ import {
   REMOVE_STORYBOARD_DETAIL,
   REMOVE_STORYBOARD_DETAIL_SUCCESS,
   REMOVE_STORYBOARD_DETAIL_ERROR,
+  GET_TEMPLATE_LIST,
+  GET_TEMPLATE_LIST_SUCCESS,
+  GET_TEMPLATE_LIST_ERROR,
 } from './actions'
 
 export function* getStoryboard() {
@@ -126,6 +129,19 @@ export function* removeStoryboardDetails(action) {
   }
 }
 
+export function* getTemplateList(action) {
+  try {
+    const response = yield axios({
+      url: 'templates',
+      method: 'get',
+    })
+
+    yield put({ type: GET_TEMPLATE_LIST_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: GET_TEMPLATE_LIST_ERROR, error })
+  }
+}
+
 export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
@@ -134,4 +150,5 @@ export function* watchStoryboard() {
   yield takeEvery(MODIFY_STORYBOARD_DETAIL, modifyStoryboardDetails)
   yield takeEvery(REMOVE_STORYBOARD_DETAIL, removeStoryboardDetails)
   yield takeEvery(ADD_STORYBOARD_SUCCESS, getStoryboard)
+  yield takeEvery(GET_TEMPLATE_LIST, getTemplateList)
 }
