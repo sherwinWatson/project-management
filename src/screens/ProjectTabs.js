@@ -2,18 +2,17 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab, TabHeading } from 'native-base'
 import theme from './../styles/theme'
-import Storyboard from './Storyboard'
 import SectionList from './SectionList'
+import Timeline from './Timeline'
 import color from '../styles/color'
 import {headerConfig} from '../config/headerConfig'
 
-class MainTabs extends React.Component {
+class ProjectTabs extends React.Component {
   static navigationOptions = headerConfig('Project', true)
 
   render() {
-    const {
-      navigation,
-    } = this.props
+    const { navigation } = this.props
+    const { id } = navigation.state.params
 
     return (
       <StyleProvider style={theme}>
@@ -22,12 +21,12 @@ class MainTabs extends React.Component {
             <Tab
               heading={ <TabHeading><Text style={{color: color.white}}>MAIN</Text></TabHeading>}
             >
-              <SectionList navigation={navigation} id={this.props.navigation.state.params.id}/>
+              <SectionList navigation={navigation} id={id}/>
             </Tab>
             <Tab
               heading={ <TabHeading><Text style={{color: color.white}}>TIMELINE</Text></TabHeading>}
             >
-              <Storyboard navigation={navigation}/>
+              <Timeline navigation={navigation} id={id}/>
             </Tab>
           </Tabs>
         </Container>
@@ -47,4 +46,4 @@ const mapDispatchToProps = (dispatch, props) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MainTabs)
+)(ProjectTabs)

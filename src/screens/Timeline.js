@@ -7,6 +7,7 @@ import LoadingView from './../components/LoadingView'
 import { View, StyleProvider, Container, Content, Button, Icon } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
+import margin from './../styles/margin'
 import moment from 'moment'
 import TitleView from './../components/TitleView'
 import Prompt from './../components/PromptWithDatePicker'
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
   timeline: {
     flex: 1,
-    marginHorizontal: 20,
+    backgroundColor: color.black,
   },
 })
 
@@ -63,12 +64,6 @@ class Timeline extends React.Component {
     gesturesEnabled: true,
   }
 
-  componentWillMount() {
-    const {loadStoryboardDetails} = this.props
-    const { id } = this.props.navigation.state.params
-
-    loadStoryboardDetails(id)
-  }
 
   componentWillReceiveProps(nextProps) {
     const {loadStoryboardDetails, addDone, modifyDone, removeDone} = this.props
@@ -80,14 +75,13 @@ class Timeline extends React.Component {
   }
 
   render() {
-    const { details, refreshing, dispatchAddStoryboardDetail, dispatchModifyStoryboardDetail, dispatchRemoveStoryboardDetail } = this.props
-    const { id } = this.props.navigation.state.params
+    const { id, details, refreshing, dispatchAddStoryboardDetail, dispatchModifyStoryboardDetail, dispatchRemoveStoryboardDetail } = this.props
 
     const data = details.map((item) => ({
       id: item.id,
       time: item.target_date ? moment(item.target_date).format('DD MMM') : 'n/a',
       title: item.subject,
-      description: item.details,
+      description: item.description,
       icon: item.isDone ? require('./../img/ic_done_white.png') : null,
     }))
 
@@ -98,24 +92,16 @@ class Timeline extends React.Component {
           <TimelineComponent
             style={styles.timeline}
             data={data}
-            innerCircle={'icon'}
-            circleSize={20}
-            circleColor='rgb(45,156,219)'
-            lineColor='rgb(45,156,219)'
-            timeContainerStyle={{minWidth: 72, marginTop: -5}}
-            timeStyle={{textAlign: 'center', backgroundColor: '#ff9797', color: 'white', padding: 5, borderRadius: 13, overflow: 'hidden'}}
-            descriptionStyle={{color: 'gray'}}
+            columnFormat={'two-column'}
+            separator={false}
+            timeStyle={{textAlign: 'center', color: color.transparent}}
+            titleStyle={{textAlign: 'center', fontSize: 12, color: color.white}}
+            showTime={false}
+            descriptionStyle={{color: color.white, fontSize: 8, textAlign: 'center'}}
             options={{
               style: {paddingTop: 5},
             }}
             onEventPress={(e) => {
-              this.setState({
-                selectedId: e.id,
-                isEditing: true,
-                defaultValue: e.title,
-                defaultValue2: e.description,
-                defaultValue3: e.time,
-              })
             }}
           />
           <ActionButton
