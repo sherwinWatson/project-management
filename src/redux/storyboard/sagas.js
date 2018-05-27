@@ -60,9 +60,10 @@ export function* getStoryboardDetails(action) {
     const { storyboardId } = action.payload
 
     const response = yield axios({
-      url: 'storyboarddetails/storyboard_id/' + storyboardId,
+      url: '/sections/storyboards/' + storyboardId + '?include=users',
       method: 'get',
     })
+
     yield put({ type: GET_STORYBOARD_DETAIL_SUCCESS, payload: response.data })
   } catch (error) {
     yield put({ type: GET_STORYBOARD_DETAIL_ERROR, error })

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab, Card, CardItem } from 'native-base'
-import {Platform, RefreshControl, View} from 'react-native'
+import {Platform, RefreshControl, View, TouchableOpacity} from 'react-native'
 import {
   addStoryboardDetail,
   getStoryboardDetail,
@@ -109,6 +109,15 @@ class SectionList extends React.Component {
         : require('./../img/no_avatar.png')
     }
 
+    const renderSelectedListItem = (data) => {
+      return (
+        <View style={{margin: margin.s12, alignItems: 'center'}}>
+          <Thumbnail style={{width: 50, height: 50}} source={getThumbnail(data)} />
+          <Text style={{marginTop: margin.s4}}>{data.name}</Text>
+        </View>
+      )
+    }
+
     const renderListItem = (data) => {
       return (
         <ListItem style={{ ...styles.container }} onPress={() => openDetail(navigation, data)} avatar>
@@ -116,16 +125,20 @@ class SectionList extends React.Component {
             <Card style={{padding: margin.s12}}>
               <CardItem header>
                 <Text style={{flexShrink: 1}} numberOfLines={1}>{data.subject}</Text>
-                <View style={{flex: 1, marginHorizontal:margin.s4}}/>
+                <View style={{flex: 1, marginHorizontal: margin.s4}}/>
                 <Text>{moment(data.target_date).format('DD/MM/YYYY')}</Text>
               </CardItem>
               <CardItem>
                 <Body>
-                  <Text>
-                    //Your text here
-                  </Text>
+                  <View style={{flexDirection: 'row', marginRight: margin.s4}}>
+                    <List
+                      horizontal={true}
+                      dataArray={data.users.data}
+                      renderRow={renderSelectedListItem}
+                    />
+                  </View>
                 </Body>
-                <View style={{flex: 1}}/>
+                <View/>
                 <Text>Detail</Text>
               </CardItem>
             </Card>
