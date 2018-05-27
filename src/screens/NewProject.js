@@ -23,8 +23,8 @@ class NewProject extends React.Component {
       datePickerVisible: false,
       title: '',
       description: '',
-      startDate: moment().format('DD MMM YYYY'),
-      endDate: moment().add(1, 'month').format('DD MMM YYYY'),
+      startDate: moment(),
+      endDate: moment().add(1, 'month'),
       selectedDate: 1,
     }
   }
@@ -90,6 +90,13 @@ class NewProject extends React.Component {
       isRefreshing,
     } = this.props
 
+    const {
+      title,
+      description,
+      startDate,
+      endDate,
+    } = this.state
+
     return (
       <StyleProvider style={theme}>
         <Container>
@@ -140,7 +147,7 @@ class NewProject extends React.Component {
                       selectedDate: 1,
                     })
                   }}>
-                    <Text>{this.state.startDate}</Text>
+                    <Text>{startDate.format('DD MMM YYYY')}</Text>
                     <IconDropdown color={color.space_grey}/>
                   </TouchableOpacity>
                 </View>
@@ -153,7 +160,7 @@ class NewProject extends React.Component {
                       selectedDate: 2,
                     })
                   }}>
-                    <Text>{this.state.endDate}</Text>
+                    <Text>{endDate.format('DD MMM YYYY')}</Text>
                     <IconDropdown color={color.space_grey}/>
                   </TouchableOpacity>
                 </View>
@@ -166,7 +173,7 @@ class NewProject extends React.Component {
               </Button>
               <Button
                 transparent onPress={() => {
-                  this.props.dispatchAddStoryboard(this.state.title)
+                  dispatchAddStoryboard(title, description, startDate, endDate)
                 }}
                 disabled={this.state.title === ''}>
                 <Text style={{color: this.state.title !== '' ? color.green : color.defaultText}}>FINISH</Text>
@@ -177,12 +184,12 @@ class NewProject extends React.Component {
               onDateChange={(date) => {
                 if (this.state.selectedDate === 1) {
                   this.setState({
-                    startDate: date.format('DD MMM YYYY'),
+                    startDate: date,
                     datePickerVisible: false,
                   })
                 } else {
                   this.setState({
-                    endDate: date.format('DD MMM YYYY'),
+                    endDate: date,
                     datePickerVisible: false,
                   })
                 }
@@ -203,8 +210,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch, props) => ({
-  dispatchAddStoryboard(name) {
-    dispatch(addStoryboard(name))
+  dispatchAddStoryboard(name, description, startDate, finishDate) {
+    dispatch(addStoryboard(name, description, startDate, finishDate))
   },
 })
 

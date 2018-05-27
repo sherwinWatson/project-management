@@ -35,11 +35,14 @@ export const getStoryboard = () => {
   }
 }
 
-export const addStoryboard = (name) => {
+export const addStoryboard = (name, description, startDate, finishDate) => {
   return {
     type: ADD_STORYBOARD,
     payload: {
       name: name,
+      description,
+      startDate,
+      finishDate,
     },
   }
 }

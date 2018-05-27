@@ -39,14 +39,16 @@ export function* getStoryboard() {
 
 export function* addStoryboard(action) {
   try {
-    const { name } = action.payload
+    const { name, description, startDate, finishDate } = action.payload
 
     const response = yield axios({
       url: 'storyboards',
       method: 'post',
       data: {
         name: name,
-        user_id: 2,
+        description: description,
+        start_date: startDate.format('YYYY-MM-DD'),
+        finish_date: finishDate.format('YYYY-MM-DD'),
       },
     })
     yield put({ type: ADD_STORYBOARD_SUCCESS, payload: response.data })
