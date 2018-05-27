@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab, Card, CardItem } from 'native-base'
+import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbnail, Left, Body, Header, Tabs, Tab, Card, CardItem, Icon } from 'native-base'
 import {Platform, RefreshControl, View, TouchableOpacity} from 'react-native'
 import {
   addStoryboardDetail,
@@ -13,10 +13,10 @@ import moment from 'moment/moment'
 import font from '../styles/font'
 import margin from '../styles/margin'
 import color from '../styles/color'
-import TitleView from './../components/TitleView'
 import Prompt from './../components/PromptWithDatePicker'
 import ActionButton from 'react-native-action-button'
 import LoadingView from './../components/LoadingView'
+import {headerConfig} from './../config/headerConfig'
 
 class SectionList extends React.Component {
   constructor() {
@@ -31,20 +31,7 @@ class SectionList extends React.Component {
     }
   }
 
-  static navigationOptions = {
-    headerTitleStyle: {
-      alignSelf: 'center',
-      color: color.toolbarItem,
-    },
-    headerStyle: {
-      borderBottomWidth: Platform.OS === 'android' && Platform.Version < 21 ? 0.5 : 0,
-      borderBottomColor: Platform.OS === 'ios' ? '#a7a6ab' : color.border,
-      backgroundColor: color.pale_white,
-    },
-    headerTitle: <TitleView title={'Sections'} />,
-    headerRight: <View/>,
-    gesturesEnabled: true,
-  }
+  static navigationOptions = headerConfig('Sections', true)
 
   componentWillMount() {
     const {loadStoryboardDetails} = this.props
@@ -124,9 +111,9 @@ class SectionList extends React.Component {
           <View style={{...styles.content}}>
             <Card style={{padding: margin.s12}}>
               <CardItem header>
-                <Text style={{flexShrink: 1}} numberOfLines={1}>{data.subject}</Text>
+                <Text style={{flexShrink: 1, fontWeight: 'bold'}} numberOfLines={1}>{data.subject}</Text>
                 <View style={{flex: 1, marginHorizontal: margin.s4}}/>
-                <Text>{moment(data.target_date).format('DD/MM/YYYY')}</Text>
+                <Text caption>{moment(data.target_date).format('DD/MM/YYYY')}</Text>
               </CardItem>
               <CardItem>
                 <Body>
@@ -139,7 +126,9 @@ class SectionList extends React.Component {
                   </View>
                 </Body>
                 <View/>
-                <Text>Detail</Text>
+                <View>
+                  <Text caption style={{flex: 1, textAlignVertical: 'bottom'}}>Detail</Text>
+                </View>
               </CardItem>
             </Card>
           </View>

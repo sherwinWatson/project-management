@@ -12,22 +12,10 @@ import IconClose from '../img/IconClose'
 import TitleView from './../components/TitleView'
 import ActionButton from 'react-native-action-button'
 import LoadingView from './../components/LoadingView'
+import {headerConfig} from '../config/headerConfig'
 
 class Contacts extends React.Component {
-  static navigationOptions = {
-    headerTitleStyle: {
-      alignSelf: 'center',
-      color: color.toolbarItem,
-    },
-    headerStyle: {
-      borderBottomWidth: Platform.OS === 'android' && Platform.Version < 21 ? 0.5 : 0,
-      borderBottomColor: Platform.OS === 'ios' ? '#a7a6ab' : color.border,
-      backgroundColor: color.black,
-    },
-    headerTitle: <TitleView title={'New Project'} />,
-    headerRight: <View/>,
-    gesturesEnabled: true,
-  }
+  static navigationOptions = headerConfig('New Project', true)
 
   constructor(props) {
     super(props)
