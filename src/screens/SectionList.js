@@ -50,8 +50,7 @@ class SectionList extends React.Component {
   }
 
   render() {
-    const { details, refreshing, dispatchAddStoryboardDetail, dispatchModifyStoryboardDetail, dispatchRemoveStoryboardDetail } = this.props
-    const { id } = this.props.navigation.state.params
+    const { id, details, refreshing, dispatchAddStoryboardDetail, dispatchModifyStoryboardDetail, dispatchRemoveStoryboardDetail } = this.props
 
     const styles = {
       container: {
