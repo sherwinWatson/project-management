@@ -81,10 +81,12 @@ class SectionList extends React.Component {
     }
 
     const renderRefreshControl = () => {
+      const {loadStoryboardDetails} = this.props
+
       return (
         <RefreshControl
           refreshing={refreshing}
-          onRefresh={() => loadStoryboards()}
+          onRefresh={() => loadStoryboardDetails(id)}
         />
       )
     }
@@ -174,7 +176,7 @@ class SectionList extends React.Component {
               if (this.state.isEditing) {
                 dispatchModifyStoryboardDetail(this.state.selectedId, value, value2, moment(value3))
               } else {
-                dispatchAddStoryboardDetail(id, value, value2, moment(value3))
+                dispatchAddStoryboardDetail(id, value, value2, value3)
               }
               this.setState({
                 promptVisible: false,

@@ -77,14 +77,14 @@ export function* addStoryboardDetails(action) {
     const { storyboardId, subject, details, targetDate } = action.payload
 
     const response = yield axios({
-      url: 'storyboarddetails',
+      url: 'sections',
       method: 'post',
       data: {
         storyboard_id: storyboardId,
         subject,
         details,
-        target_date: targetDate,
-        isDone: 0,
+        target_date: targetDate.format('YYYY-MM-DD'),
+        is_done: 0,
       },
     })
     yield put({ type: ADD_STORYBOARD_DETAIL_SUCCESS, payload: response.data })
@@ -95,13 +95,12 @@ export function* addStoryboardDetails(action) {
 
 export function* modifyStoryboardDetails(action) {
   try {
-    const { storyboardId, subject, details, targetDate } = action.payload
+    const { sectionId, subject, details, targetDate } = action.payload
 
     const response = yield axios({
-      url: 'storyboard-detail',
+      url: 'sections/' + sectionId,
       method: 'post',
       data: {
-        storyboard_id: storyboardId,
         subject,
         details,
         targetDate,

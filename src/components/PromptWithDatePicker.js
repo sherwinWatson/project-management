@@ -166,7 +166,7 @@ export default class Prompt extends Component {
                 placeholder={placeholder3}
                 autoFocus={true}
                 editable={false}
-                value={this.state.value3}
+                value={this.state.value3 ? this.state.value3.format('DD MMM YYYY') : ''}
                 underlineColorAndroid="white"
                 {...this.props.textInputProps} />
               <Button onPress={() => {
@@ -204,7 +204,7 @@ export default class Prompt extends Component {
           <CalendarPicker
             onDateChange={(date) => {
               this.setState({
-                value3: date.format('DD MMM YYYY'),
+                value3: date,
                 datePickerVisible: false,
               })
             }}
