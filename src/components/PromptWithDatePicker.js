@@ -136,7 +136,7 @@ export default class Prompt extends Component {
     return (
       <View style={styles.dialog} key="prompt">
         <View style={styles.dialogOverlay}/>
-        <View style={[styles.dialogContent, { borderColor }, promptStyle]}>
+        <View style={[styles.dialogContentWithDatePicker, { borderColor }, promptStyle]}>
           <View style={[styles.dialogTitle, { borderColor }]}>
             <Text style={[styles.dialogTitleText, titleStyle]}>
               { title }

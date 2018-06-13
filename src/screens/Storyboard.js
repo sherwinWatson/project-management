@@ -150,6 +150,9 @@ class Storyboard extends React.Component {
               navigation.navigate('Contacts')
             }
           }}
+          onClose={() => this.setState({
+            promptVisible: false,
+          })}
         />
       </View>
     )

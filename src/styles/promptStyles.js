@@ -15,7 +15,15 @@ export default StyleSheet.create({
   },
   dialogContent: {
     elevation: 5,
-    marginTop: 60,
+    marginTop: 180,
+    width: 300,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  dialogContentWithDatePicker: {
+    elevation: 5,
+    marginTop: 40,
     width: 300,
     backgroundColor: 'white',
     borderRadius: 5,

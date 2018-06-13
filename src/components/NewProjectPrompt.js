@@ -32,9 +32,10 @@ class NewProjectPrompt extends React.Component {
       promptStyle,
       titleStyle,
       onChoose,
+      onClose,
     } = this.props
     return (
-      <Modal onRequestClose={() => this.close()} transparent={true} visible={this.props.visible}>
+      <Modal onRequestClose={onClose} transparent={true} visible={this.props.visible}>
         <View style={styles.dialog} key="prompt">
           <View style={styles.dialogOverlay}/>
           <View style={[styles.dialogContent, promptStyle]}>
