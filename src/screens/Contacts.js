@@ -9,7 +9,6 @@ import font from '../styles/font'
 import margin from '../styles/margin'
 import color from '../styles/color'
 import IconClose from '../img/IconClose'
-import TitleView from './../components/TitleView'
 import ActionButton from 'react-native-action-button'
 import LoadingView from './../components/LoadingView'
 import {headerConfig} from '../config/headerConfig'
@@ -88,10 +87,13 @@ class Contacts extends React.Component {
         : require('./../img/no_avatar.png')
     }
 
-    const renderListItem = (data) => {
+    const renderListItem = (data, s, index) => {
       return (
         <ListItem style={{ ...styles.container }} onPress={() => {
-          this.setState({selectedContacts: [...this.state.selectedContacts, {name: data.givenName}]})
+          this.setState({selectedContacts: [...this.state.selectedContacts, {number: data.phoneNumbers[0].number, name: data.givenName}]})
+          const newValues2 = this.state.contacts.slice(parseInt(index, 10) + 1)
+          const newValues1 = this.state.contacts.slice(0, parseInt(index, 10))
+          this.setState({contacts: newValues1.concat(newValues2)})
         }} avatar>
           <Left>
             <Thumbnail small source={getThumbnail(data)} />
@@ -139,7 +141,7 @@ class Contacts extends React.Component {
           style={{margin: margin.s12, alignItems: 'center'}}
           onPress={() => {
             const newValues2 = this.state.selectedContacts.slice(parseInt(index, 10) + 1)
-            const newValues1 = this.state.selectedContacts.slice(0, index)
+            const newValues1 = this.state.selectedContacts.slice(0, parseInt(index, 10))
             this.setState({selectedContacts: newValues1.concat(newValues2)})
           }}>
           <Thumbnail style={{width: 50, height: 50}} source={getThumbnail(data)} />
