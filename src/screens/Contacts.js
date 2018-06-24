@@ -79,6 +79,10 @@ class Contacts extends React.Component {
         flexShrink: 1,
         justifyContent: 'space-between',
       },
+      actionButtonIcon: {
+        color: 'white',
+        fontSize: 20,
+      },
     }
 
     const getThumbnail = (data) => {
@@ -189,6 +193,9 @@ class Contacts extends React.Component {
             buttonColor={color.green}
             onPress={() => {
               this.props.navigation.navigate('NewProject')
+            }}
+            renderIcon={() => {
+              return <Icon name="md-arrow-forward" style={styles.actionButtonIcon} />
             }}
           />
         </Container>
