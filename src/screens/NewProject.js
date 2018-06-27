@@ -173,7 +173,11 @@ class NewProject extends React.Component {
               </Button>
               <Button
                 transparent onPress={() => {
-                  dispatchAddStoryboard(title, description, startDate, endDate)
+                  if (moment(this.state.startDate.toISOString()).isAfter(moment(this.state.endDate.toISOString()))) {
+                    this.dialog._show(null, 'Start date must earlier than end date')
+                  } else {
+                    dispatchAddStoryboard(title, description, startDate, endDate)
+                  }
                 }}
                 disabled={this.state.title === ''}>
                 <Text style={{color: this.state.title !== '' ? color.green : color.defaultText}}>FINISH</Text>
@@ -194,6 +198,7 @@ class NewProject extends React.Component {
                   })
                 }
               }}
+              minDate={this.state.selectedDate !== 1 ? moment(this.state.startDate.toISOString()) : moment()}
             />
             }
           </Content>
