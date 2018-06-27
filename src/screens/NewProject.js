@@ -71,6 +71,7 @@ class NewProject extends React.Component {
       textInput: {
         flex: 1,
         color: color.lightText,
+        textAlignVertical: 'top',
       },
       button: {
         backgroundColor: color.space_grey,
