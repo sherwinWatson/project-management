@@ -9,6 +9,7 @@ import NewProject from './screens/NewProject'
 import SectionList from './screens/SectionList'
 import TemplateList from './screens/TemplateList'
 import ProjectTabs from './screens/ProjectTabs'
+import StoryboardDetail from './screens/StoryboardDetail'
 
 const stackNavigator = StackNavigator
 
@@ -31,6 +32,7 @@ const AuthenticatedNavigator = stackNavigator(
     SectionList: { screen: SectionList },
     TemplateList: { screen: TemplateList },
     ProjectTabs: { screen: ProjectTabs },
+    StoryboardDetail: { screen: StoryboardDetail },
   }, {
     headerMode: 'screen',
   }

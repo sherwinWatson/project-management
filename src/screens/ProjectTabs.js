@@ -4,15 +4,25 @@ import { StyleProvider, Container, List, Spinner, Text, ListItem, Button, Thumbn
 import theme from './../styles/theme'
 import SectionList from './SectionList'
 import Timeline from './Timeline'
+import TitleView from './../components/TitleView'
 import color from '../styles/color'
 import {headerConfig} from '../config/headerConfig'
 
 class ProjectTabs extends React.Component {
-  static navigationOptions = headerConfig('Project', true)
+  static navigationOptions = headerConfig((navigation) => {
+    const { data } = navigation.state.params
+    return ( 
+      <Button transparent onPress={ _.throttle(() => {
+        navigation.navigate('StoryboardDetail', { id: data.storyboard_id, data: data })
+      }, 1200, {trailing: false})}>
+      <TitleView title={data.name}/>
+    </Button>
+    )
+  }, true)
 
   render() {
     const { navigation } = this.props
-    const { id } = navigation.state.params
+    const { id, data } = navigation.state.params
 
     return (
       <StyleProvider style={theme}>
