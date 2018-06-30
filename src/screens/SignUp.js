@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Image, TextInput } from 'react-native'
+import { View, Image, TextInput, Alert, BackHandler } from 'react-native'
 import { StyleProvider, Container, Content, Form, Item, Label, InputGroup, Input, Button, Text } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
@@ -63,10 +63,35 @@ class SignUp extends React.Component {
     }
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+  }
+
+  handleBackPress = () => {
+    Alert.alert(
+      'Apakah anda yakin?',
+      'Data yang telah terisi akan hilang',
+      options,
+      { cancelable: true }
+    )
+
+    return true
+  }
+
   componentWillReceiveProps(nextProps) {
     const { error, signupSuccess, logout, navigation } = this.props
     const openLogin = _.throttle((navigationn) => {
-      navigationn.navigate('Login')
+
+      Alert.alert(
+        null,
+        'SignUp Berhasil',
+        [{text: 'OK', onPress: () => this.props.navigation.goBack(null)}],
+        { cancelable: false }
+      )
     }, 1200, {trailing: false})
 
     if (nextProps.error !== error) {

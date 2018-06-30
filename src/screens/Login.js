@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Image, TextInput, Alert } from 'react-native'
+import { View, Image, TextInput } from 'react-native'
 import { StyleProvider, Container, Content, Form, Item, Label, InputGroup, Input, Button, Text } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
