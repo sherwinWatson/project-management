@@ -10,8 +10,6 @@ import color from './../styles/color'
 import margin from './../styles/margin'
 import moment from 'moment'
 import TitleView from './../components/TitleView'
-import Prompt from './../components/PromptWithDatePicker'
-import ActionButton from 'react-native-action-button'
 
 const styles = StyleSheet.create({
   container: {
@@ -37,18 +35,6 @@ const styles = StyleSheet.create({
 })
 
 class Timeline extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      promptVisible: false,
-      isEditing: false,
-      selectedId: null,
-      defaultValue: '',
-      defaultValue2: '',
-      defaultValue3: '',
-    }
-  }
-
   static navigationOptions = {
     headerTitleStyle: {
       alignSelf: 'center',
@@ -75,7 +61,7 @@ class Timeline extends React.Component {
   }
 
   render() {
-    const { id, details, refreshing, dispatchAddStoryboardDetail, dispatchModifyStoryboardDetail, dispatchRemoveStoryboardDetail } = this.props
+    const { id, details, refreshing } = this.props
 
     const data = details.map((item) => ({
       id: item.id,
@@ -104,61 +90,6 @@ class Timeline extends React.Component {
             onEventPress={(e) => {
             }}
           />
-          <ActionButton
-            buttonColor="rgba(231,76,60,1)"
-            onPress={() => {
-              this.setState({
-                promptVisible: true,
-                isEditing: false,
-                defaultValue: '',
-                defaultValue2: '',
-                defaultValue3: '',
-              })
-            }}
-          />
-          <Prompt
-            title="New Detail"
-            placeholder="Subject"
-            placeholder2="Description"
-            placeholder3="Target Date"
-            defaultValue={this.state.defaultValue}
-            defaultValue2={this.state.defaultValue2}
-            defaultValue3={this.state.defaultValue3}
-            visible={ this.state.promptVisible }
-            onCancel={ () => this.setState({
-              promptVisible: false,
-            }) }
-            onSubmit={ (value, value2, value3) => {
-              if (this.state.isEditing) {
-                dispatchModifyStoryboardDetail(this.state.selectedId, value, value2, moment(value3))
-              } else {
-                dispatchAddStoryboardDetail(id, value, value2, moment(value3))
-              }
-              this.setState({
-                promptVisible: false,
-                isEditing: false,
-              })
-            }}/>
-          {this.state.isEditing &&
-          <Picker
-            onValueChange={(itemValue, itemIndex) => {
-              if (itemValue === 'mod') {
-                this.setState({
-                  promptVisible: true,
-                  isEditing: true,
-                })
-              } else {
-                dispatchRemoveStoryboardDetail(this.state.selectedId)
-                this.setState({
-                  isEditing: false,
-                })
-              }
-            }}>
-            <Picker.Item label="Choose action" value="choose" />
-            <Picker.Item label="Modify" value="mod" />
-            <Picker.Item label="Delete" value="del" />
-          </Picker>
-          }
         </Container>
       </StyleProvider>
     )
@@ -177,15 +108,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch, props) => ({
   loadStoryboardDetails(id) {
     dispatch(getStoryboardDetail(id))
-  },
-  dispatchAddStoryboardDetail(storyboardId, subject, description, targetDate) {
-    dispatch(addStoryboardDetail(storyboardId, subject, description, targetDate))
-  },
-  dispatchModifyStoryboardDetail(id, subject, description, targetDate) {
-    dispatch(modifyStoryboardDetail(id, subject, description, targetDate))
-  },
-  dispatchRemoveStoryboardDetail(id) {
-    dispatch(removeStoryboardDetail(id))
   },
 })
 
