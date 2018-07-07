@@ -26,6 +26,12 @@ import {
   GET_TEMPLATE_LIST,
   GET_TEMPLATE_LIST_SUCCESS,
   GET_TEMPLATE_LIST_ERROR,
+  GET_USER_STORYBOARD,
+  GET_USER_STORYBOARD_SUCCESS,
+  GET_USER_STORYBOARD_ERROR,
+  ADD_USER_STORYBOARD,
+  ADD_USER_STORYBOARD_SUCCESS,
+  ADD_USER_STORYBOARD_ERROR
 } from './actions'
 
 const initialState = {
@@ -78,6 +84,22 @@ const initialState = {
     isUpdate: false,
   },
   templateList: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
+  userStoryboards: {
+    result: {
+      data: [],
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
+  addUserStoryboards: {
     result: {
       data: {},
     },
@@ -151,6 +173,25 @@ export default (state = initialState, action) => {
 
     case GET_TEMPLATE_LIST_ERROR:
       return handleRequestErrorReducer(state, action, 'templateList')
+
+    case GET_USER_STORYBOARD:
+      console.log('reducers get_user_storyboard')
+      return handleRequestReducer(state, action, 'userStoryboards')
+
+    case GET_USER_STORYBOARD_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'userStoryboards')
+
+    case GET_USER_STORYBOARD_ERROR:
+      return handleRequestErrorReducer(state, action, 'userStoryboards')
+
+    case ADD_USER_STORYBOARD:
+      return handleRequestReducer(state, action, 'addUserStoryboards')
+
+    case ADD_USER_STORYBOARD_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'addUserStoryboards')
+
+    case ADD_USER_STORYBOARD_ERROR:
+      return handleRequestErrorReducer(state, action, 'addUserStoryboards')
 
     default:
       return state

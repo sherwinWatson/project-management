@@ -28,6 +28,14 @@ export const GET_TEMPLATE_LIST = 'STORYBOARD::GET_TEMPLATE'
 export const GET_TEMPLATE_LIST_SUCCESS = 'STORYBOARD::GET_TEMPLATE_SUCCESS'
 export const GET_TEMPLATE_LIST_ERROR = 'STORYBOARD::GET_TEMPLATE_ERROR'
 
+export const GET_USER_STORYBOARD = 'USER_STORYBOARD::GET'
+export const GET_USER_STORYBOARD_SUCCESS = 'USER_STORYBOARD::GET_SUCCESS'
+export const GET_USER_STORYBOARD_ERROR = 'USER_STORYBOARD::GET_ERROR'
+
+export const ADD_USER_STORYBOARD = 'USER_STORYBOARD::ADD'
+export const ADD_USER_STORYBOARD_SUCCESS = 'USER_STORYBOARD::ADD_SUCCESS'
+export const ADD_USER_STORYBOARD_ERROR = 'USER_STORYBOARD::ADD_ERROR'
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -91,5 +99,25 @@ export const removeStoryboardDetail = (storyboardId) => {
 export const getTemplateList = () => {
   return {
     type: GET_TEMPLATE_LIST,
+  }
+}
+
+export const getUserStoryboard = (storyboardId) => {
+  console.log('actions getuserstoryboard')
+  return {
+    type: GET_USER_STORYBOARD,
+    payload: {
+      storyboardId,
+    },
+  }
+}
+
+export const addUserStoryboard = (storyboardId, userId) => {
+  return {
+    type: ADD_USER_STORYBOARD,
+    payload: {
+      storyboardId,
+      userId,
+    },
   }
 }

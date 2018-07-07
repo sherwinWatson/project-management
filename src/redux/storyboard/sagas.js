@@ -23,6 +23,12 @@ import {
   GET_TEMPLATE_LIST,
   GET_TEMPLATE_LIST_SUCCESS,
   GET_TEMPLATE_LIST_ERROR,
+  GET_USER_STORYBOARD,
+  GET_USER_STORYBOARD_SUCCESS,
+  GET_USER_STORYBOARD_ERROR,
+  ADD_USER_STORYBOARD,
+  ADD_USER_STORYBOARD_SUCCESS,
+  ADD_USER_STORYBOARD_ERROR,
 } from './actions'
 
 export function* getStoryboard() {
@@ -144,6 +150,39 @@ export function* getTemplateList(action) {
   }
 }
 
+export function* getUserStoryboard(action) {
+  try {
+    const { storyboardId } = action.payload
+    const response = yield axios({
+      url: 'storyboardusers/storyboards/'+ storyboardId,
+      method: 'get',
+    })
+    yield put({ type: GET_USER_STORYBOARD_SUCCESS, payload: response.data })
+  } catch (error) {
+    console.log(error)
+    yield put({ type: GET_USER_STORYBOARD_ERROR, error })
+  }
+}
+
+export function* addUserStoryboard(action) {
+  try {
+    const { storyboardId, userId } = action.payload
+
+    const response = yield axios({
+      url: 'storyboardsusers/storyboards/'+ storyboardId,
+      method: 'post',
+      data: {
+        member: [ 
+          {user_id: userId},  
+        ]
+      },
+    })
+    yield put({ type: ADD_USER_STORYBOARD_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: ADD_USER_STORYBOARD_ERROR, error })
+  }
+}
+
 export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
@@ -153,4 +192,6 @@ export function* watchStoryboard() {
   yield takeEvery(REMOVE_STORYBOARD_DETAIL, removeStoryboardDetails)
   yield takeEvery(ADD_STORYBOARD_SUCCESS, getStoryboard)
   yield takeEvery(GET_TEMPLATE_LIST, getTemplateList)
+  yield takeEvery(GET_USER_STORYBOARD, getUserStoryboard)
+  yield takeEvery(ADD_USER_STORYBOARD, addUserStoryboard)
 }

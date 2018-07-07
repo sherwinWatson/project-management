@@ -79,7 +79,7 @@ class Storyboard extends React.Component {
     }
 
     const openDetail = _.throttle((navigationn, data) => {
-      navigationn.navigate('ProjectTabs', { id: data.storyboard_id })
+      navigationn.navigate('ProjectTabs', { id: data.storyboard_id, data: data })
     }, 1200, {trailing: false})
 
     const renderListItem = (data) => {
