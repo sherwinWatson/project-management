@@ -108,7 +108,7 @@ class SectionList extends React.Component {
 
     const renderListItem = (data) => {
       return (
-        <ListItem style={{ ...styles.container }} onPress={() => openDetail(navigation, data)} avatar>
+        <ListItem style={{ ...styles.container }} avatar>
           <View style={{...styles.content}}>
             <Card style={{padding: margin.s12}}>
               <CardItem header>

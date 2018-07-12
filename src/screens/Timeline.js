@@ -2,9 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import TimelineComponent from 'react-native-timeline-listview'
 import {StyleSheet, Platform, Picker} from 'react-native'
-import {getStoryboardDetail, addStoryboardDetail, modifyStoryboardDetail, removeStoryboardDetail} from './../redux/storyboard/actions'
 import LoadingView from './../components/LoadingView'
-import { View, StyleProvider, Container, Content, Button, Icon } from 'native-base'
+import { View, StyleProvider, Container, Content, Button, Icon, Text } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
 import margin from './../styles/margin'
@@ -75,6 +74,9 @@ class Timeline extends React.Component {
       <StyleProvider style={theme}>
         <Container>
           <LoadingView isShown={refreshing} solid />
+          {details[0].target_date &&
+            <Text>{moment(details[0].target_date).format('DD MMM')}</Text>
+          }
           <TimelineComponent
             style={styles.timeline}
             data={data}
@@ -90,6 +92,9 @@ class Timeline extends React.Component {
             onEventPress={(e) => {
             }}
           />
+          {details[details.length - 1].target_date &&
+            <Text>{moment(details[details.length - 1].target_date).format('DD MMM')}</Text>
+          }
         </Container>
       </StyleProvider>
     )
