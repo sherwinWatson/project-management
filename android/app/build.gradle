@@ -108,6 +108,11 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+    configurations.all {
+        resolutionStrategy {
+            force 'com.airbnb.android:lottie:2.5.5'
+        }
+    }
     signingConfigs {
         release {
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {

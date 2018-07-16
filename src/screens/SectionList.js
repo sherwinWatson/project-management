@@ -32,7 +32,6 @@ class SectionList extends React.Component {
   }
 
   static navigationOptions = headerConfig('Sections', true)
-
   componentWillMount() {
     const {loadStoryboardDetails} = this.props
     const { id } = this.props.navigation.state.params
@@ -50,7 +49,10 @@ class SectionList extends React.Component {
   }
 
   render() {
-    const { id, details, refreshing, dispatchAddStoryboardDetail, dispatchModifyStoryboardDetail, dispatchRemoveStoryboardDetail } = this.props
+    const { id, details, refreshing, dispatchAddStoryboardDetail, dispatchModifyStoryboardDetail, dispatchRemoveStoryboardDetail, navigation } = this.props
+
+    console.log('render section list')
+    console.log(details)
 
     const styles = {
       container: {
@@ -106,9 +108,13 @@ class SectionList extends React.Component {
       )
     }
 
+    const openDetail = _.throttle((navigationn, data) => {
+      navigationn.navigate('SectionDetail', {sectionId: data.section_id, section: data})
+    }, 1200, {trailing: false})
+
     const renderListItem = (data) => {
       return (
-        <ListItem style={{ ...styles.container }} avatar>
+        <ListItem style={{ ...styles.container }} onPress={() => openDetail(navigation, data)} avatar>
           <View style={{...styles.content}}>
             <Card style={{padding: margin.s12}}>
               <CardItem header>

@@ -41,8 +41,8 @@ class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: '',
-      password: '',
+      username: 'Alpin123',
+      password: '123456',
     }
   }
 
@@ -85,7 +85,7 @@ class Login extends React.Component {
               <Item style={styles.input}>
                 <IconPerson color={color.lightText} width={margin.s16} height={margin.s16} style={{marginLeft: margin.s24}}/>
                 <TextInput
-                  autoFocus={true}
+                  autoFocus={false}
                   blurOnSubmit={false}
                   onSubmitEditing={(event) => {
                     this._passwordView.focus()
