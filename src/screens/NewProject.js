@@ -9,7 +9,7 @@ import margin, {screen} from '../styles/margin'
 import moment from 'moment'
 import IconDropdown from '../img/IconDropdown'
 import CalendarPicker from 'react-native-calendar-picker'
-import {addStoryboard} from './../redux/storyboard/actions'
+import { addStoryboard, modifyStoryboard } from './../redux/storyboard/actions'
 import DialogView from './../components/DialogView'
 
 class NewProject extends React.Component {
@@ -27,10 +27,26 @@ class NewProject extends React.Component {
       endDate: moment().add(1, 'month'),
       selectedDate: 1,
     }
+    console.log('constructor')
+  }
+
+  componentWillMount() {
+    // terima param dari screen storyboard detail untuk update storyboard
+    const { data, id } = this.props.navigation.state.params ? this.props.navigation.state.params : { data: null, id: null };
+    console.log('component will mount new project')
+    console.log(data);
+    console.log('id');
+    // console.log(moment(data.start_date));
+
+    if (data) {
+      // hanya dijalankan pada saat ada data untuk kepentingan update
+      this.setState({title: data.name, description: data.description, startDate: moment(data.start_date), endDate: moment(data.finish_date)});
+      console.log('state berhasil di update')
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { error, isRefreshing, navigation } = this.props
+    const { error, isRefreshing, navigation, dataUpdate } = this.props
 
     if (nextProps.error !== error) {
       // if (nextProps.error && nextProps.error.message) {
@@ -42,6 +58,10 @@ class NewProject extends React.Component {
     if (!nextProps.isRefreshing && !nextProps.error) {
       navigation.goBack(null)
     }
+
+    console.log('component will receive props new project')
+    console.log(dataUpdate)
+    console.log(nextProps.dataUpdate)
   }
 
   render() {
@@ -87,6 +107,7 @@ class NewProject extends React.Component {
 
     const {
       dispatchAddStoryboard,
+      dispatchModifyStoryboard,
       navigation,
       isRefreshing,
     } = this.props
@@ -97,6 +118,23 @@ class NewProject extends React.Component {
       startDate,
       endDate,
     } = this.state
+
+    const { data, id } = this.props.navigation.state.params ? this.props.navigation.state.params : { data: null, id: null };
+    
+    const handleButtonFinish = () => {
+      if (id) {
+        console.log('jalankan update')
+        dispatchModifyStoryboard(id, title, description, startDate, endDate)
+      } 
+      else {
+        console.log('jalankan insert')
+        if (moment(this.state.startDate.toISOString()).isAfter(moment(this.state.endDate.toISOString()))) {
+          this.dialog._show(null, 'Start date must earlier than end date')
+        } else {
+          dispatchAddStoryboard(title, description, startDate, endDate)
+        }
+      }
+    }
 
     return (
       <StyleProvider style={theme}>
@@ -116,11 +154,12 @@ class NewProject extends React.Component {
             <View padder>
               <Item style={styles.input}>
                 <TextInput
-                  autoFocus={true}
+                  autoFocus={false}
                   blurOnSubmit={false}
                   placeholder='Ketik subjek grup'
                   placeholderTextColor={color.lightText}
                   returnKeyType = {'next'}
+                  value={title}
                   style={styles.textInput}
                   underlineColorAndroid='transparent'
                   onChangeText={(value) => this.setState({title: value})}
@@ -133,6 +172,7 @@ class NewProject extends React.Component {
                   placeholder='Deskripsi grup anda disini'
                   placeholderTextColor={color.lightText}
                   returnKeyType = {'next'}
+                  value={description}
                   style={styles.textInput}
                   underlineColorAndroid='transparent'
                   multiline={true}
@@ -173,13 +213,7 @@ class NewProject extends React.Component {
                 <Text style={{color: color.green}}>CANCEL</Text>
               </Button>
               <Button
-                transparent onPress={() => {
-                  if (moment(this.state.startDate.toISOString()).isAfter(moment(this.state.endDate.toISOString()))) {
-                    this.dialog._show(null, 'Start date must earlier than end date')
-                  } else {
-                    dispatchAddStoryboard(title, description, startDate, endDate)
-                  }
-                }}
+                transparent onPress={() => handleButtonFinish()}
                 disabled={this.state.title === ''}>
                 <Text style={{color: this.state.title !== '' ? color.green : color.defaultText}}>FINISH</Text>
               </Button>
@@ -213,12 +247,16 @@ const mapStateToProps = (state) => ({
   isRefreshing: state.storyboard.addStoryboard.refreshing,
   done: state.storyboard.addStoryboard.result.data,
   error: state.storyboard.addStoryboard.error,
+  dataUpdate: state.storyboard.modifyStoryboard.result.data
 })
 
 const mapDispatchToProps = (dispatch, props) => ({
   dispatchAddStoryboard(name, description, startDate, finishDate) {
     dispatch(addStoryboard(name, description, startDate, finishDate))
   },
+  dispatchModifyStoryboard(id, name, description, startDate, finishDate) {
+    dispatch(modifyStoryboard(id, name, description, startDate, finishDate))
+  }
 })
 
 export default connect(

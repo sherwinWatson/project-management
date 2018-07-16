@@ -11,6 +11,9 @@ import {
   ADD_STORYBOARD,
   ADD_STORYBOARD_SUCCESS,
   ADD_STORYBOARD_ERROR,
+  MODIFY_STORYBOARD,
+  MODIFY_STORYBOARD_SUCCESS,
+  MODIFY_STORYBOARD_ERROR,
   GET_STORYBOARD_DETAIL,
   GET_STORYBOARD_DETAIL_SUCCESS,
   GET_STORYBOARD_DETAIL_ERROR,
@@ -60,6 +63,14 @@ const initialState = {
     isUpdate: false,
   },
   addStoryboardDetails: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
+  modifyStoryboard: {
     result: {
       data: {},
     },
@@ -128,6 +139,15 @@ export default (state = initialState, action) => {
 
     case ADD_STORYBOARD_ERROR:
       return handleRequestErrorReducer(state, action, 'addStoryboard')
+
+    case MODIFY_STORYBOARD:
+      return handleRequestReducer(state, action, 'modifyStoryboard')
+
+    case MODIFY_STORYBOARD_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'modifyStoryboard')
+
+    case MODIFY_STORYBOARD_ERROR:
+      return handleRequestErrorReducer(state, action, 'modifyStoryboard')  
 
     case GET_STORYBOARD_DETAIL:
       return handleRequestReducer(state, action, 'storyboardDetails')

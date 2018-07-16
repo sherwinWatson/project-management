@@ -8,6 +8,9 @@ import {
   ADD_STORYBOARD,
   ADD_STORYBOARD_SUCCESS,
   ADD_STORYBOARD_ERROR,
+  MODIFY_STORYBOARD,
+  MODIFY_STORYBOARD_SUCCESS,
+  MODIFY_STORYBOARD_ERROR,
   GET_STORYBOARD_DETAIL,
   GET_STORYBOARD_DETAIL_SUCCESS,
   GET_STORYBOARD_DETAIL_ERROR,
@@ -60,6 +63,39 @@ export function* addStoryboard(action) {
     yield put({ type: ADD_STORYBOARD_SUCCESS, payload: response.data })
   } catch (error) {
     yield put({ type: ADD_STORYBOARD_ERROR, error })
+  }
+}
+
+export function* modifyStoryboard(action) {
+  try {
+    const { id, name, description, startDate, finishDate } = action.payload
+    console.log('masuk ke saga modify storyboard')
+    console.log(id)
+    console.log('storyboards/' + id)
+    console.log({data: {
+      name: name, 
+      description: description,
+      start_date: startDate.format('YYYY-MM-DD'),
+      finish_date: finishDate.format('YYYY-MM-DD'),
+    }})
+    const response = yield axios({
+      url: 'storyboards/' + id,
+      method: 'post',
+      data: {
+        name: name, 
+        description: description,
+        start_date: startDate.format('YYYY-MM-DD'),
+        finish_date: finishDate.format('YYYY-MM-DD'),
+      }
+    })
+    console.log('response saga')
+    console.log(response.data)
+    yield put({ type: MODIFY_STORYBOARD_SUCCESS, payload: response.data })
+  } catch (error) {
+    console.log('error saga')
+    console.log(error)
+    console.log()
+    yield put({ type: MODIFY_STORYBOARD_ERROR, error })
   }
 }
 
@@ -154,7 +190,7 @@ export function* getUserStoryboard(action) {
   try {
     const { storyboardId } = action.payload
     const response = yield axios({
-      url: 'storyboardusers/storyboards/'+ storyboardId,
+      url: 'storyboardusers/storyboards/'+ storyboardId, // 19
       method: 'get',
     })
     yield put({ type: GET_USER_STORYBOARD_SUCCESS, payload: response.data })
@@ -186,6 +222,7 @@ export function* addUserStoryboard(action) {
 export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
+  yield takeEvery(MODIFY_STORYBOARD, modifyStoryboard)
   yield takeEvery(GET_STORYBOARD_DETAIL, getStoryboardDetails)
   yield takeEvery(ADD_STORYBOARD_DETAIL, addStoryboardDetails)
   yield takeEvery(MODIFY_STORYBOARD_DETAIL, modifyStoryboardDetails)

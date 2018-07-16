@@ -58,22 +58,14 @@ class StoryboardDetail extends Component {
     }
 
     const renderListMember = () => {
-      const data2 = this.props.userStoryboard
-      
-      const data3 = [
-            { 'name': 'alpin', 'role': 'admin' },
-            { 'name': 'budi', 'role': 'member' },
-            { 'name': 'iwan', 'role': 'member' },
-            { 'name': 'reja', 'role': 'admin' },
-            { 'name': 'reja', 'role': 'admin' },
-          ]
+      const data = userStoryboard
 
       return (
         <View>
           <Text style={listSubTitle}>Peserta</Text>
           <View style={{flexDirection: 'column', marginRight: margin.s4}}>
             <List
-              dataArray={data2}
+              dataArray={data}
               renderRow={renderSelectedListItem}
             />
           </View>
@@ -121,6 +113,10 @@ class StoryboardDetail extends Component {
       )
     }
 
+    const handleEditStoryboard = _.throttle((navigationn, data) => {
+      navigationn.navigate('NewProject', { id: data.storyboard_id, data: data })
+    }, 1200, {trailing: false});
+
     return (
       <StyleProvider style={theme}>
         <Container>  
@@ -144,10 +140,10 @@ class StoryboardDetail extends Component {
                     <Text style={{fontSize: 18, fontWeight: 'bold', color: color.white}
                   }>{data.name.toUpperCase()}</Text>
                     <Text style={{fontSize: 12, color: color.white, marginBottom: margin.s8 }
-                  }>Dibuat oleh {data.created_by}, {moment(data.created_at).format('DD MMM YYYY')}</Text>
+                  }>Dibuat oleh {data.created_by_name}, {moment(data.created_at).format('DD MMM YYYY')}</Text>
                   </View> 
                 </View>
-                <Button transparent onPress={() => console.log('Edit profile diteken')}>
+                <Button transparent onPress={() => handleEditStoryboard(navigation, data)}>
                   <Icon style={{ color: color.toolbarItem }} name="md-create" />
                 </Button>
               </View>
