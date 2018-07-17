@@ -27,21 +27,15 @@ class NewProject extends React.Component {
       endDate: moment().add(1, 'month'),
       selectedDate: 1,
     }
-    console.log('constructor')
   }
 
   componentWillMount() {
     // terima param dari screen storyboard detail untuk update storyboard
     const { data, id } = this.props.navigation.state.params ? this.props.navigation.state.params : { data: null, id: null };
-    console.log('component will mount new project')
-    console.log(data);
-    console.log('id');
-    // console.log(moment(data.start_date));
 
     if (data) {
       // hanya dijalankan pada saat ada data untuk kepentingan update
-      this.setState({title: data.name, description: data.description, startDate: moment(data.start_date), endDate: moment(data.finish_date)});
-      console.log('state berhasil di update')
+      this.setState({title: data.title, description: data.description, startDate: moment(data.startDate), endDate: moment(data.finishDate)});
     }
   }
 
@@ -58,10 +52,6 @@ class NewProject extends React.Component {
     if (!nextProps.isRefreshing && !nextProps.error) {
       navigation.goBack(null)
     }
-
-    console.log('component will receive props new project')
-    console.log(dataUpdate)
-    console.log(nextProps.dataUpdate)
   }
 
   render() {
@@ -123,11 +113,9 @@ class NewProject extends React.Component {
     
     const handleButtonFinish = () => {
       if (id) {
-        console.log('jalankan update')
         dispatchModifyStoryboard(id, title, description, startDate, endDate)
       } 
       else {
-        console.log('jalankan insert')
         if (moment(this.state.startDate.toISOString()).isAfter(moment(this.state.endDate.toISOString()))) {
           this.dialog._show(null, 'Start date must earlier than end date')
         } else {

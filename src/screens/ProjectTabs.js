@@ -13,7 +13,7 @@ class ProjectTabs extends React.Component {
     const { data } = navigation.state.params
     return ( 
       <Button transparent onPress={ _.throttle(() => {
-        navigation.navigate('StoryboardDetail', { id: data.storyboard_id, data: data })
+        navigation.navigate('StoryboardDetail', { id: data.storyboard_id })
       }, 1200, {trailing: false})}>
       <TitleView title={data.name}/>
     </Button>

@@ -34,7 +34,10 @@ import {
   GET_USER_STORYBOARD_ERROR,
   ADD_USER_STORYBOARD,
   ADD_USER_STORYBOARD_SUCCESS,
-  ADD_USER_STORYBOARD_ERROR
+  ADD_USER_STORYBOARD_ERROR,
+  GET_ONE_STORYBOARD,
+  GET_ONE_STORYBOARD_SUCCESS,
+  GET_ONE_STORYBOARD_ERROR
 } from './actions'
 
 const initialState = {
@@ -212,6 +215,15 @@ export default (state = initialState, action) => {
 
     case ADD_USER_STORYBOARD_ERROR:
       return handleRequestErrorReducer(state, action, 'addUserStoryboards')
+
+    case GET_ONE_STORYBOARD:
+      return handleRequestReducer(state, action, 'modifyStoryboard')
+
+    case GET_ONE_STORYBOARD_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'modifyStoryboard')
+
+    case GET_ONE_STORYBOARD_ERROR:
+      return handleRequestErrorReducer(state, action, 'modifyStoryboard')
 
     default:
       return state

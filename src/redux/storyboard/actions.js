@@ -40,6 +40,10 @@ export const ADD_USER_STORYBOARD = 'USER_STORYBOARD::ADD'
 export const ADD_USER_STORYBOARD_SUCCESS = 'USER_STORYBOARD::ADD_SUCCESS'
 export const ADD_USER_STORYBOARD_ERROR = 'USER_STORYBOARD::ADD_ERROR'
 
+export const GET_ONE_STORYBOARD = 'STORYBOARD::GET_ONE'
+export const GET_ONE_STORYBOARD_SUCCESS = 'STORYBOARD::GET_ONE_SUCCESS'
+export const GET_ONE_STORYBOARD_ERROR = 'STORYBOARD::GET_ONE_ERROR'
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -136,5 +140,14 @@ export const addUserStoryboard = (storyboardId, userId) => {
       storyboardId,
       userId,
     },
+  }
+}
+
+export const getOneStoryboard = (storyboardId) => {
+  return {
+    type: GET_ONE_STORYBOARD,
+    payload: {
+      storyboardId
+    }
   }
 }

@@ -32,12 +32,15 @@ import {
   ADD_USER_STORYBOARD,
   ADD_USER_STORYBOARD_SUCCESS,
   ADD_USER_STORYBOARD_ERROR,
+  GET_ONE_STORYBOARD,
+  GET_ONE_STORYBOARD_SUCCESS,
+  GET_ONE_STORYBOARD_ERROR
 } from './actions'
 
 export function* getStoryboard() {
   try {
     const response = yield axios({
-      url: 'storyboards',
+      url: 'storyboards', //3
       method: 'get',
     })
     yield put({ type: GET_STORYBOARD_SUCCESS, payload: response.data })
@@ -99,12 +102,27 @@ export function* modifyStoryboard(action) {
   }
 }
 
+export function* getOneStoryboard(action) {
+  try{
+    const { storyboardId } = action.payload
+    
+    const response = yield axios({
+      url: '/storyboards/' + storyboardId,  // 7
+      method: 'get'
+    })
+
+    yield put({ type: GET_ONE_STORYBOARD_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: GET_ONE_STORYBOARD_ERROR, error})
+  }
+}
+
 export function* getStoryboardDetails(action) {
   try {
     const { storyboardId } = action.payload
 
     const response = yield axios({
-      url: '/sections/storyboards/' + storyboardId + '?include=users',
+      url: '/sections/storyboards/' + storyboardId + '?include=users',  //26
       method: 'get',
     })
 
@@ -223,6 +241,7 @@ export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
   yield takeEvery(MODIFY_STORYBOARD, modifyStoryboard)
+  yield takeEvery(GET_ONE_STORYBOARD, getOneStoryboard)
   yield takeEvery(GET_STORYBOARD_DETAIL, getStoryboardDetails)
   yield takeEvery(ADD_STORYBOARD_DETAIL, addStoryboardDetails)
   yield takeEvery(MODIFY_STORYBOARD_DETAIL, modifyStoryboardDetails)
