@@ -33,9 +33,9 @@ class NewProject extends React.Component {
     // terima param dari screen storyboard detail untuk update storyboard
     const { data, id } = this.props.navigation.state.params ? this.props.navigation.state.params : { data: null, id: null };
 
-    if (data) {
+    if (id) {
       // hanya dijalankan pada saat ada data untuk kepentingan update
-      this.setState({title: data.title, description: data.description, startDate: moment(data.startDate), endDate: moment(data.finishDate)});
+      this.setState({title: data.name, description: data.description, startDate: moment(data.startDate), endDate: moment(data.finishDate)});
     }
   }
 
@@ -109,7 +109,7 @@ class NewProject extends React.Component {
       endDate,
     } = this.state
 
-    const { data, id } = this.props.navigation.state.params ? this.props.navigation.state.params : { data: null, id: null };
+    const { id } = this.props.navigation.state.params ? this.props.navigation.state.params : { id: null };
     
     const handleButtonFinish = () => {
       if (id) {
