@@ -23,7 +23,21 @@ const styles = StyleSheet.create({
     ...font.bold,
     textAlign: 'center',
   },
+  dateText: {
+    fontSize: 12,
+  },
+  titleText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: color.white,
+  },
+  descriptionText: {
+    color: color.lightText,
+    fontSize: 10,
+  },
 })
+
+const colors = ['red', 'green', 'orange', 'pink', 'cyan', 'lime', 'blue', 'magenta', 'gray', 'white', 'purple']
 
 class Timeline extends React.Component {
   static navigationOptions = {
@@ -46,10 +60,11 @@ class Timeline extends React.Component {
 
     const data = details.map((item) => ({
       id: item.id,
-      time: item.target_date ? moment(item.target_date).format('DD MMM') : 'n/a',
+      time: item.target_date ? moment(item.target_date).format('DD/MM/YYYY') : 'n/a',
       title: item.subject,
       description: item.description,
       icon: item.isDone ? require('./../img/ic_done_white.png') : null,
+      circleColor: colors[Math.floor(Math.random() * colors.length)],
     }))
 
     return (
@@ -64,14 +79,21 @@ class Timeline extends React.Component {
             data={data}
             columnFormat={'two-column'}
             separator={false}
-            timeStyle={{textAlign: 'center', color: color.transparent}}
-            titleStyle={{textAlign: 'center', fontSize: 12, color: color.white}}
-            // showTime={false}
-            descriptionStyle={{color: color.white, fontSize: 8, textAlign: 'center'}}
             options={{
               style: {paddingTop: 5, paddingBottom: 5},
             }}
             onEventPress={(e) => {}}
+            lineColor='gray'
+            renderDetail={(rowData, sectionId, rowId) => {
+              const textAlign = {textAlign: rowId % 2 === 0 ? 'left' : 'right'}
+              return (
+                <View style={{marginTop: -12}}>
+                  <Text style={[styles.dateText, textAlign]}>{rowData.time}</Text>
+                  <Text style={[styles.titleText, textAlign]}>{rowData.title}</Text>
+                  <Text style={[styles.descriptionText, textAlign]}>{rowData.description}</Text>
+                </View>
+              )
+            }}
           />
           {details[details.length - 1].target_date &&
             <Text style={styles.date}>{moment(details[0].target_date).format('DD MMM YYYY')}</Text>
