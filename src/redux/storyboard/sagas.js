@@ -29,12 +29,15 @@ import {
   ADD_USER_STORYBOARD,
   ADD_USER_STORYBOARD_SUCCESS,
   ADD_USER_STORYBOARD_ERROR,
+  GET_ONE_SECTION, 
+  GET_ONE_SECTION_SUCCESS,
+  GET_ONE_SECTION_ERROR
 } from './actions'
 
 export function* getStoryboard() {
   try {
     const response = yield axios({
-      url: 'storyboards',
+      url: 'storyboards', // 3
       method: 'get',
     })
     yield put({ type: GET_STORYBOARD_SUCCESS, payload: response.data })
@@ -48,7 +51,7 @@ export function* addStoryboard(action) {
     const { name, description, startDate, finishDate } = action.payload
 
     const response = yield axios({
-      url: 'storyboards',
+      url: 'storyboards', // 4
       method: 'post',
       data: {
         name: name,
@@ -68,7 +71,7 @@ export function* getStoryboardDetails(action) {
     const { storyboardId } = action.payload
 
     const response = yield axios({
-      url: '/sections/storyboards/' + storyboardId + '?include=users',
+      url: '/sections/storyboards/' + storyboardId + '?include=users',  // 26
       method: 'get',
     })
 
@@ -78,12 +81,27 @@ export function* getStoryboardDetails(action) {
   }
 }
 
+export function* getOneSection(action) {
+  try {
+    const { sectionId } = action.payload
+
+    const response = yield axios({
+      url: '/sections/' + sectionId + '?include=tasks,users', // 29
+      method: 'get',
+    })
+
+    yield put({ type: GET_ONE_SECTION_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: GET_ONE_SECTION_ERROR, error })
+  }
+}
+
 export function* addStoryboardDetails(action) {
   try {
     const { storyboardId, subject, details, targetDate } = action.payload
 
     const response = yield axios({
-      url: 'sections',
+      url: 'sections',    // 6
       method: 'post',
       data: {
         storyboard_id: storyboardId,
@@ -104,7 +122,7 @@ export function* modifyStoryboardDetails(action) {
     const { sectionId, subject, details, targetDate } = action.payload
 
     const response = yield axios({
-      url: 'sections/' + sectionId,
+      url: 'sections/' + sectionId, // 27
       method: 'post',
       data: {
         subject,
@@ -124,7 +142,7 @@ export function* removeStoryboardDetails(action) {
     const { storyboardId } = action.payload
 
     const response = yield axios({
-      url: 'storyboard-detail',
+      url: 'storyboard-detail', // 28
       method: 'post',
       data: {
         storyboard_id: storyboardId,
@@ -140,7 +158,7 @@ export function* removeStoryboardDetails(action) {
 export function* getTemplateList(action) {
   try {
     const response = yield axios({
-      url: 'templates',
+      url: 'templates', // 13
       method: 'get',
     })
 
@@ -154,7 +172,7 @@ export function* getUserStoryboard(action) {
   try {
     const { storyboardId } = action.payload
     const response = yield axios({
-      url: 'storyboardusers/storyboards/'+ storyboardId,
+      url: 'storyboardusers/storyboards/'+ storyboardId,  // 19
       method: 'get',
     })
     yield put({ type: GET_USER_STORYBOARD_SUCCESS, payload: response.data })
@@ -169,7 +187,7 @@ export function* addUserStoryboard(action) {
     const { storyboardId, userId } = action.payload
 
     const response = yield axios({
-      url: 'storyboardsusers/storyboards/'+ storyboardId,
+      url: 'storyboardsusers/storyboards/'+ storyboardId, // 17
       method: 'post',
       data: {
         member: [ 
@@ -187,6 +205,7 @@ export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
   yield takeEvery(GET_STORYBOARD_DETAIL, getStoryboardDetails)
+  yield takeEvery(GET_ONE_SECTION, getOneSection)
   yield takeEvery(ADD_STORYBOARD_DETAIL, addStoryboardDetails)
   yield takeEvery(MODIFY_STORYBOARD_DETAIL, modifyStoryboardDetails)
   yield takeEvery(REMOVE_STORYBOARD_DETAIL, removeStoryboardDetails)

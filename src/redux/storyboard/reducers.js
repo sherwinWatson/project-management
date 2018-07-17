@@ -31,7 +31,10 @@ import {
   GET_USER_STORYBOARD_ERROR,
   ADD_USER_STORYBOARD,
   ADD_USER_STORYBOARD_SUCCESS,
-  ADD_USER_STORYBOARD_ERROR
+  ADD_USER_STORYBOARD_ERROR,
+  GET_ONE_SECTION,
+  GET_ONE_SECTION_SUCCESS,
+  GET_ONE_SECTION_ERROR
 } from './actions'
 
 const initialState = {
@@ -107,6 +110,14 @@ const initialState = {
     error: null,
     isUpdate: false,
   },
+  getOneSection: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  }
 }
 
 export default (state = initialState, action) => {
@@ -137,6 +148,15 @@ export default (state = initialState, action) => {
 
     case GET_STORYBOARD_DETAIL_ERROR:
       return handleRequestErrorReducer(state, action, 'storyboardDetails')
+
+    case GET_ONE_SECTION:
+      return handleRequestReducer(state, action, 'getOneSection')
+
+    case GET_ONE_SECTION_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'getOneSection')
+
+    case GET_ONE_SECTION_ERROR:
+      return handleRequestErrorReducer(state, action, 'getOneSection')
 
     case ADD_STORYBOARD_DETAIL:
       return handleRequestReducer(state, action, 'addStoryboardDetails')

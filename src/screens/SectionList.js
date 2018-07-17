@@ -109,7 +109,7 @@ class SectionList extends React.Component {
     }
 
     const openDetail = _.throttle((navigationn, data) => {
-      navigationn.navigate('SectionDetail', {sectionId: data.section_id, section: data})
+      navigationn.navigate('SectionDetail', { sectionId: data.section_id })
     }, 1200, {trailing: false})
 
     const renderListItem = (data) => {

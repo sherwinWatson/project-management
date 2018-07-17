@@ -12,6 +12,10 @@ export const GET_STORYBOARD_DETAIL = 'STORYBOARD::GET_DETAIL'
 export const GET_STORYBOARD_DETAIL_SUCCESS = 'STORYBOARD::GET_SUCCESS_DETAIL'
 export const GET_STORYBOARD_DETAIL_ERROR = 'STORYBOARD::GET_ERROR_DETAIL'
 
+export const GET_ONE_SECTION = 'SECTION::GET'
+export const GET_ONE_SECTION_SUCCESS = 'SECTION::GET_SUCCES'
+export const GET_ONE_SECTION_ERROR = 'SECTION::GET_ERROR'
+
 export const ADD_STORYBOARD_DETAIL = 'STORYBOARD::ADD_DETAIL'
 export const ADD_STORYBOARD_DETAIL_SUCCESS = 'STORYBOARD::ADD_SUCCESS_DETAIL'
 export const ADD_STORYBOARD_DETAIL_ERROR = 'STORYBOARD::ADD_ERROR_DETAIL'
@@ -60,6 +64,15 @@ export const getStoryboardDetail = (storyboardId) => {
     payload: {
       storyboardId,
     },
+  }
+}
+
+export const getOneSection = (sectionId) => {
+  return {
+    type: GET_ONE_SECTION,
+    payload: {
+      sectionId,
+    }
   }
 }
 
