@@ -7,29 +7,21 @@ import { View, StyleProvider, Container, Content, Button, Icon, Text } from 'nat
 import theme from './../styles/theme'
 import color from './../styles/color'
 import margin from './../styles/margin'
+import font from './../styles/font'
 import moment from 'moment'
 import TitleView from './../components/TitleView'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
   timeline: {
-    flex: 1,
     backgroundColor: color.black,
+    flexGrow: 1,
+  },
+  date: {
+    backgroundColor: color.black,
+    color: color.white,
+    fontSize: 20,
+    ...font.bold,
+    textAlign: 'center',
   },
 })
 
@@ -49,16 +41,6 @@ class Timeline extends React.Component {
     gesturesEnabled: true,
   }
 
-
-  componentWillReceiveProps(nextProps) {
-    const {loadStoryboardDetails, addDone, modifyDone, removeDone} = this.props
-    const {id} = this.props.navigation.state.params
-
-    if (!_.isEqual(addDone, nextProps.addDone) || !_.isEqual(modifyDone, nextProps.modifyDone) || !_.isEqual(removeDone, nextProps.removeDone)) {
-      loadStoryboardDetails(id)
-    }
-  }
-
   render() {
     const { id, details, refreshing } = this.props
 
@@ -75,7 +57,7 @@ class Timeline extends React.Component {
         <Container>
           <LoadingView isShown={refreshing} solid />
           {details[0].target_date &&
-            <Text>{moment(details[0].target_date).format('DD MMM')}</Text>
+            <Text style={styles.date}>{moment(details[details.length - 1].target_date).format('DD MMM YYYY')}</Text>
           }
           <TimelineComponent
             style={styles.timeline}
@@ -84,16 +66,15 @@ class Timeline extends React.Component {
             separator={false}
             timeStyle={{textAlign: 'center', color: color.transparent}}
             titleStyle={{textAlign: 'center', fontSize: 12, color: color.white}}
-            showTime={false}
+            // showTime={false}
             descriptionStyle={{color: color.white, fontSize: 8, textAlign: 'center'}}
             options={{
-              style: {paddingTop: 5},
+              style: {paddingTop: 5, paddingBottom: 5},
             }}
-            onEventPress={(e) => {
-            }}
+            onEventPress={(e) => {}}
           />
           {details[details.length - 1].target_date &&
-            <Text>{moment(details[details.length - 1].target_date).format('DD MMM')}</Text>
+            <Text style={styles.date}>{moment(details[0].target_date).format('DD MMM YYYY')}</Text>
           }
         </Container>
       </StyleProvider>
@@ -110,13 +91,7 @@ const mapStateToProps = (state) => ({
   removeDone: state.storyboard.removeStoryboardDetails.result.data,
 })
 
-const mapDispatchToProps = (dispatch, props) => ({
-  loadStoryboardDetails(id) {
-    dispatch(getStoryboardDetail(id))
-  },
-})
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  null,
 )(Timeline)

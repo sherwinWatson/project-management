@@ -47,7 +47,10 @@ class TemplateList extends React.Component {
 
     const renderListItem = (data) => {
       return (
-        <ListItem style={{ ...styles.container }} onPress={() => navigation.navigate('Contacts')} avatar>
+        <ListItem style={{ ...styles.container }} onPress={() => {
+          navigation.goBack(null)
+          navigation.navigate('Contacts')
+        }} avatar>
           <View style={{...styles.content}}>
             <Body style = {{...styles.contentBody}}>
               <Text style={{ ...styles.text }}>{data.name}</Text>
@@ -84,6 +87,9 @@ const mapStateToProps = (state) => ({
   templates: state.storyboard.templateList.result.data,
   refreshing: state.storyboard.templateList.refreshing,
   error: state.storyboard.templateList.error,
+  addStoryboardRefreshing: state.storyboard.addStoryboard.refreshing,
+  addStoryboardDone: state.storyboard.addStoryboard.data,
+  addStoryboardError: state.storyboard.addStoryboard.result.error,
 })
 
 const mapDispatchToProps = (dispatch, props) => ({
