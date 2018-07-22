@@ -8,6 +8,10 @@ export const ADD_STORYBOARD = 'STORYBOARD::ADD'
 export const ADD_STORYBOARD_SUCCESS = 'STORYBOARD::ADD_SUCCESS'
 export const ADD_STORYBOARD_ERROR = 'STORYBOARD::ADD_ERROR'
 
+export const MODIFY_STORYBOARD = 'STORYBOARD::MODIFY'
+export const MODIFY_STORYBOARD_SUCCESS = 'STORYBOARD::MODIFY_SUCCESS'
+export const MODIFY_STORYBOARD_ERROR = 'STORYBOARD::MODIFY_ERROR'
+
 export const GET_STORYBOARD_DETAIL = 'STORYBOARD::GET_DETAIL'
 export const GET_STORYBOARD_DETAIL_SUCCESS = 'STORYBOARD::GET_SUCCESS_DETAIL'
 export const GET_STORYBOARD_DETAIL_ERROR = 'STORYBOARD::GET_ERROR_DETAIL'
@@ -36,6 +40,10 @@ export const ADD_USER_STORYBOARD = 'USER_STORYBOARD::ADD'
 export const ADD_USER_STORYBOARD_SUCCESS = 'USER_STORYBOARD::ADD_SUCCESS'
 export const ADD_USER_STORYBOARD_ERROR = 'USER_STORYBOARD::ADD_ERROR'
 
+export const GET_ONE_STORYBOARD = 'STORYBOARD::GET_ONE'
+export const GET_ONE_STORYBOARD_SUCCESS = 'STORYBOARD::GET_ONE_SUCCESS'
+export const GET_ONE_STORYBOARD_ERROR = 'STORYBOARD::GET_ONE_ERROR'
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -51,6 +59,19 @@ export const addStoryboard = (name, description, startDate, finishDate) => {
       startDate,
       finishDate,
     },
+  }
+}
+
+export const modifyStoryboard = (id, name, description, startDate, finishDate) => {
+  return {
+    type: MODIFY_STORYBOARD,
+    payload: {
+      id,
+      name,
+      description,
+      startDate,
+      finishDate
+    }
   }
 }
 
@@ -119,5 +140,14 @@ export const addUserStoryboard = (storyboardId, userId) => {
       storyboardId,
       userId,
     },
+  }
+}
+
+export const getOneStoryboard = (storyboardId) => {
+  return {
+    type: GET_ONE_STORYBOARD,
+    payload: {
+      storyboardId
+    }
   }
 }
