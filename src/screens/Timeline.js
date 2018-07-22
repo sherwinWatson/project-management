@@ -6,10 +6,12 @@ import LoadingView from './../components/LoadingView'
 import { View, StyleProvider, Container, Content, Button, Icon, Text } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
-import margin from './../styles/margin'
+import margin, { screen } from './../styles/margin'
 import font from './../styles/font'
 import moment from 'moment'
 import TitleView from './../components/TitleView'
+
+const colors = ['red', 'green', 'orange', 'pink', 'cyan', 'lime', 'blue', 'magenta', 'gray', 'white', 'purple']
 
 const styles = StyleSheet.create({
   timeline: {
@@ -35,9 +37,24 @@ const styles = StyleSheet.create({
     color: color.lightText,
     fontSize: 10,
   },
+  dot: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    left: screen.width / 2 - 7,
+    position: 'absolute',
+  },
+  largeDot: {
+    backgroundColor: 'white',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    left: screen.width / 2 - 20,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 })
-
-const colors = ['red', 'green', 'orange', 'pink', 'cyan', 'lime', 'blue', 'magenta', 'gray', 'white', 'purple']
 
 class Timeline extends React.Component {
   static navigationOptions = {
@@ -58,22 +75,31 @@ class Timeline extends React.Component {
   render() {
     const { id, details, refreshing } = this.props
 
-    const data = details.map((item) => ({
-      id: item.id,
+    let data = details.map((item) => ({
       time: item.target_date ? moment(item.target_date).format('DD/MM/YYYY') : 'n/a',
       title: item.subject,
       description: item.description,
       icon: item.isDone ? require('./../img/ic_done_white.png') : null,
-      circleColor: colors[Math.floor(Math.random() * colors.length)],
     }))
+
+    data.push({
+      id: 99,
+      time: moment(details[details.length - 1].target_date).format('DD/MM/YYYY'),
+      title: 'Project Finish',
+      percentage: 80, // TODO: implement percentage from server
+    })
+
+    data.unshift({
+      id: 0,
+      time: moment(details[0].target_date).format('DD/MM/YYYY'),
+      title: 'Project Start',
+      percentage: 0,
+    })
 
     return (
       <StyleProvider style={theme}>
         <Container>
           <LoadingView isShown={refreshing} solid />
-          {details[0].target_date &&
-            <Text style={styles.date}>{moment(details[details.length - 1].target_date).format('DD MMM YYYY')}</Text>
-          }
           <TimelineComponent
             style={styles.timeline}
             data={data}
@@ -94,10 +120,19 @@ class Timeline extends React.Component {
                 </View>
               )
             }}
+            renderCircle={(rowData, sectionId, rowId) => {
+              if (rowData.id === 0 || rowData.id === 99) {
+                return (
+                  <View style={styles.largeDot}>
+                    <Text style={{color: color.darkText, fontWeight: 'bold'}}>{rowData.percentage}%</Text>
+                  </View>
+                )
+              }
+              return (
+                <View style={[styles.dot, {backgroundColor: colors[Math.floor(Math.random() * colors.length)]}]}/>
+              )
+            }}
           />
-          {details[details.length - 1].target_date &&
-            <Text style={styles.date}>{moment(details[0].target_date).format('DD MMM YYYY')}</Text>
-          }
         </Container>
       </StyleProvider>
     )
