@@ -31,7 +31,10 @@ import {
   ADD_USER_STORYBOARD_ERROR,
   GET_ONE_SECTION, 
   GET_ONE_SECTION_SUCCESS,
-  GET_ONE_SECTION_ERROR
+  GET_ONE_SECTION_ERROR,
+  ADD_TASK,
+  ADD_TASK_SUCCESS,
+  ADD_TASK_ERROR,
 } from './actions'
 
 export function* getStoryboard() {
@@ -201,6 +204,27 @@ export function* addUserStoryboard(action) {
   }
 }
 
+export function* addTask(action) {
+  try {
+    const { sectionId, name, startDate, finishDate, status } = action.payload
+
+    const response = yield axios({
+      url: 'tasks',  // 32
+      method: 'POST',
+      data: {
+        section_id: sectionId,
+        name: name,
+        start_date: startDate.format('YYYY-MM-DD'),
+        finish_date: finishDate.format('YYYY-MM-DD'),
+        status: status
+      }
+    })
+    yield put({ type: ADD_TASK_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: ADD_TASK_ERROR, error })
+  }
+}
+
 export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
@@ -213,4 +237,5 @@ export function* watchStoryboard() {
   yield takeEvery(GET_TEMPLATE_LIST, getTemplateList)
   yield takeEvery(GET_USER_STORYBOARD, getUserStoryboard)
   yield takeEvery(ADD_USER_STORYBOARD, addUserStoryboard)
+  yield takeEvery(ADD_TASK, addTask)
 }

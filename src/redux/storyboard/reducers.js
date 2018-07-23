@@ -34,7 +34,10 @@ import {
   ADD_USER_STORYBOARD_ERROR,
   GET_ONE_SECTION,
   GET_ONE_SECTION_SUCCESS,
-  GET_ONE_SECTION_ERROR
+  GET_ONE_SECTION_ERROR,
+  ADD_TASK,
+  ADD_TASK_SUCCESS,
+  ADD_TASK_ERROR,
 } from './actions'
 
 const initialState = {
@@ -117,7 +120,15 @@ const initialState = {
     refreshing: false,
     error: null,
     isUpdate: false,
-  }
+  },
+  addTask: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null, 
+    isUpdate: false,
+  },
 }
 
 export default (state = initialState, action) => {
@@ -213,6 +224,15 @@ export default (state = initialState, action) => {
     case ADD_USER_STORYBOARD_ERROR:
       return handleRequestErrorReducer(state, action, 'addUserStoryboards')
 
+    case ADD_TASK:
+      return handleRequestReducer(state, action, 'addTask')
+
+    case ADD_TASK_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'addTask')
+
+    case ADD_TASK_ERROR:
+      return handleRequestErrorReducer(state, action, 'addTask')
+    
     default:
       return state
   }

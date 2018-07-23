@@ -9,6 +9,7 @@ import color from '../styles/color';
 import margin from '../styles/margin';
 import { getOneSection } from '../redux/storyboard/actions';
 import { Loader } from '../components/Loader';
+import ActionButton from 'react-native-action-button';
 
 class SectionDetail extends Component {
   static navigationOptions = headerConfig('', true);
@@ -140,13 +141,18 @@ class SectionDetail extends Component {
               />
             </ListItem>
             <ListItem last>
-              <View style={{borderWidth: 1, flex: 1, justifyContent: 'center', alignContent: 'center', height: 300}}>
-                <Text style={{fontSize: 32}}>
+              <View style={{flex: 1, justifyContent: 'center', alignContent: 'center', height: 150}}>
+                <Text style={{fontSize: 64, alignSelf: 'center', borderWidth: 5, padding: margin.s24, borderRadius: 100 }}>
                   {complete}%
                 </Text>
               </View>
             </ListItem>
           </List>
+
+          <ActionButton
+            buttonColor={color.green}
+            onPress={() => {navigation.navigate('NewTask', { sectionId: sectionId })}}
+          />
         </Container>
       </StyleProvider>
     )

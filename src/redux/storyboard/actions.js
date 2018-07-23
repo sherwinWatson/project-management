@@ -40,6 +40,10 @@ export const ADD_USER_STORYBOARD = 'USER_STORYBOARD::ADD'
 export const ADD_USER_STORYBOARD_SUCCESS = 'USER_STORYBOARD::ADD_SUCCESS'
 export const ADD_USER_STORYBOARD_ERROR = 'USER_STORYBOARD::ADD_ERROR'
 
+export const ADD_TASK = 'TASK::ADD'
+export const ADD_TASK_SUCCESS = 'TASK::ADD_SUCCESS'
+export const ADD_TASK_ERROR = 'TASK::ADD_ERROR'
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -132,5 +136,18 @@ export const addUserStoryboard = (storyboardId, userId) => {
       storyboardId,
       userId,
     },
+  }
+}
+
+export const addTask = (sectionId, name, startDate, finishDate, status) => {
+  return {
+    type: ADD_TASK,
+    payload: {
+      sectionId, 
+      name, 
+      startDate, 
+      finishDate, 
+      status
+    }
   }
 }
