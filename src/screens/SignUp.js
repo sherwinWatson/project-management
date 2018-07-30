@@ -75,7 +75,10 @@ class SignUp extends React.Component {
     Alert.alert(
       'Apakah anda yakin?',
       'Data yang telah terisi akan hilang',
-      options,
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+        {text: 'OK', onPress: () => this.props.navigation.goBack(null)}
+      ],
       { cancelable: true }
     )
 
@@ -96,7 +99,15 @@ class SignUp extends React.Component {
 
     if (nextProps.error !== error) {
       if (nextProps.error && nextProps.error.message) {
-        this.dialog._show('Signup Error', nextProps.error.message)
+        if (nextProps.error && nextProps.error.response && nextProps.error.response.data && nextProps.error.response.data.errors) {
+          const key = Object.keys(nextProps.error.response.data.errors)[0]; 
+          const message = nextProps.error.response.data.errors[key][0];
+          // this.dialog._show('Signup Error', message) 
+          Alert.alert( 'Signup Error', message)
+        } else {
+        // this.dialog._show('Signup Error', nextProps.error.message)
+          Alert.alert( 'Signup Error', nextProps.error.message)
+        }
       }
     }
 
@@ -130,7 +141,7 @@ class SignUp extends React.Component {
               <View style={styles.firstRow}>
                 <Item style={styles.smallInput}>
                   <TextInput
-                    autoFocus={true}
+                    autoFocus={false}
                     blurOnSubmit={false}
                     onSubmitEditing={(event) => {
                       this._lastNameView.focus()

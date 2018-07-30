@@ -103,7 +103,15 @@ export default (state = initialState, action) => {
       return handleRequestErrorReducer(prevState, action, 'me')
 
     case SIGNUP:
-      return handleRequestReducer(state, action, 'signup')
+      // return handleRequestReducer(state, action, 'signup')
+      const data = handleRequestReducer(state, action, 'signup')
+      return {
+        ...data,
+        signup: {
+          ...data.signup,
+          result: {},
+        }
+      }
 
     case SIGNUP_SUCCESS:
       return {

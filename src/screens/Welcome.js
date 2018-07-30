@@ -36,10 +36,6 @@ class Welcome extends React.Component {
     header: null,
   }
 
-  componentDidMount() {
-    this.props.navigation.navigate('Login')
-  }
-
   render() {
     const {
       navigation,
