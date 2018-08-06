@@ -41,67 +41,79 @@ class NewTask extends Component {
     return (
       <StyleProvider style={theme}>
         <Container>
-          <Content>
-            <Form style={{ marginLeft: margin.s12, marginRight: margin.s12 }}>
-              <Item stackedLabel>
-                <Label>Nama Task</Label>
-                <Input value={name}/>
-              </Item>
-              <Item>
-                <Text>Start Date: {startDate.toString().substr(4, 12)}</Text>
-                <DatePicker
-                  defaultDate={new Date()}
-                  locale={"en"}
-                  timeZoneOffsetInMinutes={undefined}
-                  modalTransparent={false}
-                  animationType={"fade"}
-                  androidMode={"default"}
-                  placeHolderText='select date...'
-                  textStyle={{ color: color.black, fontSize: 18 }}
-                  style={{flex: 1}}
-                  placeHolderTextStyle={{ color: color.light_grey, fontSize: 18 }}
-                  onDateChange={startDate => this.setState({startDate})}
-                />
-              </Item>
-              <Item>
-                <Text>Finish Date: {finishDate.toString().substr(4, 12)}</Text>
-                <DatePicker
-                  defaultDate={new Date()}
-                  locale={"en"}
-                  timeZoneOffsetInMinutes={undefined}
-                  modalTransparent={false}
-                  animationType={"fade"}
-                  androidMode={"default"}
-                  placeHolderText='select date...'
-                  textStyle={{ color: color.black, fontSize: 18 }}
-                  style={{flex: 1}}
-                  placeHolderTextStyle={{ color: color.light_grey, fontSize: 18 }}
-                  onDateChange={finishDate => this.setState({finishDate})}
-                />
-              </Item>
-              <Item>
-                {/* <Label>Status</Label> */}
+          <Content contentContainerStyle={{ flexGrow: 1 }} >
+            <Form style={{marginHorizontal: margin.s12}}>
+              
+              <View style={{borderBottomWidth: 1, borderColor: color.border, margin: margin.s16, height: 80}}>
+                <Label>Task Name</Label>
+                <Input style={{fontSize: 18}} value={name} onChangeText={(name) => this.setState({name})}/>
+              </View>
+
+              <View style={{borderBottomWidth: 1, borderColor: color.border, marginHorizontal: margin.s16, height: 80, flexDirection: 'row'}}>
+                <View style={{flex: 1}}>
+                  <Label>Start Date</Label>
+                  <DatePicker
+                    defaultDate={new Date()}
+                    locale={"en"}
+                    timeZoneOffsetInMinutes={undefined}
+                    modalTransparent={false}
+                    animationType={"fade"}
+                    androidMode={"default"}
+                      placeHolderText='choose date...'
+                    textStyle={{ color: color.black, fontSize: 18 }}
+                    style={{flex: 1}}
+                    placeHolderTextStyle={{ color: color.light_grey, fontSize: 18 }}
+                    onDateChange={startDate => this.setState({startDate})}
+                  />
+                </View>
+                <View style={{flex: 1}}>
+                  <Label>Finish Date</Label>
+                  <DatePicker
+                    defaultDate={new Date()}
+                    locale={"en"}
+                    timeZoneOffsetInMinutes={undefined}
+                    modalTransparent={false}
+                    animationType={"fade"}
+                    androidMode={"default"}
+                      placeHolderText='choose date...'
+                    textStyle={{ color: color.black, fontSize: 18 }}
+                    style={{flex: 1}}
+                    placeHolderTextStyle={{ color: color.light_grey, fontSize: 18 }}
+                    onDateChange={finishDate => this.setState({finishDate})}
+                  />
+                </View>
+              </View>
+
+              <View style={{borderBottomWidth: 1, borderColor: color.border, margin: margin.s16, height: 80}}>
+                <Label>Status</Label>
                 <Picker
                   mode="dropdown"
-                  iosHeader="Choose Status"
+                  iosHeader="pilih jenis kelamin"
                   iosIcon={<Icon name="ios-arrow-down-outline" />}
-                  style={{ width: undefined, flex: 1, borderWidth: 1 }}
+                  style={{ width: undefined }}
                   selectedValue={status}
                   onValueChange={status => this.setState({status})}
                 >
-                  <Picker.Item label="Start" value="START" />
-                  <Picker.Item label="Inprogress" value="INPROGRESS" />
-                  <Picker.Item label="Done" value="DONE" />
+                  <Picker.Item label="START" value="START" />
+                  <Picker.Item label="INPROGRESS" value="INPROGRESS" />
+                  <Picker.Item label="DONE" value="DONE" />
                 </Picker>
-              </Item>
+              </View>
+
+              <View style={{margin: margin.s16}}>
+                <Label>Choose Person</Label>
+                
+              </View>
             </Form>
-            
-            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-              <Button transparent onPress={() => navigation.goBack(null)}>
-                <Text style={{color: color.green}}>CANCEL</Text>
+
+            <View style={{margin: margin.s16, flexDirection: 'row', justifyContent: 'flex-end'}}>
+              <Button
+                transparent onPress={() => navigation.goBack(null)}>
+                <Text style={{fontSize: 18, color: color.green}}>CANCEL</Text>
               </Button>
-              <Button transparent onPress={() => dispatchAddTask(sectionId, name, startDate, finishDate, status)}>
-                <Text style={{color: color.green}}>FINISH</Text>
+              <Button
+                transparent onPress={() => console.log('button finish pressed')}>
+                <Text style={{fontSize: 18, color: color.green}}>FINISH</Text>
               </Button>
             </View>
           </Content>

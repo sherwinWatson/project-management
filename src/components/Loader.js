@@ -33,7 +33,7 @@ const styles = {
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: '#00000040'
+    backgroundColor: '#fff'
   },
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
