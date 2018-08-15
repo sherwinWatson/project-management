@@ -43,18 +43,19 @@ class Main extends React.Component {
     if (isLoggedIn) {
       return (
         <AuthenticatedNavigator
-          navigation={addNavigationHelpers({
-            dispatch: this.props.dispatch,
-            state: this.props.authenticatedNav,
-          })}
+          // navigation={addNavigationHelpers({
+          //   dispatch: this.props.dispatch,
+          //   state: this.props.authenticatedNav,
+          // })}
         />
       )
     }
 
     return (
-      <UnAuthenticatedNavigator navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.unAuthenticatedNav })}
+      <UnAuthenticatedNavigator 
+      // navigation={addNavigationHelpers({
+      //   dispatch: this.props.dispatch,
+      //   state: this.props.unAuthenticatedNav })}
       />
     )
   }

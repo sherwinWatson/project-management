@@ -23,14 +23,27 @@ class SectionDetail extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { dispatchLoadSection } = this.props    
     const { sectionId } = this.props.navigation.state.params
 
-    console.log('component will mount section details')
-    console.log(sectionId)
-    //loadsection by section id
-    dispatchLoadSection(sectionId)
+    this.props.navigation.addListener('willFocus', (route) => {
+      // add listener will focus for reloading new task 
+      console.log('component did mount listener will focus')
+      console.log(sectionId)
+
+      dispatchLoadSection(sectionId)
+    });
+  }
+
+  componentWillMount() {
+    // const { dispatchLoadSection } = this.props    
+    // const { sectionId } = this.props.navigation.state.params
+
+    // console.log('component will mount section details')
+    // console.log(sectionId)
+    // //loadsection by section id
+    // dispatchLoadSection(sectionId)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,7 +58,7 @@ class SectionDetail extends Component {
       const { complete, users, tasks } = nextProps.section
 
       this.setState({
-        complete: complete,
+        complete: Math.round(complete * 100) / 100,
         users: users.data, 
         tasks: tasks.data,
       })

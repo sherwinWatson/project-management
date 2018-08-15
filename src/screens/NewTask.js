@@ -6,8 +6,9 @@ import color from './../styles/color'
 import margin from './../styles/margin'
 import { headerConfig } from '../config/headerConfig';
 import moment from 'moment';
-import { Text, View } from 'react-native';
+import { Text, View, Alert } from 'react-native';
 import { addTask } from '../redux/storyboard/actions';
+import LoadingView from '../components/LoadingView';
 
 class NewTask extends Component {
   static navigationOptions = headerConfig('', true);
@@ -16,14 +17,31 @@ class NewTask extends Component {
     super(props)
     this.state = {
       name: 'Nama Task disini',
-      startDate: moment(),
-      finishDate: moment(),
-      status: 'START',
+      startDate: new Date(),
+      finishDate: new Date(),
+      status: 'start',
     }
   }
+  
+  componentWillReceiveProps(nextProps) {
+    const { error, task, refreshing, navigation } = this.props
 
-  componentWillMount() {
+    //CEK ERROR AND DISPLAY IT
+    if (nextProps.error !== error) {
+      if (nextProps.error && nextProps.error.message) {
+        if (nextProps.error && nextProps.error.response && nextProps.error.response.data && nextProps.error.response.data.errors) {
+          const key = Object.keys(nextProps.error.response.data.errors)[0]; 
+          const message = nextProps.error.response.data.errors[key][0];
+          Alert.alert( 'Cannot create Task', message)
+        } else {
+          Alert.alert( 'Cannot create Task', nextProps.error.message)
+        }
+      }
+    }
 
+    if (!nextProps.refreshing && !nextProps.error) {
+      navigation.goBack(null)
+    }
   }
 
   render() {
@@ -32,15 +50,10 @@ class NewTask extends Component {
     const {}  = styles
     const { name, startDate, finishDate, status } = this.state
 
-    console.log('render new task')
-    console.log(sectionId)
-    console.log(task)
-    console.log(error)
-    console.log(refreshing)
-
     return (
       <StyleProvider style={theme}>
-        <Container>
+        <Container style={{backgroundColor: color.white}}>
+          <LoadingView isShown={refreshing} noBack isModal={false} />
           <Content contentContainerStyle={{ flexGrow: 1 }} >
             <Form style={{marginHorizontal: margin.s12}}>
               
@@ -94,9 +107,9 @@ class NewTask extends Component {
                   selectedValue={status}
                   onValueChange={status => this.setState({status})}
                 >
-                  <Picker.Item label="START" value="START" />
-                  <Picker.Item label="INPROGRESS" value="INPROGRESS" />
-                  <Picker.Item label="DONE" value="DONE" />
+                  <Picker.Item label="START" value="start" />
+                  <Picker.Item label="INPROGRESS" value="inprogress" />
+                  <Picker.Item label="DONE" value="done" />
                 </Picker>
               </View>
 
@@ -112,7 +125,7 @@ class NewTask extends Component {
                 <Text style={{fontSize: 18, color: color.green}}>CANCEL</Text>
               </Button>
               <Button
-                transparent onPress={() => console.log('button finish pressed')}>
+                transparent onPress={() => dispatchAddTask(sectionId, name, startDate, finishDate, status) }>
                 <Text style={{fontSize: 18, color: color.green}}>FINISH</Text>
               </Button>
             </View>

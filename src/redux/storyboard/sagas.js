@@ -1,5 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import axios from 'axios'
+import moment from 'moment';
 
 import {
   GET_STORYBOARD,
@@ -214,13 +215,15 @@ export function* addTask(action) {
       data: {
         section_id: sectionId,
         name: name,
-        start_date: startDate.format('YYYY-MM-DD'),
-        finish_date: finishDate.format('YYYY-MM-DD'),
+        start_date: moment(startDate).format('YYYY-MM-DD'),
+        finish_date: moment(finishDate).format('YYYY-MM-DD'),
         status: status
       }
     })
     yield put({ type: ADD_TASK_SUCCESS, payload: response.data })
   } catch (error) {
+    console.log('error saga add task')
+    console.log(error.response)
     yield put({ type: ADD_TASK_ERROR, error })
   }
 }

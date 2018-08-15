@@ -26,7 +26,7 @@
     "react-native-svg": "6.0.0",
     "react-native-timeline-listview": "^0.2.2",
     "react-native-vector-icons": "^4.5.0",
-    "react-navigation": "1.0.0-beta.26",
+    "react-navigation": "2.11.2",
     "react-redux": "^5.0.6",
     "react-redux-form": "^1.16.5",
     "redux": "^3.7.2",
