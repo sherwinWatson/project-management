@@ -45,11 +45,16 @@ class SectionDetail extends Component {
       const { complete, users, tasks } = nextProps.section
 
       this.setState({
-        complete: complete,
+        complete: Math.round(complete * 100) / 100, // ambil dua angka belakang decimal jika ada 
         users: users.data, 
         tasks: tasks.data,
       })
     }
+  }
+  
+  updateTask = ({task}) => {
+    // update array tasks dengan task yg baru ditambahkan
+    this.setState({ tasks: [...this.state.tasks, task] })
   }
 
   render() {
@@ -60,8 +65,9 @@ class SectionDetail extends Component {
 
     console.log('render')
     console.log(section)
-    console.log(isUpdate)
-    console.log(isRefreshing)
+    // console.log(isUpdate)
+    // console.log(isRefreshing)
+    console.log(tasks)
 
     const getThumbnail = (data) => {
       return data.imageUrl
@@ -110,6 +116,7 @@ class SectionDetail extends Component {
             <List style={{margin: margin.s16}}>
               <ListItem style={listItemStyle}>
                 <Text style={textStyle}>{section.description}</Text>
+                <Button full onPress={() => console.log(tasks)}><Text>Refresh...</Text></Button>
               </ListItem>
               <ListItem style={listItemStyle}>
                 <View>
@@ -140,7 +147,7 @@ class SectionDetail extends Component {
           </Content>
           <ActionButton
             buttonColor={color.green}
-            onPress={() => navigation.navigate('NewTask', { sectionId: sectionId})}
+            onPress={() => navigation.navigate('NewTask', { sectionId: sectionId, updateTask: this.updateTask })}
           />
         </Container>
       </StyleProvider>
