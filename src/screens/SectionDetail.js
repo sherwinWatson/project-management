@@ -116,7 +116,6 @@ class SectionDetail extends Component {
             <List style={{margin: margin.s16}}>
               <ListItem style={listItemStyle}>
                 <Text style={textStyle}>{section.description}</Text>
-                <Button full onPress={() => console.log(tasks)}><Text>Refresh...</Text></Button>
               </ListItem>
               <ListItem style={listItemStyle}>
                 <View>
@@ -147,7 +146,7 @@ class SectionDetail extends Component {
           </Content>
           <ActionButton
             buttonColor={color.green}
-            onPress={() => navigation.navigate('NewTask', { sectionId: sectionId, updateTask: this.updateTask })}
+            onPress={() => navigation.navigate('NewTask', { sectionId: sectionId, updateTask: this.updateTask, sectionUsers: users})}
           />
         </Container>
       </StyleProvider>

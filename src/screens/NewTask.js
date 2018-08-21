@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleProvider, Container, Button, Content, Form, Item, Label, Input, DatePicker, Picker, Icon } from 'native-base'
+import { StyleProvider, Container, Button, Content, Form, Item, Label, Input, DatePicker, Picker, Icon, List, Thumbnail } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
 import margin from './../styles/margin'
 import { headerConfig } from '../config/headerConfig';
 import moment from 'moment';
-import { Text, View, Alert } from 'react-native';
+import { Text, View, Alert, TouchableOpacity } from 'react-native';
 import { addTask, getOneSection } from '../redux/storyboard/actions';
 import LoadingView from '../components/LoadingView';
+import { Map } from 'immutable'
 
 class NewTask extends Component {
   static navigationOptions = headerConfig('', true);
@@ -20,7 +21,10 @@ class NewTask extends Component {
       startDate: new Date(),
       finishDate: new Date(),
       status: 'start',
+      selectedUsers: Map(),
+      member: [],
     }
+    this.handleUserSelected.bind(this)
   }
   
   componentWillReceiveProps(nextProps) {
@@ -51,11 +55,93 @@ class NewTask extends Component {
     }
   }
 
+  handleUserSelected = (user) => {
+    const { selectedUsers } = this.state
+
+    console.log('handle user selected')
+    console.log(user)
+    console.log('handle user selected')
+    console.log(selectedUsers)
+    console.log(selectedUsers.has(user.user_id))
+
+    const newerSelectedUsers = 
+      selectedUsers.has(user.user_id) ? 
+        selectedUsers.delete(user.user_id) :
+          selectedUsers.set(user.user_id, user.user_id)
+
+    this.setState({selectedUsers: newerSelectedUsers})
+
+    console.log('newerSelectedUsers')
+    console.log(newerSelectedUsers)
+
+    let selectedToArray = []
+    newerSelectedUsers.map((item, i) => {
+        selectedToArray.push({user_id: i})
+      }
+    )
+
+    console.log('array user terpilih')
+    console.log(selectedToArray)
+    this.setState({member: selectedToArray})
+  }
+
   render() {
     const { navigation, dispatchAddTask, task, error, refreshing } = this.props
-    const { sectionId } = navigation.state.params    
-    const {}  = styles
-    const { name, startDate, finishDate, status } = this.state
+    const { sectionId, sectionUsers } = navigation.state.params    
+    const { userStyles }  = styles
+    const { name, startDate, finishDate, status, selectedUsers, member } = this.state
+
+    console.log('render new task')
+    console.log(selectedUsers)
+    console.log(sectionUsers)
+    console.log(member)
+
+    const getThumbnail = (sectionUser) => {
+      return sectionUser.imageUrl
+        ? { uri: sectionUser.imageUrl }
+        : require('./../img/no_avatar.png')
+    }
+
+    const renderUser = (user) => {
+      return (
+        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', margin: margin.s8}}
+        onPress={() => {
+          this.handleUserSelected(user)
+        }}>
+          <Thumbnail style={{width: 50, height: 50, margin: margin.s4}} source={getThumbnail(user)} />
+          <Text style={userStyles}>{user.name}</Text>
+          { selectedUsers.has(user.user_id) ? <Icon name="md-checkmark" style={{color: color.green, fontSize: 16}}/> : <Text /> }
+        </TouchableOpacity>
+      )
+    }
+
+    const renderAvailableUser = (users) => {
+      // const sectionUsers = [
+      //   {
+      //       "user_id": 6,
+      //       "name": "test2",
+      //       "first_name": "test2",
+      //       "last_name": "test2",
+      //       "role": "2"
+      //   },
+      //   {
+      //       "user_id": 7,
+      //       "name": "test",
+      //       "first_name": "test",
+      //       "last_name": "test",
+      //       "role": "member"
+      //   }
+      // ];
+
+      return (
+        <View style={{flexDirection: 'column', marginRight: margin.s4}}>
+          <List
+            dataArray={users}
+            renderRow={renderUser}
+          />
+        </View>
+      )
+    }
 
     return (
       <StyleProvider style={theme}>
@@ -122,7 +208,7 @@ class NewTask extends Component {
 
               <View style={{margin: margin.s16}}>
                 <Label>Choose Person</Label>
-                
+                {renderAvailableUser(sectionUsers)}
               </View>
             </Form>
 
@@ -144,7 +230,13 @@ class NewTask extends Component {
 }
 
 const styles = {
-
+  userStyles: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: color.black,
+    margin: margin.s16,
+    flex: 1
+  },
 };
 
 const mapStateToProps = (state) => ({
