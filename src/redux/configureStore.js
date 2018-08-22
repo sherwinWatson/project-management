@@ -49,15 +49,14 @@ export default (Router, onComplete) => {
     ...mobileReducers,
   })
 
-  // const persistedReducer = persistReducer(persistConfig, appReducers)
+  const persistedReducer = persistReducer(persistConfig, appReducers)
   const sagasMiddleware = createSagaMiddleware()
   const middlewares = applyMiddleware(sagasMiddleware)
   const enhancers = composeEnhancers(middlewares)
-  const store = createStore(appReducers, enhancers)
-  // const persistor = persistStore(store)
+  const store = createStore(persistedReducer, enhancers)
+  const persistor = persistStore(store)
 
   sagasMiddleware.run(sagas)
 
-  // return { store, persistor }
-  return store
+  return { store, persistor }
 }

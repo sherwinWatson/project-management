@@ -17,7 +17,7 @@ class NewTask extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: 'Nama Task disini',
+      name: '',
       startDate: new Date(),
       finishDate: new Date(),
       status: 'start',
@@ -44,12 +44,7 @@ class NewTask extends Component {
     }
 
     if (!nextProps.refreshing && !nextProps.error) {
-      // jika berhasil
-      console.log('berhasil create task');
-      // console.log(section.tasks.data);
-      console.log(nextProps.task);
-      // section.tasks.data.push(nextProps.task);
-      // console.log(section.tasks.data);
+      // if success
       navigation.goBack(null)
       navigation.state.params.updateTask({ task: nextProps.task  });
     }
@@ -67,7 +62,7 @@ class NewTask extends Component {
 
     let selectedToArray = []
     newerSelectedUsers.map((item, i) => {
-        selectedToArray.push({user_id: i})
+        selectedToArray.push({user_id: i, key: i})
       }
     )
     this.setState({member: selectedToArray})
@@ -76,7 +71,7 @@ class NewTask extends Component {
   render() {
     const { navigation, dispatchAddTask, task, error, refreshing } = this.props
     const { sectionId, sectionUsers } = navigation.state.params    
-    const { userStyles }  = styles
+    const { containerStyle, formStyle, listItemStyle, userStyles, footerMenuStyle, thumbnailStyle, listSelectedStyle }  = styles
     const { name, startDate, finishDate, status, selectedUsers, member } = this.state
 
     const getThumbnail = (item) => {
@@ -88,15 +83,15 @@ class NewTask extends Component {
     const renderUser = ({item}) => { 
       return (
         <TouchableOpacity 
-          id={item.index}
-          style={{flexDirection: 'row', alignItems: 'center', margin: margin.s8}}
+          key={item.user_id}
+          style={listSelectedStyle}
           onPress={() => {
             this.handleUserSelected(item)
           }
         }>
-          <Thumbnail style={{width: 50, height: 50, margin: margin.s4}} source={getThumbnail(item)} />
+          {/* <Thumbnail style={thumbnailStyle} source={getThumbnail(item)} />
           <Text style={userStyles}>{item.name}</Text>
-          { selectedUsers.has(item.user_id) ? <Icon name="md-checkmark" style={{color: color.green, fontSize: 16}}/> : <Text /> }
+          { selectedUsers.has(item.user_id) ? <Icon name="md-checkmark" style={{color: color.green, fontSize: 16}}/> : <Text /> } */}
         </TouchableOpacity>
       )
     }
@@ -117,17 +112,18 @@ class NewTask extends Component {
 
     return (
       <StyleProvider style={theme}>
-        <Container style={{backgroundColor: color.white}}>
+        <Container style={containerStyle}>
           <LoadingView isShown={refreshing} noBack isModal={false} />
           <Content contentContainerStyle={{ flexGrow: 1 }} >
-            <Form style={{marginHorizontal: margin.s12}}>
+            <Form style={formStyle}>
               
-              <View style={{borderBottomWidth: 1, borderColor: color.border, margin: margin.s16, height: 80}}>
+              <View style={listItemStyle}>
                 <Label>Task Name</Label>
                 <Input style={{fontSize: 18}} value={name} onChangeText={(name) => this.setState({name})}/>
               </View>
 
-              <View style={{borderBottomWidth: 1, borderColor: color.border, marginHorizontal: margin.s16, height: 80, flexDirection: 'row'}}>
+              <View style={listItemStyle}>
+                <View style={{flexDirection: 'row'}}>
                 <View style={{flex: 1}}>
                   <Label>Start Date</Label>
                   <DatePicker
@@ -161,8 +157,9 @@ class NewTask extends Component {
                   />
                 </View>
               </View>
+              </View>
 
-              <View style={{borderBottomWidth: 1, borderColor: color.border, margin: margin.s16, height: 80}}>
+              <View style={listItemStyle}>
                 <Label>Status</Label>
                 <Picker
                   mode="dropdown"
@@ -184,7 +181,7 @@ class NewTask extends Component {
               </View>
             </Form>
 
-            <View style={{margin: margin.s16, flexDirection: 'row', justifyContent: 'flex-end'}}>
+            <View style={footerMenuStyle}>
               <Button
                 transparent onPress={() => navigation.goBack(null)}>
                 <Text style={{fontSize: 18, color: color.green}}>CANCEL</Text>
@@ -202,12 +199,40 @@ class NewTask extends Component {
 }
 
 const styles = {
+  containerStyle: {
+    backgroundColor: color.white,
+  },
+  formStyle: {
+    marginHorizontal: margin.s12
+  },
   userStyles: {
     fontSize: 16,
     fontWeight: 'bold',
     color: color.black,
     margin: margin.s16,
     flex: 1
+  },
+  listItemStyle: {
+    borderBottomWidth: 1, 
+    borderColor: color.border, 
+    marginHorizontal: margin.s16,
+    marginVertical: margin.s8, 
+    height: 80
+  },
+  footerMenuStyle:{
+    margin: margin.s16, 
+    flexDirection: 'row', 
+    justifyContent: 'flex-end'
+  },
+  listSelectedStyle: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    margin: margin.s8
+  },
+  thumbnailStyle: {
+    width: 50, 
+    height: 50, 
+    margin: margin.s4
   },
 };
 

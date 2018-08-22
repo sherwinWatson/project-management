@@ -27,8 +27,6 @@ class SectionDetail extends Component {
     const { dispatchLoadSection } = this.props    
     const { sectionId } = this.props.navigation.state.params
 
-    console.log('component will mount section details')
-    console.log(sectionId)
     //loadsection by section id
     dispatchLoadSection(sectionId)
   }
@@ -36,10 +34,6 @@ class SectionDetail extends Component {
   componentWillReceiveProps(nextProps) {
     // set data section by id to this state
     const { section } = this.props
-    
-    console.log('component will receive props')
-    console.log(section)  
-    console.log(nextProps.section)
 
     if (nextProps.section.section_id) {
       const { complete, users, tasks } = nextProps.section
@@ -63,12 +57,6 @@ class SectionDetail extends Component {
     const { textStyle, listItemStyle, cicleStyle, textCircleStyle, titleContainerStyle, titleContentStyle, titleStyle, titlePortionStyle, titleDateStyle } = styles
     const { complete, users, tasks} = this.state
 
-    console.log('render')
-    console.log(section)
-    // console.log(isUpdate)
-    // console.log(isRefreshing)
-    console.log(tasks)
-
     const getThumbnail = (data) => {
       return data.imageUrl
         ? { uri: data.imageUrl }
@@ -86,7 +74,7 @@ class SectionDetail extends Component {
 
     const renderSelectedTask = (task) => {
       return (
-        <View style={{flex: 1, flexDirection: 'row', marginVertical: margin.s4}}>
+        <View style={{flex: 1, flexDirection: 'row', marginVertical: margin.s8}}>
           <View style={{flex: 1, borderWidth: 0}}>
             <Text>{task.name}</Text>
           </View>
