@@ -6,7 +6,7 @@ import color from './../styles/color'
 import margin from './../styles/margin'
 import { headerConfig } from '../config/headerConfig';
 import moment from 'moment';
-import { Text, View, Alert, TouchableOpacity } from 'react-native';
+import { Text, View, Alert, TouchableOpacity, FlatList } from 'react-native';
 import { addTask, getOneSection } from '../redux/storyboard/actions';
 import LoadingView from '../components/LoadingView';
 import { Map } from 'immutable'
@@ -58,12 +58,6 @@ class NewTask extends Component {
   handleUserSelected = (user) => {
     const { selectedUsers } = this.state
 
-    console.log('handle user selected')
-    console.log(user)
-    console.log('handle user selected')
-    console.log(selectedUsers)
-    console.log(selectedUsers.has(user.user_id))
-
     const newerSelectedUsers = 
       selectedUsers.has(user.user_id) ? 
         selectedUsers.delete(user.user_id) :
@@ -71,17 +65,11 @@ class NewTask extends Component {
 
     this.setState({selectedUsers: newerSelectedUsers})
 
-    console.log('newerSelectedUsers')
-    console.log(newerSelectedUsers)
-
     let selectedToArray = []
     newerSelectedUsers.map((item, i) => {
         selectedToArray.push({user_id: i})
       }
     )
-
-    console.log('array user terpilih')
-    console.log(selectedToArray)
     this.setState({member: selectedToArray})
   }
 
@@ -91,55 +79,39 @@ class NewTask extends Component {
     const { userStyles }  = styles
     const { name, startDate, finishDate, status, selectedUsers, member } = this.state
 
-    console.log('render new task')
-    console.log(selectedUsers)
-    console.log(sectionUsers)
-    console.log(member)
-
-    const getThumbnail = (sectionUser) => {
-      return sectionUser.imageUrl
-        ? { uri: sectionUser.imageUrl }
+    const getThumbnail = (item) => {
+      return item.imageUrl
+        ? { uri: item.imageUrl }
         : require('./../img/no_avatar.png')
     }
 
-    const renderUser = (user) => {
+    const renderUser = ({item}) => { 
       return (
-        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', margin: margin.s8}}
-        onPress={() => {
-          this.handleUserSelected(user)
-        }}>
-          <Thumbnail style={{width: 50, height: 50, margin: margin.s4}} source={getThumbnail(user)} />
-          <Text style={userStyles}>{user.name}</Text>
-          { selectedUsers.has(user.user_id) ? <Icon name="md-checkmark" style={{color: color.green, fontSize: 16}}/> : <Text /> }
+        <TouchableOpacity 
+          id={item.index}
+          style={{flexDirection: 'row', alignItems: 'center', margin: margin.s8}}
+          onPress={() => {
+            this.handleUserSelected(item)
+          }
+        }>
+          <Thumbnail style={{width: 50, height: 50, margin: margin.s4}} source={getThumbnail(item)} />
+          <Text style={userStyles}>{item.name}</Text>
+          { selectedUsers.has(item.user_id) ? <Icon name="md-checkmark" style={{color: color.green, fontSize: 16}}/> : <Text /> }
         </TouchableOpacity>
       )
     }
 
-    const renderAvailableUser = (users) => {
-      // const sectionUsers = [
-      //   {
-      //       "user_id": 6,
-      //       "name": "test2",
-      //       "first_name": "test2",
-      //       "last_name": "test2",
-      //       "role": "2"
-      //   },
-      //   {
-      //       "user_id": 7,
-      //       "name": "test",
-      //       "first_name": "test",
-      //       "last_name": "test",
-      //       "role": "member"
-      //   }
-      // ];
+    const renderMultiSelectList = () => {
+
+      _keyExtractor = (item, index) => item.id
 
       return (
-        <View style={{flexDirection: 'column', marginRight: margin.s4}}>
-          <List
-            dataArray={users}
-            renderRow={renderUser}
-          />
-        </View>
+        <FlatList
+          data={sectionUsers}
+          extraData={selectedUsers}
+          renderItem={renderUser}
+          keyExtractor={_keyExtractor}
+        />
       )
     }
 
@@ -165,7 +137,7 @@ class NewTask extends Component {
                     modalTransparent={false}
                     animationType={"fade"}
                     androidMode={"default"}
-                      placeHolderText='choose date...'
+                    placeHolderText='choose date...'
                     textStyle={{ color: color.black, fontSize: 18 }}
                     style={{flex: 1}}
                     placeHolderTextStyle={{ color: color.light_grey, fontSize: 18 }}
@@ -208,7 +180,7 @@ class NewTask extends Component {
 
               <View style={{margin: margin.s16}}>
                 <Label>Choose Person</Label>
-                {renderAvailableUser(sectionUsers)}
+                { renderMultiSelectList() }
               </View>
             </Form>
 
