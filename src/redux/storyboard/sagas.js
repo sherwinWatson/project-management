@@ -207,7 +207,7 @@ export function* addUserStoryboard(action) {
 
 export function* addTask(action) {
   try {
-    const { sectionId, name, startDate, finishDate, status } = action.payload
+    const { sectionId, name, startDate, finishDate, status, member } = action.payload
 
     const response = yield axios({
       url: 'tasks',  // 32
@@ -217,7 +217,8 @@ export function* addTask(action) {
         name: name,
         start_date: moment(startDate).format('YYYY-MM-DD'), 
         finish_date: moment(finishDate).format('YYYY-MM-DD'),
-        status: status
+        status: status,
+        member: member
       }
     })
     yield put({ type: ADD_TASK_SUCCESS, payload: response.data })

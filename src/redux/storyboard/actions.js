@@ -139,7 +139,7 @@ export const addUserStoryboard = (storyboardId, userId) => {
   }
 }
 
-export const addTask = (sectionId, name, startDate, finishDate, status) => {
+export const addTask = (sectionId, name, startDate, finishDate, status, member) => {
   return {
     type: ADD_TASK,
     payload: {
@@ -147,7 +147,8 @@ export const addTask = (sectionId, name, startDate, finishDate, status) => {
       name, 
       startDate, 
       finishDate, 
-      status
+      status,
+      member
     }
   }
 }

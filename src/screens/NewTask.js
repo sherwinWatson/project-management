@@ -218,7 +218,7 @@ class NewTask extends Component {
                 <Text style={{fontSize: 18, color: color.green}}>CANCEL</Text>
               </Button>
               <Button
-                transparent onPress={() => dispatchAddTask(sectionId, name, startDate, finishDate, status) }>
+                transparent onPress={() => dispatchAddTask(sectionId, name, startDate, finishDate, status, member) }>
                 <Text style={{fontSize: 18, color: color.green}}>FINISH</Text>
               </Button>
             </View>
@@ -247,8 +247,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
-  dispatchAddTask(sectionId, name, startDate, finishDate, status) {
-    dispatch(addTask(sectionId, name, startDate, finishDate, status))
+  dispatchAddTask(sectionId, name, startDate, finishDate, status, member) {
+    dispatch(addTask(sectionId, name, startDate, finishDate, status, member))
   },
 });
 
