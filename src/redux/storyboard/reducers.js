@@ -37,7 +37,13 @@ import {
   ADD_USER_STORYBOARD_ERROR,
   GET_ONE_STORYBOARD,
   GET_ONE_STORYBOARD_SUCCESS,
-  GET_ONE_STORYBOARD_ERROR
+  GET_ONE_STORYBOARD_ERROR,
+  GET_ONE_SECTION,
+  GET_ONE_SECTION_SUCCESS,
+  GET_ONE_SECTION_ERROR,
+  ADD_TASK,
+  ADD_TASK_SUCCESS,
+  ADD_TASK_ERROR,
 } from './actions'
 
 const initialState = {
@@ -121,6 +127,22 @@ const initialState = {
     error: null,
     isUpdate: false,
   },
+  getOneSection: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
+  addTask: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
 }
 
 export default (state = initialState, action) => {
@@ -150,7 +172,7 @@ export default (state = initialState, action) => {
       return handleRequestSuccessReducer(state, action, 'modifyStoryboard')
 
     case MODIFY_STORYBOARD_ERROR:
-      return handleRequestErrorReducer(state, action, 'modifyStoryboard')  
+      return handleRequestErrorReducer(state, action, 'modifyStoryboard')
 
     case GET_STORYBOARD_DETAIL:
       return handleRequestReducer(state, action, 'storyboardDetails')
@@ -160,6 +182,15 @@ export default (state = initialState, action) => {
 
     case GET_STORYBOARD_DETAIL_ERROR:
       return handleRequestErrorReducer(state, action, 'storyboardDetails')
+
+    case GET_ONE_SECTION:
+      return handleRequestReducer(state, action, 'getOneSection')
+
+    case GET_ONE_SECTION_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'getOneSection')
+
+    case GET_ONE_SECTION_ERROR:
+      return handleRequestErrorReducer(state, action, 'getOneSection')
 
     case ADD_STORYBOARD_DETAIL:
       return handleRequestReducer(state, action, 'addStoryboardDetails')
@@ -224,6 +255,15 @@ export default (state = initialState, action) => {
 
     case GET_ONE_STORYBOARD_ERROR:
       return handleRequestErrorReducer(state, action, 'modifyStoryboard')
+
+    case ADD_TASK:
+      return handleRequestReducer(state, action, 'addTask')
+
+    case ADD_TASK_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'addTask')
+
+    case ADD_TASK_ERROR:
+      return handleRequestErrorReducer(state, action, 'addTask')
 
     default:
       return state

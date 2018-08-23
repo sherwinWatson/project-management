@@ -1,5 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import axios from 'axios'
+import moment from 'moment'
 
 import {
   GET_STORYBOARD,
@@ -34,13 +35,19 @@ import {
   ADD_USER_STORYBOARD_ERROR,
   GET_ONE_STORYBOARD,
   GET_ONE_STORYBOARD_SUCCESS,
-  GET_ONE_STORYBOARD_ERROR
+  GET_ONE_STORYBOARD_ERROR,
+  GET_ONE_SECTION,
+  GET_ONE_SECTION_SUCCESS,
+  GET_ONE_SECTION_ERROR,
+  ADD_TASK,
+  ADD_TASK_SUCCESS,
+  ADD_TASK_ERROR,
 } from './actions'
 
 export function* getStoryboard() {
   try {
     const response = yield axios({
-      url: 'storyboards', //3
+      url: 'storyboards',
       method: 'get',
     })
     yield put({ type: GET_STORYBOARD_SUCCESS, payload: response.data })
@@ -76,7 +83,7 @@ export function* modifyStoryboard(action) {
     console.log(id)
     console.log('storyboards/' + id)
     console.log({data: {
-      name: name, 
+      name: name,
       description: description,
       start_date: startDate.format('YYYY-MM-DD'),
       finish_date: finishDate.format('YYYY-MM-DD'),
@@ -85,7 +92,7 @@ export function* modifyStoryboard(action) {
       url: 'storyboards/' + id,
       method: 'post',
       data: {
-        name: name, 
+        name: name,
         description: description,
         start_date: startDate.format('YYYY-MM-DD'),
         finish_date: finishDate.format('YYYY-MM-DD'),
@@ -105,7 +112,7 @@ export function* modifyStoryboard(action) {
 export function* getOneStoryboard(action) {
   try{
     const { storyboardId } = action.payload
-    
+
     const response = yield axios({
       url: '/storyboards/' + storyboardId,  // 7
       method: 'get'
@@ -122,13 +129,28 @@ export function* getStoryboardDetails(action) {
     const { storyboardId } = action.payload
 
     const response = yield axios({
-      url: '/sections/storyboards/' + storyboardId + '?include=users',  //26
+      url: '/sections/storyboards/' + storyboardId + '?include=users',
       method: 'get',
     })
 
     yield put({ type: GET_STORYBOARD_DETAIL_SUCCESS, payload: response.data })
   } catch (error) {
     yield put({ type: GET_STORYBOARD_DETAIL_ERROR, error })
+  }
+}
+
+export function* getOneSection(action) {
+  try {
+    const { sectionId } = action.payload
+
+    const response = yield axios({
+      url: '/sections/' + sectionId + '?include=tasks,users', // 29
+      method: 'get',
+    })
+
+    yield put({ type: GET_ONE_SECTION_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: GET_ONE_SECTION_ERROR, error })
   }
 }
 
@@ -208,7 +230,7 @@ export function* getUserStoryboard(action) {
   try {
     const { storyboardId } = action.payload
     const response = yield axios({
-      url: 'storyboardusers/storyboards/'+ storyboardId, // 19
+      url: 'storyboardusers/storyboards/'+ storyboardId,
       method: 'get',
     })
     yield put({ type: GET_USER_STORYBOARD_SUCCESS, payload: response.data })
@@ -226,8 +248,8 @@ export function* addUserStoryboard(action) {
       url: 'storyboardsusers/storyboards/'+ storyboardId,
       method: 'post',
       data: {
-        member: [ 
-          {user_id: userId},  
+        member: [
+          {user_id: userId},
         ]
       },
     })
@@ -237,12 +259,37 @@ export function* addUserStoryboard(action) {
   }
 }
 
+export function* addTask(action) {
+  try {
+    const { sectionId, name, startDate, finishDate, status, member } = action.payload
+
+    const response = yield axios({
+      url: 'tasks',  // 32
+      method: 'POST',
+      data: {
+        section_id: sectionId,
+        name: name,
+        start_date: moment(startDate).format('YYYY-MM-DD'),
+        finish_date: moment(finishDate).format('YYYY-MM-DD'),
+        status: status,
+        member: member
+      }
+    })
+    yield put({ type: ADD_TASK_SUCCESS, payload: response.data })
+  } catch (error) {
+    console.log('error saga add task')
+    console.log(error.response)
+    yield put({ type: ADD_TASK_ERROR, error })
+  }
+}
+
 export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
   yield takeEvery(MODIFY_STORYBOARD, modifyStoryboard)
   yield takeEvery(GET_ONE_STORYBOARD, getOneStoryboard)
   yield takeEvery(GET_STORYBOARD_DETAIL, getStoryboardDetails)
+  yield takeEvery(GET_ONE_SECTION, getOneSection)
   yield takeEvery(ADD_STORYBOARD_DETAIL, addStoryboardDetails)
   yield takeEvery(MODIFY_STORYBOARD_DETAIL, modifyStoryboardDetails)
   yield takeEvery(REMOVE_STORYBOARD_DETAIL, removeStoryboardDetails)
@@ -250,4 +297,5 @@ export function* watchStoryboard() {
   yield takeEvery(GET_TEMPLATE_LIST, getTemplateList)
   yield takeEvery(GET_USER_STORYBOARD, getUserStoryboard)
   yield takeEvery(ADD_USER_STORYBOARD, addUserStoryboard)
+  yield takeEvery(ADD_TASK, addTask)
 }

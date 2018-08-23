@@ -16,6 +16,10 @@ export const GET_STORYBOARD_DETAIL = 'STORYBOARD::GET_DETAIL'
 export const GET_STORYBOARD_DETAIL_SUCCESS = 'STORYBOARD::GET_SUCCESS_DETAIL'
 export const GET_STORYBOARD_DETAIL_ERROR = 'STORYBOARD::GET_ERROR_DETAIL'
 
+export const GET_ONE_SECTION = 'SECTION::GET'
+export const GET_ONE_SECTION_SUCCESS = 'SECTION::GET_SUCCES'
+export const GET_ONE_SECTION_ERROR = 'SECTION::GET_ERROR'
+
 export const ADD_STORYBOARD_DETAIL = 'STORYBOARD::ADD_DETAIL'
 export const ADD_STORYBOARD_DETAIL_SUCCESS = 'STORYBOARD::ADD_SUCCESS_DETAIL'
 export const ADD_STORYBOARD_DETAIL_ERROR = 'STORYBOARD::ADD_ERROR_DETAIL'
@@ -43,6 +47,10 @@ export const ADD_USER_STORYBOARD_ERROR = 'USER_STORYBOARD::ADD_ERROR'
 export const GET_ONE_STORYBOARD = 'STORYBOARD::GET_ONE'
 export const GET_ONE_STORYBOARD_SUCCESS = 'STORYBOARD::GET_ONE_SUCCESS'
 export const GET_ONE_STORYBOARD_ERROR = 'STORYBOARD::GET_ONE_ERROR'
+
+export const ADD_TASK = 'TASK::ADD'
+export const ADD_TASK_SUCCESS = 'TASK::ADD_SUCCESS'
+export const ADD_TASK_ERROR = 'TASK::ADD_ERROR'
 
 export const getStoryboard = () => {
   return {
@@ -81,6 +89,15 @@ export const getStoryboardDetail = (storyboardId) => {
     payload: {
       storyboardId,
     },
+  }
+}
+
+export const getOneSection = (sectionId) => {
+  return {
+    type: GET_ONE_SECTION,
+    payload: {
+      sectionId,
+    }
   }
 }
 
@@ -148,6 +165,20 @@ export const getOneStoryboard = (storyboardId) => {
     type: GET_ONE_STORYBOARD,
     payload: {
       storyboardId
+    }
+  }
+}
+
+export const addTask = (sectionId, name, startDate, finishDate, status, member) => {
+  return {
+    type: ADD_TASK,
+    payload: {
+      sectionId,
+      name,
+      startDate,
+      finishDate,
+      status,
+      member
     }
   }
 }
