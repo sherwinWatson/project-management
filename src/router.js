@@ -11,7 +11,8 @@ import TemplateList from './screens/TemplateList'
 import ProjectTabs from './screens/ProjectTabs'
 import StoryboardDetail from './screens/StoryboardDetail'
 import SectionDetail from './screens/SectionDetail'
-import NewTask from './screens/NewTask';
+import NewTask from './screens/NewTask'
+import QRCode from './screens/QRCode'
 
 const stackNavigator = StackNavigator
 
@@ -37,6 +38,7 @@ const AuthenticatedNavigator = stackNavigator(
     StoryboardDetail: { screen: StoryboardDetail },
     SectionDetail: { screen: SectionDetail },
     NewTask: { screen: NewTask },
+    QRCode: { screen: QRCode },
   }, {
     headerMode: 'screen',
   }

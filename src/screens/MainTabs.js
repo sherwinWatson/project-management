@@ -8,7 +8,7 @@ import {headerConfig} from '../config/headerConfig'
 import MainTabsRightButton from '../components/MainTabsRightButton'
 
 class MainTabs extends React.Component {
-  static navigationOptions = headerConfig('KAMI', false, <MainTabsRightButton/>)
+  static navigationOptions = headerConfig('KAMI', false, (navigation) => <MainTabsRightButton navigation={navigation}/>)
 
   render() {
     const {
