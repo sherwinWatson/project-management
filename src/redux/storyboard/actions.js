@@ -52,6 +52,11 @@ export const ADD_TASK = 'TASK::ADD'
 export const ADD_TASK_SUCCESS = 'TASK::ADD_SUCCESS'
 export const ADD_TASK_ERROR = 'TASK::ADD_ERROR'
 
+
+export const  GET_USER_BY_CONTACT = 'GET_USER_BY_CONTACT'
+export const  GET_USER_BY_CONTACT_SUCCESS = 'GET_USER_BY_CONTACT_SUCCESS'
+export const  GET_USER_BY_CONTACT_ERROR = 'GET_USER_BY_CONTACT_ERROR'
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -179,6 +184,15 @@ export const addTask = (sectionId, name, startDate, finishDate, status, member) 
       finishDate,
       status,
       member
+    }
+  }
+}
+
+export const getUserByContacts = (phonenumbers) => {
+  return {
+    type: GET_USER_BY_CONTACT,
+    payload: {
+      phonenumbers 
     }
   }
 }

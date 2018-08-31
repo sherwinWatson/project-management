@@ -44,6 +44,9 @@ import {
   ADD_TASK,
   ADD_TASK_SUCCESS,
   ADD_TASK_ERROR,
+  GET_USER_BY_CONTACT,
+  GET_USER_BY_CONTACT_SUCCESS,
+  GET_USER_BY_CONTACT_ERROR,
 } from './actions'
 
 const initialState = {
@@ -143,6 +146,14 @@ const initialState = {
     error: null,
     isUpdate: false,
   },
+  userContacts: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  }
 }
 
 export default (state = initialState, action) => {
@@ -264,6 +275,15 @@ export default (state = initialState, action) => {
 
     case ADD_TASK_ERROR:
       return handleRequestErrorReducer(state, action, 'addTask')
+
+    case GET_USER_BY_CONTACT:
+      return handleRequestReducer(state, action, 'userContacts')
+
+    case GET_USER_BY_CONTACT_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'userContacts')
+
+    case GET_USER_BY_CONTACT_ERROR:
+      return handleRequestErrorReducer(state, action, 'userContacts')
 
     default:
       return state

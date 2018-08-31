@@ -22,6 +22,7 @@ class Contacts extends React.Component {
       contacts: [],
       selectedContacts: [],
       noPermission: false,
+      phoneNumbers: [], 
     }
   }
 
@@ -37,6 +38,31 @@ class Contacts extends React.Component {
         if (err) throw err
 
         this.setState({contacts: contacts})
+
+        const phonenumbers = [];
+
+        this.state.contacts.map((item, i) => {
+          
+          if(item.phoneNumbers.length > 0) {
+            item.phoneNumbers.map((number, j) => { 
+
+                let tmp = number.number.toString().replace(/\D/g,'')    // remove all non number character
+                let index = tmp.substring(0, 2) == '08' ? '628' : tmp.substring(0, 2) // ganti 08 jadi 628
+                tmp = index + tmp.substring(2, tmp.length);
+                
+                phonenumbers.push({ phonenumbers: tmp })
+            })
+          }
+        })
+
+        if (phonenumbers.length > 0) {
+          this.setState({ phoneNumbers: phonenumbers})
+        }
+
+        console.log('reqeuest contacts')
+        console.log(phonenumbers)
+
+        this.props.
       })
     }
 
@@ -84,6 +110,9 @@ class Contacts extends React.Component {
         fontSize: 20,
       },
     }
+
+    console.log('render list item contact')
+    console.log(this.state.phoneNumbers)
 
     const getThumbnail = (data) => {
       return data.imageUrl
@@ -208,10 +237,15 @@ const mapStateToProps = (state) => ({
   isRefreshing: state.storyboard.addStoryboard.refreshing,
   done: state.storyboard.addStoryboard.result.data,
   error: state.storyboard.addStoryboard.error,
+  userContacts: state.storyboard.userContacts.result.data,
+  ifRefreshingUserContacts: state.storyboard.userContacts.refreshing,
+  errorUserContacts: state.storyboard.userContacts.error
 })
 
 const mapDispatchToProps = (dispatch, props) => ({
-
+  dispatchGetUserByContacts(phonenumbers) {
+    
+  }
 })
 
 export default connect(

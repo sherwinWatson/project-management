@@ -42,6 +42,9 @@ import {
   ADD_TASK,
   ADD_TASK_SUCCESS,
   ADD_TASK_ERROR,
+  GET_USER_BY_CONTACT,
+  GET_USER_BY_CONTACT_SUCCESS,
+  GET_USER_BY_CONTACT_ERROR,
 } from './actions'
 
 export function* getStoryboard() {
@@ -280,6 +283,27 @@ export function* addTask(action) {
     console.log('error saga add task')
     console.log(error.response)
     yield put({ type: ADD_TASK_ERROR, error })
+  }
+}
+
+export function* getUserByContacts(action) {
+  try {
+    const { phonenumbers } = action.payload
+    
+    const response = yield axios ({
+      url: 'users/contacts', //11
+      method: 'POST',
+      data: {
+        phonenumbers: phonenumbers
+      }
+    })
+    console.log('masuk saga get user by contacts')
+    console.log(response.data)
+    yield put({ type: GET_USER_BY_CONTACT_SUCCESS, payload: response.data })
+  } catch (error) {
+    console.log('error saga get user by contacts')
+    console.log(error.response)
+    yield put({ type: GET_USER_BY_CONTACT_ERROR})
   }
 }
 
