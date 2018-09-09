@@ -13,6 +13,7 @@ import StoryboardDetail from './screens/StoryboardDetail'
 import SectionDetail from './screens/SectionDetail'
 import NewTask from './screens/NewTask'
 import QRCode from './screens/QRCode'
+import NewSection from './screens/NewSection'
 
 const stackNavigator = StackNavigator
 
@@ -33,6 +34,7 @@ const AuthenticatedNavigator = stackNavigator(
     Contacts: { screen: Contacts },
     NewProject: { screen: NewProject },
     SectionList: { screen: SectionList },
+    NewSection: { screen: NewSection },
     TemplateList: { screen: TemplateList },
     ProjectTabs: { screen: ProjectTabs },
     StoryboardDetail: { screen: StoryboardDetail },

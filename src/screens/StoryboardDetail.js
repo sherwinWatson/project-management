@@ -29,7 +29,7 @@ class StoryboardDetail extends Component {
       createdAt: ''
     }
   }
-  
+
   componentWillMount() {
     const { id } = this.props.navigation.state.params
     const { loadUserStoryboards, getOneStoryboard } = this.props
@@ -51,7 +51,7 @@ class StoryboardDetail extends Component {
         storyboardId: storyboard_id,
         name: name,
         description: description,
-        startDate: start_date,
+        targetDate: start_date,
         finishDate: finish_date,
         timeLeft: time_left,
         createdBy: created_by,
@@ -60,9 +60,9 @@ class StoryboardDetail extends Component {
       })
     }
   }
-  
+
   render() {
-    const { container, contentBody, content, text, listTitle, listSubTitle, 
+    const { container, contentBody, content, text, listTitle, listSubTitle,
       contentTime, userStyles, roleContentStyles, roleTextStyles
     } = styles
     const { userStoryboard, navigation } = this.props
@@ -127,7 +127,7 @@ class StoryboardDetail extends Component {
                 </View>
                 <View style={contentTime}>
                   <Text style={listTitle}>
-                    {moment(startDate).format('DD MMM YYYY')} - {moment(finishDate).format('DD MMM YYYY')} 
+                    {moment(startDate).format('DD MMM YYYY')} - {moment(finishDate).format('DD MMM YYYY')}
                   </Text>
                   <Text>Edit</Text>
                 </View>
@@ -155,7 +155,7 @@ class StoryboardDetail extends Component {
 
     return (
       <StyleProvider style={theme}>
-        <Container>  
+        <Container>
           <Content contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps='always'>
             <Image
               source={require('./../img/aad705dd-889c-47df-8934-4725d75cfbaa.jpg')}
@@ -170,14 +170,14 @@ class StoryboardDetail extends Component {
                   <Icon style={{ color: color.toolbarItem }} name="md-person-add" />
                 </Button>
               </View>
-              <View style={content}> 
-                <View style={contentBody}> 
+              <View style={content}>
+                <View style={contentBody}>
                   <View style={{marginLeft: margin.s16}}>
                     <Text style={{fontSize: 18, fontWeight: 'bold', color: color.white}
                   }>{name.toUpperCase()}</Text>
                     <Text style={{fontSize: 12, color: color.white, marginBottom: margin.s8 }
                   }>Dibuat oleh {createdByName}, {moment(createdAt).format('DD MMM YYYY')}</Text>
-                  </View> 
+                  </View>
                 </View>
                 <Button transparent onPress={() => handleEditStoryboard(navigation, this.state)}>
                   <Icon style={{ color: color.toolbarItem }} name="md-create" />
@@ -238,17 +238,17 @@ const styles = {
     flex: 1
   },
   roleContentStyles: {
-    borderWidth: 1, 
-    borderColor: 'limegreen', 
+    borderWidth: 1,
+    borderColor: 'limegreen',
     borderRadius: 5
   },
   roleTextStyles: {
-    color: 'limegreen', 
-    fontSize: 12, 
+    color: 'limegreen',
+    fontSize: 12,
     margin: margin.s4
   }
 }
-  
+
 const mapStateToProps = (state) => ({
   userStoryboard: state.storyboard.userStoryboards.result.data,
   refreshing: state.storyboard.userStoryboards.refreshing,

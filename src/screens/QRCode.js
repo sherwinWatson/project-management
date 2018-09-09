@@ -16,7 +16,7 @@ class QRCode extends React.Component {
       <StyleProvider style={theme}>
         <Container style={{justifyContent: 'center', alignItems: 'center'}}>
           <QRCodeView
-            value={this.props.user.user_id}
+            value={this.props.user.user_id.toString()}
             size={screen.width - 50}
           />
         </Container>

@@ -26,7 +26,7 @@ class NewTask extends Component {
     }
     this.handleUserSelected.bind(this)
   }
-  
+
   componentWillReceiveProps(nextProps) {
     const { error, task, refreshing, navigation, section } = this.props
 
@@ -34,7 +34,7 @@ class NewTask extends Component {
     if (nextProps.error !== error) {
       if (nextProps.error && nextProps.error.message) {
         if (nextProps.error && nextProps.error.response && nextProps.error.response.data && nextProps.error.response.data.errors) {
-          const key = Object.keys(nextProps.error.response.data.errors)[0]; 
+          const key = Object.keys(nextProps.error.response.data.errors)[0];
           const message = nextProps.error.response.data.errors[key][0];
           Alert.alert( 'Cannot create Task', message)
         } else {
@@ -53,8 +53,8 @@ class NewTask extends Component {
   handleUserSelected = (user) => {
     const { selectedUsers } = this.state
 
-    const newerSelectedUsers = 
-      selectedUsers.has(user.user_id) ? 
+    const newerSelectedUsers =
+      selectedUsers.has(user.user_id) ?
         selectedUsers.delete(user.user_id) :
           selectedUsers.set(user.user_id, user.user_id)
 
@@ -70,7 +70,7 @@ class NewTask extends Component {
 
   render() {
     const { navigation, dispatchAddTask, task, error, refreshing } = this.props
-    const { sectionId, sectionUsers } = navigation.state.params    
+    const { sectionId, sectionUsers } = navigation.state.params
     const { containerStyle, formStyle, listItemStyle, userStyles, footerMenuStyle, thumbnailStyle, listSelectedStyle }  = styles
     const { name, startDate, finishDate, status, selectedUsers, member } = this.state
 
@@ -80,9 +80,9 @@ class NewTask extends Component {
         : require('./../img/no_avatar.png')
     }
 
-    const renderUser = ({item}) => { 
+    const renderUser = ({item}) => {
       return (
-        <TouchableOpacity 
+        <TouchableOpacity
           key={item.user_id}
           style={listSelectedStyle}
           onPress={() => {
@@ -116,7 +116,7 @@ class NewTask extends Component {
           <LoadingView isShown={refreshing} noBack isModal={false} />
           <Content contentContainerStyle={{ flexGrow: 1 }} >
             <Form style={formStyle}>
-              
+
               <View style={listItemStyle}>
                 <Label>Task Name</Label>
                 <Input style={{fontSize: 18}} value={name} onChangeText={(name) => this.setState({name})}/>
@@ -137,7 +137,7 @@ class NewTask extends Component {
                     textStyle={{ color: color.black, fontSize: 18 }}
                     style={{flex: 1}}
                     placeHolderTextStyle={{ color: color.light_grey, fontSize: 18 }}
-                    onDateChange={startDate => this.setState({startDate})}
+                    onDateChange={startDate => this.setState({startDate: targetDate})}
                   />
                 </View>
                 <View style={{flex: 1}}>
@@ -213,25 +213,25 @@ const styles = {
     flex: 1
   },
   listItemStyle: {
-    borderBottomWidth: 1, 
-    borderColor: color.border, 
+    borderBottomWidth: 1,
+    borderColor: color.border,
     marginHorizontal: margin.s16,
-    marginVertical: margin.s8, 
+    marginVertical: margin.s8,
     height: 80
   },
   footerMenuStyle:{
-    margin: margin.s16, 
-    flexDirection: 'row', 
+    margin: margin.s16,
+    flexDirection: 'row',
     justifyContent: 'flex-end'
   },
   listSelectedStyle: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    alignItems: 'center',
     margin: margin.s8
   },
   thumbnailStyle: {
-    width: 50, 
-    height: 50, 
+    width: 50,
+    height: 50,
     margin: margin.s4
   },
 };

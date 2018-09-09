@@ -13,24 +13,11 @@ import moment from 'moment/moment'
 import font from '../styles/font'
 import margin from '../styles/margin'
 import color from '../styles/color'
-import Prompt from './../components/PromptWithDatePicker'
 import ActionButton from 'react-native-action-button'
 import LoadingView from './../components/LoadingView'
 import {headerConfig} from './../config/headerConfig'
 
 class SectionList extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      promptVisible: false,
-      isEditing: false,
-      selectedId: null,
-      defaultValue: '',
-      defaultValue2: '',
-      defaultValue3: '',
-    }
-  }
-
   static navigationOptions = headerConfig('Sections', true)
   componentWillMount() {
     const {loadStoryboardDetails} = this.props
@@ -49,10 +36,7 @@ class SectionList extends React.Component {
   }
 
   render() {
-    const { id, details, refreshing, dispatchAddStoryboardDetail, dispatchModifyStoryboardDetail, dispatchRemoveStoryboardDetail, navigation } = this.props
-
-    console.log('render section list')
-    console.log(details)
+    const { id, details, refreshing, navigation } = this.props
 
     const styles = {
       container: {
@@ -157,58 +141,9 @@ class SectionList extends React.Component {
           <ActionButton
             buttonColor="rgba(231,76,60,1)"
             onPress={() => {
-              this.setState({
-                promptVisible: true,
-                isEditing: false,
-                defaultValue: '',
-                defaultValue2: '',
-                defaultValue3: '',
-              })
+              navigation.navigate('NewSection', {id: id})
             }}
           />
-          <Prompt
-            title="New Detail"
-            placeholder="Subject"
-            placeholder2="Description"
-            placeholder3="Target Date"
-            defaultValue={this.state.defaultValue}
-            defaultValue2={this.state.defaultValue2}
-            defaultValue3={this.state.defaultValue3}
-            visible={ this.state.promptVisible }
-            onCancel={ () => this.setState({
-              promptVisible: false,
-            }) }
-            onSubmit={ (value, value2, value3) => {
-              if (this.state.isEditing) {
-                dispatchModifyStoryboardDetail(this.state.selectedId, value, value2, moment(value3))
-              } else {
-                dispatchAddStoryboardDetail(id, value, value2, value3)
-              }
-              this.setState({
-                promptVisible: false,
-                isEditing: false,
-              })
-            }}/>
-          {this.state.isEditing &&
-          <Picker
-            onValueChange={(itemValue, itemIndex) => {
-              if (itemValue === 'mod') {
-                this.setState({
-                  promptVisible: true,
-                  isEditing: true,
-                })
-              } else {
-                dispatchRemoveStoryboardDetail(this.state.selectedId)
-                this.setState({
-                  isEditing: false,
-                })
-              }
-            }}>
-            <Picker.Item label="Choose action" value="choose" />
-            <Picker.Item label="Modify" value="mod" />
-            <Picker.Item label="Delete" value="del" />
-          </Picker>
-          }
         </Container>
       </StyleProvider>
     )
@@ -227,15 +162,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch, props) => ({
   loadStoryboardDetails(id) {
     dispatch(getStoryboardDetail(id))
-  },
-  dispatchAddStoryboardDetail(storyboardId, subject, description, targetDate) {
-    dispatch(addStoryboardDetail(storyboardId, subject, description, targetDate))
-  },
-  dispatchModifyStoryboardDetail(id, subject, description, targetDate) {
-    dispatch(modifyStoryboardDetail(id, subject, description, targetDate))
-  },
-  dispatchRemoveStoryboardDetail(id) {
-    dispatch(removeStoryboardDetail(id))
   },
 })
 

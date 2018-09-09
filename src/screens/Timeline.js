@@ -75,8 +75,9 @@ class Timeline extends React.Component {
   render() {
     const { id, details, refreshing } = this.props
 
+    let data = []
     if (details.length > 0) {
-      let data = details.map((item) => ({
+      data = details.map((item) => ({
         time: item.target_date ? moment(item.target_date).format('DD/MM/YYYY') : 'n/a',
         title: item.subject,
         description: item.description,
@@ -102,7 +103,7 @@ class Timeline extends React.Component {
       <StyleProvider style={theme}>
         <Container>
           <LoadingView isShown={refreshing} solid />
-          {details.length > 0 &&
+          {data.length > 0 &&
             <TimelineComponent
               style={styles.timeline}
               data={data}
