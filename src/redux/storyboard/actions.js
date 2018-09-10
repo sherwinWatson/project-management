@@ -159,12 +159,12 @@ export const getUserStoryboard = (storyboardId) => {
   }
 }
 
-export const addUserStoryboard = (storyboardId, userId) => {
+export const addUserStoryboard = (storyboardId, member) => {
   return {
     type: ADD_USER_STORYBOARD,
     payload: {
       storyboardId,
-      userId,
+      member,
     },
   }
 }

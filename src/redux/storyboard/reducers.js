@@ -125,14 +125,6 @@ const initialState = {
     error: null,
     isUpdate: false,
   },
-  addUserStoryboards: {
-    result: {
-      data: {},
-    },
-    refreshing: false,
-    error: null,
-    isUpdate: false,
-  },
   getOneSection: {
     result: {
       data: {},
@@ -243,7 +235,6 @@ export default (state = initialState, action) => {
       return handleRequestErrorReducer(state, action, 'templateList')
 
     case GET_USER_STORYBOARD:
-      console.log('reducers get_user_storyboard')
       return handleRequestReducer(state, action, 'userStoryboards')
 
     case GET_USER_STORYBOARD_SUCCESS:
@@ -253,13 +244,13 @@ export default (state = initialState, action) => {
       return handleRequestErrorReducer(state, action, 'userStoryboards')
 
     case ADD_USER_STORYBOARD:
-      return handleRequestReducer(state, action, 'addUserStoryboards')
+      return handleRequestReducer(state, action, 'userStoryboards')
 
     case ADD_USER_STORYBOARD_SUCCESS:
-      return handleRequestSuccessReducer(state, action, 'addUserStoryboards')
+      return handleRequestSuccessReducer(state, action, 'userStoryboards')
 
     case ADD_USER_STORYBOARD_ERROR:
-      return handleRequestErrorReducer(state, action, 'addUserStoryboards')
+      return handleRequestErrorReducer(state, action, 'userStoryboards')
 
     case GET_ONE_STORYBOARD:
       return handleRequestReducer(state, action, 'modifyStoryboard')

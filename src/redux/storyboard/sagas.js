@@ -236,27 +236,23 @@ export function* getUserStoryboard(action) {
   try {
     const { storyboardId } = action.payload
     const response = yield axios({
-      url: 'storyboardusers/storyboards/'+ storyboardId,
+      url: 'storyboardusers/storyboards/'+ storyboardId,  // 19
       method: 'get',
     })
     yield put({ type: GET_USER_STORYBOARD_SUCCESS, payload: response.data })
   } catch (error) {
-    console.log(error)
     yield put({ type: GET_USER_STORYBOARD_ERROR, error })
   }
 }
 
 export function* addUserStoryboard(action) {
   try {
-    const { storyboardId, userId } = action.payload
-
+    const { storyboardId, member } = action.payload
     const response = yield axios({
-      url: 'storyboardsusers/storyboards/'+ storyboardId,
+      url: 'storyboardusers/storyboards/'+ storyboardId, // 17
       method: 'post',
       data: {
-        member: [
-          {user_id: userId},
-        ]
+        member: member
       },
     })
     yield put({ type: ADD_USER_STORYBOARD_SUCCESS, payload: response.data })
