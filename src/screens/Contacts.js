@@ -12,6 +12,7 @@ import IconClose from '../img/IconClose'
 import ActionButton from 'react-native-action-button'
 import LoadingView from './../components/LoadingView'
 import {headerConfig} from '../config/headerConfig'
+import { getUserByContacts } from '../redux/storyboard/actions';
 
 class Contacts extends React.Component {
   static navigationOptions = headerConfig('New Project', true)
@@ -22,13 +23,16 @@ class Contacts extends React.Component {
       contacts: [],
       selectedContacts: [],
       noPermission: false,
-      phoneNumbers: [], 
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.isRefreshing && !nextProps.error) {
-      this.props.navigation.goBack(null)
+    const { isRefreshing, error } = this.props
+
+    if (isRefreshing != nextProps.isRefreshing) {
+      if (!nextProps.isRefreshing && !nextProps.error) {
+        this.props.navigation.goBack(null)
+      }
     }
   }
 
@@ -37,15 +41,12 @@ class Contacts extends React.Component {
       Contact.getAll((err, contacts) => {
         if (err) throw err
 
-        this.setState({contacts: contacts})
-
         const phonenumbers = [];
-
+        this.setState({contacts: contacts})
         this.state.contacts.map((item, i) => {
           
           if(item.phoneNumbers.length > 0) {
             item.phoneNumbers.map((number, j) => { 
-
                 let tmp = number.number.toString().replace(/\D/g,'')    // remove all non number character
                 let index = tmp.substring(0, 2) == '08' ? '628' : tmp.substring(0, 2) // ganti 08 jadi 628
                 tmp = index + tmp.substring(2, tmp.length);
@@ -54,15 +55,8 @@ class Contacts extends React.Component {
             })
           }
         })
-
-        if (phonenumbers.length > 0) {
-          this.setState({ phoneNumbers: phonenumbers})
-        }
-
-        console.log('reqeuest contacts')
-        console.log(phonenumbers)
-
-        this.props.
+        //send list phonenumbers to backend to process and return registered user
+        this.props.dispatchGetUserByContacts(phonenumbers)
       })
     }
 
@@ -110,9 +104,7 @@ class Contacts extends React.Component {
         fontSize: 20,
       },
     }
-
-    console.log('render list item contact')
-    console.log(this.state.phoneNumbers)
+    const { userContacts, ifRefreshingUserContacts, errorUserContacts } = this.props
 
     const getThumbnail = (data) => {
       return data.imageUrl
@@ -123,17 +115,17 @@ class Contacts extends React.Component {
     const renderListItem = (data, s, index) => {
       return (
         <ListItem style={{ ...styles.container }} onPress={() => {
-          this.setState({selectedContacts: [...this.state.selectedContacts, {number: data.phoneNumbers[0].number, name: data.givenName}]})
-          const newValues2 = this.state.contacts.slice(parseInt(index, 10) + 1)
-          const newValues1 = this.state.contacts.slice(0, parseInt(index, 10))
-          this.setState({contacts: newValues1.concat(newValues2)})
+          this.setState({selectedContacts: [...this.state.selectedContacts, {...data}]})
+          const newValues2 = this.props.userContacts.slice(parseInt(index, 10) + 1)
+          const newValues1 = this.props.userContacts.slice(0, parseInt(index, 10))
+          this.props.userContacts = newValues1.concat(newValues2)
         }} avatar>
           <Left>
             <Thumbnail small source={getThumbnail(data)} />
           </Left>
           <View style={{...styles.content}}>
             <Body style = {{...styles.contentBody}}>
-              <Text style={{ ...styles.text }}>{data.givenName.concat(data.familyName ? ' ' + data.familyName : '')}</Text>
+              <Text style={{ ...styles.text }}>{data.name}</Text>
             </Body>
           </View>
         </ListItem>
@@ -161,7 +153,7 @@ class Contacts extends React.Component {
         <List
           contentContainerStyle={{ flexGrow: 1 }}
           removeClippedSubviews={false}
-          dataArray={this.state.contacts}
+          dataArray={this.props.userContacts}
           renderRow={renderListItem}
           // renderFooter={renderFooterLoading}
         />
@@ -221,7 +213,7 @@ class Contacts extends React.Component {
           <ActionButton
             buttonColor={color.green}
             onPress={() => {
-              this.props.navigation.navigate('NewProject')
+              this.props.navigation.navigate('NewProject', {member: this.state.selectedContacts})
             }}
             renderIcon={() => {
               return <Icon name="md-arrow-forward" style={styles.actionButtonIcon} />
@@ -244,7 +236,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, props) => ({
   dispatchGetUserByContacts(phonenumbers) {
-    
+    dispatch(getUserByContacts(phonenumbers))
   }
 })
 

@@ -9,7 +9,7 @@ import margin, {screen} from '../styles/margin'
 import moment from 'moment'
 import IconDropdown from '../img/IconDropdown'
 import CalendarPicker from 'react-native-calendar-picker'
-import { addStoryboard, modifyStoryboard } from './../redux/storyboard/actions'
+import { addStoryboard, modifyStoryboard, addStoryboardByTemplate } from './../redux/storyboard/actions'
 import DialogView from './../components/DialogView'
 
 class NewProject extends React.Component {
@@ -98,8 +98,11 @@ class NewProject extends React.Component {
     const {
       dispatchAddStoryboard,
       dispatchModifyStoryboard,
+      dispatchAddStoryboardByTemplate,
       navigation,
       isRefreshing,
+      done,
+      error
     } = this.props
 
     const {
@@ -110,14 +113,16 @@ class NewProject extends React.Component {
     } = this.state
 
     const { id } = this.props.navigation.state.params ? this.props.navigation.state.params : { id: null };
-    
+    const { member } = this.props.navigation.state.params ? this.props.navigation.state.params: { member: [] };
+
     const handleButtonFinish = () => {
-      if (id) {
-        dispatchModifyStoryboard(id, title, description, startDate, endDate)
-      } 
-      else {
-        if (moment(this.state.startDate.toISOString()).isAfter(moment(this.state.endDate.toISOString()))) {
-          this.dialog._show(null, 'Start date must earlier than end date')
+      if (moment(this.state.startDate.toISOString()).isAfter(moment(this.state.endDate.toISOString()))) {
+        this.dialog._show(null, 'Start date must earlier than end date')
+      } else {
+        if (id) {
+          dispatchModisfyStoryboard(id, title, description, startDate, endDate);
+        } else if (member) {
+          dispatchAddStoryboardByTemplate(title, description, startDate, endDate, null, member);
         } else {
           dispatchAddStoryboard(title, description, startDate, endDate)
         }
@@ -244,6 +249,9 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
   dispatchModifyStoryboard(id, name, description, startDate, finishDate) {
     dispatch(modifyStoryboard(id, name, description, startDate, finishDate))
+  },
+  dispatchAddStoryboardByTemplate(name, description, startDate, finishDate, section, member){
+    dispatch(addStoryboardByTemplate(name, description, startDate, finishDate, section, member))
   }
 })
 

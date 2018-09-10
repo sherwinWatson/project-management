@@ -57,6 +57,10 @@ export const  GET_USER_BY_CONTACT = 'GET_USER_BY_CONTACT'
 export const  GET_USER_BY_CONTACT_SUCCESS = 'GET_USER_BY_CONTACT_SUCCESS'
 export const  GET_USER_BY_CONTACT_ERROR = 'GET_USER_BY_CONTACT_ERROR'
 
+export const ADD_STORYBOARD_BY_TEMPLATE = 'ADD_STORYBOARD_BY_TEMPLATE';
+export const ADD_STORYBOARD_BY_TEMPLATE_SUCCESS = 'ADD_STORYBOARD_BY_TEMPLATE_SUCCESS';
+export const ADD_STORYBOARD_BY_TEMPLATE_ERROR = 'ADD_STORYBOARD_BY_TEMPLATE_ERROR';
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -194,5 +198,19 @@ export const getUserByContacts = (phonenumbers) => {
     payload: {
       phonenumbers 
     }
+  }
+}
+
+export const addStoryboardByTemplate = (name, description, startDate, finishDate, section, member) => {
+  return {
+    type: ADD_STORYBOARD_BY_TEMPLATE,
+    payload: {
+      name: name,
+      description,
+      startDate,
+      finishDate,
+      section,
+      member
+    },
   }
 }

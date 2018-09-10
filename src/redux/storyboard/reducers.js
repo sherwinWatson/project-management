@@ -47,6 +47,9 @@ import {
   GET_USER_BY_CONTACT,
   GET_USER_BY_CONTACT_SUCCESS,
   GET_USER_BY_CONTACT_ERROR,
+  ADD_STORYBOARD_BY_TEMPLATE,
+  ADD_STORYBOARD_BY_TEMPLATE_SUCCESS,
+  ADD_STORYBOARD_BY_TEMPLATE_ERROR,
 } from './actions'
 
 const initialState = {
@@ -284,6 +287,15 @@ export default (state = initialState, action) => {
 
     case GET_USER_BY_CONTACT_ERROR:
       return handleRequestErrorReducer(state, action, 'userContacts')
+
+    case ADD_STORYBOARD_BY_TEMPLATE:
+      return handleRequestReducer(state, action, 'addStoryboard')
+
+    case ADD_STORYBOARD_BY_TEMPLATE_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'addStoryboard')
+
+    case ADD_STORYBOARD_BY_TEMPLATE_ERROR:
+      return handleRequestErrorReducer(state, action, 'addStoryboard')
 
     default:
       return state
