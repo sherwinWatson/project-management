@@ -42,6 +42,12 @@ import {
   ADD_TASK,
   ADD_TASK_SUCCESS,
   ADD_TASK_ERROR,
+  GET_USER_BY_CONTACT,
+  GET_USER_BY_CONTACT_SUCCESS,
+  GET_USER_BY_CONTACT_ERROR,
+  ADD_STORYBOARD_BY_TEMPLATE,
+  ADD_STORYBOARD_BY_TEMPLATE_SUCCESS,
+  ADD_STORYBOARD_BY_TEMPLATE_ERROR
 } from './actions'
 
 export function* getStoryboard() {
@@ -230,27 +236,23 @@ export function* getUserStoryboard(action) {
   try {
     const { storyboardId } = action.payload
     const response = yield axios({
-      url: 'storyboardusers/storyboards/'+ storyboardId,
+      url: 'storyboardusers/storyboards/'+ storyboardId,  // 19
       method: 'get',
     })
     yield put({ type: GET_USER_STORYBOARD_SUCCESS, payload: response.data })
   } catch (error) {
-    console.log(error)
     yield put({ type: GET_USER_STORYBOARD_ERROR, error })
   }
 }
 
 export function* addUserStoryboard(action) {
   try {
-    const { storyboardId, userId } = action.payload
-
+    const { storyboardId, member } = action.payload
     const response = yield axios({
-      url: 'storyboardsusers/storyboards/'+ storyboardId,
+      url: 'storyboardusers/storyboards/'+ storyboardId, // 17
       method: 'post',
       data: {
-        member: [
-          {user_id: userId},
-        ]
+        member: member
       },
     })
     yield put({ type: ADD_USER_STORYBOARD_SUCCESS, payload: response.data })
@@ -283,6 +285,45 @@ export function* addTask(action) {
   }
 }
 
+export function* getUserByContacts(action) {
+  try {
+    const { phonenumbers } = action.payload
+
+    const response = yield axios ({
+      url: 'users/contacts', //11
+      method: 'POST',
+      data: {
+        phonenumbers: phonenumbers
+      }
+    })
+    yield put({ type: GET_USER_BY_CONTACT_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: GET_USER_BY_CONTACT_ERROR})
+  }
+}
+
+export function* addStoryboardByTemplate(action) {
+  try {
+    const { name, description, startDate, finishDate, section, member } = action.payload
+
+    const response = yield axios({
+      url: 'storyboards/template',
+      method: 'post',
+      data: {
+        name: name,
+        description: description,
+        start_date: startDate.format('YYYY-MM-DD'),
+        finish_date: finishDate.format('YYYY-MM-DD'),
+        section: section, 
+        member: member,
+      },
+    })
+    yield put({ type: ADD_STORYBOARD_BY_TEMPLATE_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: ADD_STORYBOARD_BY_TEMPLATE_ERROR, error })
+  }
+}
+
 export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
@@ -298,4 +339,6 @@ export function* watchStoryboard() {
   yield takeEvery(GET_USER_STORYBOARD, getUserStoryboard)
   yield takeEvery(ADD_USER_STORYBOARD, addUserStoryboard)
   yield takeEvery(ADD_TASK, addTask)
+  yield takeEvery(GET_USER_BY_CONTACT, getUserByContacts)
+  yield takeEvery(ADD_STORYBOARD_BY_TEMPLATE, addStoryboardByTemplate)
 }

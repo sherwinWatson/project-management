@@ -14,6 +14,7 @@ import SectionDetail from './screens/SectionDetail'
 import NewTask from './screens/NewTask'
 import QRCode from './screens/QRCode'
 import NewSection from './screens/NewSection'
+import AddContacts from './screens/AddContacts'
 
 const stackNavigator = StackNavigator
 
@@ -41,6 +42,7 @@ const AuthenticatedNavigator = stackNavigator(
     SectionDetail: { screen: SectionDetail },
     NewTask: { screen: NewTask },
     QRCode: { screen: QRCode },
+    AddContacts: { screen: AddContacts },
   }, {
     headerMode: 'screen',
   }

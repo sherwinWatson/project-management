@@ -14,7 +14,7 @@ import LoadingView from './../components/LoadingView'
 import {headerConfig} from '../config/headerConfig'
 import { getUserByContacts } from '../redux/storyboard/actions';
 
-class Contacts extends React.Component {
+class AddContacts extends React.Component {
   static navigationOptions = headerConfig('New Project', true)
 
   constructor(props) {
@@ -74,7 +74,18 @@ class Contacts extends React.Component {
   }
 
   componentWillMount() {
-    this.requestContactsPermission()
+    const { navigation } = this.props;
+    const { userStoryboard } = navigation.state.params;
+
+    this.requestContactsPermission();
+    // this.setState({ selectedContacts: userStoryboard})
+  }
+
+  handlePress = () => {
+    const { navigation } = this.props;
+    
+    navigation.goBack(null);
+    navigation.state.params.addNewUserToStoryboard({ member: this.state.selectedContacts });
   }
 
   render() {
@@ -212,9 +223,7 @@ class Contacts extends React.Component {
           {renderContent()}
           <ActionButton
             buttonColor={color.green}
-            onPress={() => {
-              this.props.navigation.navigate('NewProject', {member: this.state.selectedContacts})
-            }}
+            onPress={() => this.handlePress()}
             renderIcon={() => {
               return <Icon name="md-arrow-forward" style={styles.actionButtonIcon} />
             }}
@@ -243,4 +252,4 @@ const mapDispatchToProps = (dispatch, props) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Contacts)
+)(AddContacts)

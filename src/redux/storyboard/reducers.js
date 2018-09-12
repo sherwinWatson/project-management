@@ -44,6 +44,12 @@ import {
   ADD_TASK,
   ADD_TASK_SUCCESS,
   ADD_TASK_ERROR,
+  GET_USER_BY_CONTACT,
+  GET_USER_BY_CONTACT_SUCCESS,
+  GET_USER_BY_CONTACT_ERROR,
+  ADD_STORYBOARD_BY_TEMPLATE,
+  ADD_STORYBOARD_BY_TEMPLATE_SUCCESS,
+  ADD_STORYBOARD_BY_TEMPLATE_ERROR,
 } from './actions'
 
 const initialState = {
@@ -119,14 +125,6 @@ const initialState = {
     error: null,
     isUpdate: false,
   },
-  addUserStoryboards: {
-    result: {
-      data: {},
-    },
-    refreshing: false,
-    error: null,
-    isUpdate: false,
-  },
   getOneSection: {
     result: {
       data: {},
@@ -143,6 +141,14 @@ const initialState = {
     error: null,
     isUpdate: false,
   },
+  userContacts: {
+    result: {
+      data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  }
 }
 
 export default (state = initialState, action) => {
@@ -229,7 +235,6 @@ export default (state = initialState, action) => {
       return handleRequestErrorReducer(state, action, 'templateList')
 
     case GET_USER_STORYBOARD:
-      console.log('reducers get_user_storyboard')
       return handleRequestReducer(state, action, 'userStoryboards')
 
     case GET_USER_STORYBOARD_SUCCESS:
@@ -239,13 +244,13 @@ export default (state = initialState, action) => {
       return handleRequestErrorReducer(state, action, 'userStoryboards')
 
     case ADD_USER_STORYBOARD:
-      return handleRequestReducer(state, action, 'addUserStoryboards')
+      return handleRequestReducer(state, action, 'userStoryboards')
 
     case ADD_USER_STORYBOARD_SUCCESS:
-      return handleRequestSuccessReducer(state, action, 'addUserStoryboards')
+      return handleRequestSuccessReducer(state, action, 'userStoryboards')
 
     case ADD_USER_STORYBOARD_ERROR:
-      return handleRequestErrorReducer(state, action, 'addUserStoryboards')
+      return handleRequestErrorReducer(state, action, 'userStoryboards')
 
     case GET_ONE_STORYBOARD:
       return handleRequestReducer(state, action, 'modifyStoryboard')
@@ -264,6 +269,24 @@ export default (state = initialState, action) => {
 
     case ADD_TASK_ERROR:
       return handleRequestErrorReducer(state, action, 'addTask')
+
+    case GET_USER_BY_CONTACT:
+      return handleRequestReducer(state, action, 'userContacts')
+
+    case GET_USER_BY_CONTACT_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'userContacts')
+
+    case GET_USER_BY_CONTACT_ERROR:
+      return handleRequestErrorReducer(state, action, 'userContacts')
+
+    case ADD_STORYBOARD_BY_TEMPLATE:
+      return handleRequestReducer(state, action, 'addStoryboard')
+
+    case ADD_STORYBOARD_BY_TEMPLATE_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'addStoryboard')
+
+    case ADD_STORYBOARD_BY_TEMPLATE_ERROR:
+      return handleRequestErrorReducer(state, action, 'addStoryboard')
 
     default:
       return state

@@ -61,6 +61,11 @@ class StoryboardDetail extends Component {
     }
   }
 
+  addNewUserToStoryboard = ({member}) => {
+    // add user to storyboard
+    this.props.dispatchAddUserStoryboard(this.state.storyboardId, member);
+  }
+
   render() {
     const { container, contentBody, content, text, listTitle, listSubTitle,
       contentTime, userStyles, roleContentStyles, roleTextStyles
@@ -166,7 +171,7 @@ class StoryboardDetail extends Component {
                 <Button transparent onPress={() => navigation.goBack(null)}>
                   <Icon style={{ color: color.toolbarItem }} name="ios-arrow-back" />
                 </Button>
-                <Button transparent onPress={() => console.log('Tambah user diteken')}>
+                <Button transparent onPress={() => navigation.navigate('AddContacts', {addNewUserToStoryboard: this.addNewUserToStoryboard, userStoryboard: userStoryboard})}>
                   <Icon style={{ color: color.toolbarItem }} name="md-person-add" />
                 </Button>
               </View>
@@ -262,8 +267,8 @@ const mapDispatchToProps = (dispatch, props) => ({
   loadUserStoryboards(storyboardId) {
     dispatch(getUserStoryboard(storyboardId))
   },
-  dispatchAddUserStoryboard() {
-    dispatch(addUserStoryboard(storyboardId, userId))
+  dispatchAddUserStoryboard(storyboardId, member) {
+    dispatch(addUserStoryboard(storyboardId, member))
   },
   getOneStoryboard(storyboardId) {
     dispatch(getOneStoryboard(storyboardId))
