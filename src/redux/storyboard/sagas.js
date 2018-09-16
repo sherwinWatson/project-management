@@ -64,7 +64,7 @@ export function* getStoryboard() {
 
 export function* addStoryboard(action) {
   try {
-    const { name, description, startDate, finishDate } = action.payload
+    const { name, description, startDate, finishDate, portion } = action.payload
 
     const response = yield axios({
       url: 'storyboards',
@@ -74,6 +74,7 @@ export function* addStoryboard(action) {
         description: description,
         start_date: startDate.format('YYYY-MM-DD'),
         finish_date: finishDate.format('YYYY-MM-DD'),
+        portion,
       },
     })
     yield put({ type: ADD_STORYBOARD_SUCCESS, payload: response.data })
@@ -314,7 +315,7 @@ export function* addStoryboardByTemplate(action) {
         description: description,
         start_date: startDate.format('YYYY-MM-DD'),
         finish_date: finishDate.format('YYYY-MM-DD'),
-        section: section, 
+        section: section,
         member: member,
       },
     })

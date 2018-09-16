@@ -25,6 +25,7 @@ class NewSection extends React.Component {
       description: '',
       targetDate: moment(),
       selectedDate: 1,
+      portion: 0,
     }
   }
 
@@ -94,12 +95,13 @@ class NewSection extends React.Component {
       title,
       description,
       targetDate,
+      portion,
     } = this.state
 
     const {id} =  navigation.state.params
 
     const handleButtonFinish = () => {
-      dispatchAddStoryboardDetail(id, title, description, targetDate)
+      dispatchAddStoryboardDetail(id, title, description, targetDate, portion)
     }
 
     return (
@@ -153,6 +155,23 @@ class NewSection extends React.Component {
                   <IconDropdown color={color.space_grey}/>
                 </TouchableOpacity>
               </View>
+              <View style={{flex: 1}}>
+                <Text style={{}}>Portion</Text>
+                <Item style={styles.input}>
+                  <TextInput
+                    autoFocus={false}
+                    blurOnSubmit={false}
+                    placeholder='%'
+                    placeholderTextColor={color.lightText}
+                    returnKeyType = {'next'}
+                    keyboardType='numeric'
+                    value={portion}
+                    style={styles.textInput}
+                    underlineColorAndroid='transparent'
+                    onChangeText={(value) => this.setState({portion: value})}
+                  />
+                </Item>
+              </View>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
               <Button
@@ -190,8 +209,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch, props) => ({
-  dispatchAddStoryboardDetail(storyboardId, subject, description, targetDate) {
-    dispatch(addStoryboardDetail(storyboardId, subject, description, targetDate))
+  dispatchAddStoryboardDetail(storyboardId, subject, description, targetDate, portion) {
+    dispatch(addStoryboardDetail(storyboardId, subject, description, targetDate, portion))
   },
 })
 

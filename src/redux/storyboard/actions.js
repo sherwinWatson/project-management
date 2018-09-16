@@ -110,7 +110,7 @@ export const getOneSection = (sectionId) => {
   }
 }
 
-export const addStoryboardDetail = (storyboardId, subject, details, targetDate) => {
+export const addStoryboardDetail = (storyboardId, subject, details, targetDate, portion, completion) => {
   return {
     type: ADD_STORYBOARD_DETAIL,
     payload: {
@@ -118,6 +118,8 @@ export const addStoryboardDetail = (storyboardId, subject, details, targetDate) 
       subject,
       details,
       targetDate,
+      portion,
+      completion,
     },
   }
 }
@@ -196,7 +198,7 @@ export const getUserByContacts = (phonenumbers) => {
   return {
     type: GET_USER_BY_CONTACT,
     payload: {
-      phonenumbers 
+      phonenumbers
     }
   }
 }
