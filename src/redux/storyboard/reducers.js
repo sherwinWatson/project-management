@@ -50,6 +50,9 @@ import {
   ADD_STORYBOARD_BY_TEMPLATE,
   ADD_STORYBOARD_BY_TEMPLATE_SUCCESS,
   ADD_STORYBOARD_BY_TEMPLATE_ERROR,
+  ADD_USER_SECTION,
+  ADD_USER_SECTION_SUCCESS,
+  ADD_USER_SECTION_ERROR,
 } from './actions'
 
 const initialState = {
@@ -144,6 +147,14 @@ const initialState = {
   userContacts: {
     result: {
       data: {},
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
+  userSections: {
+    result: {
+      data: [],
     },
     refreshing: false,
     error: null,
@@ -287,6 +298,15 @@ export default (state = initialState, action) => {
 
     case ADD_STORYBOARD_BY_TEMPLATE_ERROR:
       return handleRequestErrorReducer(state, action, 'addStoryboard')
+
+    case ADD_USER_SECTION:
+      return handleRequestReducer(state, action, 'userSections')
+
+    case ADD_USER_SECTION_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'userSections')
+
+    case ADD_USER_SECTION_ERROR:
+      return handleRequestErrorReducer(state, action, 'userSections')
 
     default:
       return state

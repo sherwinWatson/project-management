@@ -47,7 +47,10 @@ import {
   GET_USER_BY_CONTACT_ERROR,
   ADD_STORYBOARD_BY_TEMPLATE,
   ADD_STORYBOARD_BY_TEMPLATE_SUCCESS,
-  ADD_STORYBOARD_BY_TEMPLATE_ERROR
+  ADD_STORYBOARD_BY_TEMPLATE_ERROR,
+  ADD_USER_SECTION,
+  ADD_USER_SECTION_SUCCESS,
+  ADD_USER_SECTION_ERROR,
 } from './actions'
 
 export function* getStoryboard() {
@@ -325,6 +328,22 @@ export function* addStoryboardByTemplate(action) {
   }
 }
 
+export function* addUserSection(action) {
+  try {
+    const { sectionId, member } = action.payload
+    const response = yield axios({
+      url: 'sectionusers/sections/' + sectionId,
+      method: 'post',
+      data: {
+        member: member,
+      },
+    })
+    yield put({ type: ADD_USER_SECTION_SUCCESS, payload: response.data, id: sectionId })
+  } catch (error) {
+    yield put({ type: ADD_USER_SECTION_ERROR, error })
+  }
+}
+
 export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
@@ -342,4 +361,5 @@ export function* watchStoryboard() {
   yield takeEvery(ADD_TASK, addTask)
   yield takeEvery(GET_USER_BY_CONTACT, getUserByContacts)
   yield takeEvery(ADD_STORYBOARD_BY_TEMPLATE, addStoryboardByTemplate)
+  yield takeEvery(ADD_USER_SECTION, addUserSection)
 }

@@ -12,10 +12,10 @@ import IconClose from '../img/IconClose'
 import ActionButton from 'react-native-action-button'
 import LoadingView from './../components/LoadingView'
 import {headerConfig} from '../config/headerConfig'
-import { getUserByContacts } from '../redux/storyboard/actions';
+import { getUserByContacts } from '../redux/storyboard/actions'
 
 class AddContacts extends React.Component {
-  static navigationOptions = headerConfig('New Project', true)
+  static navigationOptions = headerConfig('Add Contacts', true)
 
   constructor(props) {
     super(props)
@@ -41,21 +41,20 @@ class AddContacts extends React.Component {
       Contact.getAll((err, contacts) => {
         if (err) throw err
 
-        const phonenumbers = [];
+        const phonenumbers = []
         this.setState({contacts: contacts})
         this.state.contacts.map((item, i) => {
-          
-          if(item.phoneNumbers.length > 0) {
-            item.phoneNumbers.map((number, j) => { 
-                let tmp = number.number.toString().replace(/\D/g,'')    // remove all non number character
-                let index = tmp.substring(0, 2) == '08' ? '628' : tmp.substring(0, 2) // ganti 08 jadi 628
-                tmp = index + tmp.substring(2, tmp.length);
-                
-                phonenumbers.push({ phonenumbers: tmp })
+          if (item.phoneNumbers.length > 0) {
+            item.phoneNumbers.map((number, j) => {
+              let tmp = number.number.toString().replace(/\D/g, '')    // remove all non number character
+              let index = tmp.substring(0, 2) == '08' ? '628' : tmp.substring(0, 2) // ganti 08 jadi 628
+              tmp = index + tmp.substring(2, tmp.length)
+
+              phonenumbers.push({ phonenumbers: tmp })
             })
           }
         })
-        //send list phonenumbers to backend to process and return registered user
+        // send list phonenumbers to backend to process and return registered user
         this.props.dispatchGetUserByContacts(phonenumbers)
       })
     }
@@ -74,18 +73,18 @@ class AddContacts extends React.Component {
   }
 
   componentWillMount() {
-    const { navigation } = this.props;
-    const { userStoryboard } = navigation.state.params;
+    const { navigation } = this.props
+    const { userStoryboard } = navigation.state.params
 
-    this.requestContactsPermission();
+    this.requestContactsPermission()
     // this.setState({ selectedContacts: userStoryboard})
   }
 
   handlePress = () => {
-    const { navigation } = this.props;
-    
-    navigation.goBack(null);
-    navigation.state.params.addNewUserToStoryboard({ member: this.state.selectedContacts });
+    const { navigation } = this.props
+
+    navigation.goBack(null)
+    navigation.state.params.addNewUserToStoryboard({ member: this.state.selectedContacts })
   }
 
   render() {
@@ -240,13 +239,13 @@ const mapStateToProps = (state) => ({
   error: state.storyboard.addStoryboard.error,
   userContacts: state.storyboard.userContacts.result.data,
   ifRefreshingUserContacts: state.storyboard.userContacts.refreshing,
-  errorUserContacts: state.storyboard.userContacts.error
+  errorUserContacts: state.storyboard.userContacts.error,
 })
 
 const mapDispatchToProps = (dispatch, props) => ({
   dispatchGetUserByContacts(phonenumbers) {
     dispatch(getUserByContacts(phonenumbers))
-  }
+  },
 })
 
 export default connect(

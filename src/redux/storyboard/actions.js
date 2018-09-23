@@ -61,6 +61,10 @@ export const ADD_STORYBOARD_BY_TEMPLATE = 'ADD_STORYBOARD_BY_TEMPLATE';
 export const ADD_STORYBOARD_BY_TEMPLATE_SUCCESS = 'ADD_STORYBOARD_BY_TEMPLATE_SUCCESS';
 export const ADD_STORYBOARD_BY_TEMPLATE_ERROR = 'ADD_STORYBOARD_BY_TEMPLATE_ERROR';
 
+export const ADD_USER_SECTION = 'USER_SECTION::ADD'
+export const ADD_USER_SECTION_SUCCESS = 'USER_SECTION::ADD_SUCCESS'
+export const ADD_USER_SECTION_ERROR = 'USER_SECTION::ADD_ERROR'
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -213,6 +217,16 @@ export const addStoryboardByTemplate = (name, description, startDate, finishDate
       finishDate,
       section,
       member
+    },
+  }
+}
+
+export const addUserSection = (sectionId, member) => {
+  return {
+    type: ADD_USER_SECTION,
+    payload: {
+      sectionId,
+      member,
     },
   }
 }

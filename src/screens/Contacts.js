@@ -12,10 +12,10 @@ import IconClose from '../img/IconClose'
 import ActionButton from 'react-native-action-button'
 import LoadingView from './../components/LoadingView'
 import {headerConfig} from '../config/headerConfig'
-import { getUserByContacts } from '../redux/storyboard/actions';
+import { getUserByContacts } from '../redux/storyboard/actions'
 
 class Contacts extends React.Component {
-  static navigationOptions = headerConfig('New Project', true)
+  static navigationOptions = headerConfig('Add Contacts', true)
 
   constructor(props) {
     super(props)
@@ -44,13 +44,13 @@ class Contacts extends React.Component {
         const phonenumbers = [];
         this.setState({contacts: contacts})
         this.state.contacts.map((item, i) => {
-          
+
           if(item.phoneNumbers.length > 0) {
-            item.phoneNumbers.map((number, j) => { 
+            item.phoneNumbers.map((number, j) => {
                 let tmp = number.number.toString().replace(/\D/g,'')    // remove all non number character
                 let index = tmp.substring(0, 2) == '08' ? '628' : tmp.substring(0, 2) // ganti 08 jadi 628
                 tmp = index + tmp.substring(2, tmp.length);
-                
+
                 phonenumbers.push({ phonenumbers: tmp })
             })
           }
