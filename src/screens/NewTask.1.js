@@ -26,27 +26,10 @@ class NewTask extends Component {
       startDate: moment(),
       finishDate: moment().add(1, 'month'),
       status: 'start',
-      selectedUsers: [],
+      selectedUsers: Map(),
       member: [],
     }
     this.handleUserSelected.bind(this)
-  }
-
-  componentWillMount(){
-    const { task, users } = this.props.navigation.state.params ? this.props.navigation.state.params : { task: null, users: [] }
-  
-    console.log('component will mount')
-    console.log(task.start_date)
-
-    
-    if (task) {
-      this.setState({ 
-        name: task.name, 
-        // startDate: start_date,
-        // finishDate: finish_date,
-        status: task.status,
-      });
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,11 +55,32 @@ class NewTask extends Component {
     }
   }
 
+  handleUserSelected = (user) => {
+    const { selectedUsers } = this.state
+
+    const newerSelectedUsers =
+      selectedUsers.has(user.user_id) ?
+        selectedUsers.delete(user.user_id) :
+          selectedUsers.set(user.user_id, user.user_id)
+
+    this.setState({selectedUsers: newerSelectedUsers})
+
+    let selectedToArray = []
+    newerSelectedUsers.map((item, i) => {
+        selectedToArray.push({user_id: i, key: i})
+      }
+    )
+    this.setState({member: selectedToArray})
+  }
+
   render() {
     const { navigation, dispatchAddTask, task, error, refreshing } = this.props
     const { sectionId, sectionUsers } = navigation.state.params
     const { containerStyle, formStyle, listItemStyle, listStyle, userStyles, footerMenuStyle, thumbnailStyle, listSelectedStyle, labelStyle }  = styles
     const { name, startDate, finishDate, status, selectedUsers, member, selectedDate, datePickerVisible } = this.state
+
+    console.log('render')
+    console.log(sectionUsers)
 
     const getThumbnail = (item) => {
       return item.imageUrl
@@ -84,53 +88,37 @@ class NewTask extends Component {
         : require('./../img/no_avatar.png')
     }
 
-    // const renderSelectedUser = () => {
+    const renderUser = ({item}) => {
+
+      console.log('render user');
+      console.log(item)
       
-    // }
+      return (
+        <TouchableOpacity
+          key={item.user_id}
+          style={listSelectedStyle}
+          onPress={() => {
+            this.handleUserSelected(item)
+          }
+        }>
+          <Thumbnail style={thumbnailStyle} source={getThumbnail(item)} />
+          <Text style={userStyles}>{item.name}</Text>
+          { selectedUsers.has(item.user_id) ? <Icon name="md-checkmark" style={{color: color.green, fontSize: 16}}/> : <Text /> }
+        </TouchableOpacity>
+      )
+    }
 
-    // const renderRowAvailableUser = (data, s, index) => {
-    //   return (
-    //     <ListItem 
-    //       style={{ margin: margin.s12, borderBottomColor: color.darkText }} 
-    //       onPress={() => {
-    //         this.setState({member: [...member, {...data}]})
-    //         const newValues2 = sectionUsers.slice(parseInt(index, 10) + 1)
-    //         const newValues1 = sectionUsers.slice(0, parseInt(index, 10))
-    //         sectionUsers = newValues1.concat(newValues2)
-    //       }} 
-    //       avatar>
-    //       <Left>
-    //         <Thumbnail small source={getThumbnail(data)} />
-    //       </Left>
-    //       <View style={{
-    //         flexDirection: 'row',
-    //         flexShrink: 1,
-    //         justifyContent: 'space-between',
-    //         marginLeft: 10,
-    //       }}>
-    //         <Body style = {{
-    //           flexShrink: 1,
-    //           justifyContent: 'space-between'
-    //         }}>
-    //           <Text style={{ 
-    //             fontSize: 21,
-    //             marginBottom: margin.s8,
-    //             alignSelf: 'flex-start', 
-    //           }}>{data.name}</Text>
-    //         </Body>
-    //       </View>
-    //     </ListItem>
-    //   )
-    // }
-
-    // const renderAvailableUser = () => {
-    //   <List
-    //     contentContainerStyle={{ flexGrow: 1 }}
-    //     removeClippedSubviews={false}
-    //     dataArray={sectionUsers}
-    //     renderRow={renderRowAvailableUser}
-    //   />
-    // }
+    const renderMultiSelectList = () => {
+      _keyExtractor = (item, index) => item.user_id
+      return (
+        <FlatList
+          data={sectionUsers}
+          extraData={selectedUsers}
+          renderItem={renderUser}
+          keyExtractor={_keyExtractor}
+        />
+      )
+    }
 
     const handleButtonFinish = () => {
       if (moment(startDate.toISOString()).isAfter(moment(finishDate.toISOString()))) {
@@ -202,8 +190,7 @@ class NewTask extends Component {
 
               <View style={{margin: margin.s16}}>
                 <Text>Choose Person</Text>
-                {renderSelectedUser()}
-                {renderAvailableUser()}
+                { renderMultiSelectList() }
               </View>
             </Form>
 

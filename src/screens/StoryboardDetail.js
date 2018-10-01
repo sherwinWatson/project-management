@@ -51,7 +51,7 @@ class StoryboardDetail extends Component {
         storyboardId: storyboard_id,
         name: name,
         description: description,
-        targetDate: start_date,
+        startDate: start_date,
         finishDate: finish_date,
         timeLeft: time_left,
         createdBy: created_by,
@@ -103,7 +103,7 @@ class StoryboardDetail extends Component {
     const renderListMember = () => {
       return (
         <View>
-          <Text style={listSubTitle}>Peserta</Text>
+          <Text style={listSubTitle}>Participants</Text>
           <View style={{flexDirection: 'column', marginRight: margin.s4}}>
             <List
               dataArray={userStoryboard}
@@ -128,7 +128,7 @@ class StoryboardDetail extends Component {
             <View style={content}>
               <Body style={contentBody}>
                 <View style={contentTime}>
-                  <Text style={text}>Waktu Pengerjaan</Text>
+                  <Text style={text}>Storyboard Range Periode</Text>
                 </View>
                 <View style={contentTime}>
                   <Text style={listTitle}>
@@ -137,7 +137,7 @@ class StoryboardDetail extends Component {
                   <Text>Edit</Text>
                 </View>
                 <View style={contentTime}>
-                  <Text style={text}>Sisa hari kerja:</Text>
+                  <Text style={text}>Days Left:</Text>
                   <Text style={listSubTitle}>{timeLeft}</Text>
                 </View>
               </Body>
@@ -181,7 +181,7 @@ class StoryboardDetail extends Component {
                     <Text style={{fontSize: 18, fontWeight: 'bold', color: color.white}
                   }>{name.toUpperCase()}</Text>
                     <Text style={{fontSize: 12, color: color.white, marginBottom: margin.s8 }
-                  }>Dibuat oleh {createdByName}, {moment(createdAt).format('DD MMM YYYY')}</Text>
+                  }>Created by {createdByName}, {moment(createdAt).format('DD MMM YYYY')}</Text>
                   </View>
                 </View>
                 <Button transparent onPress={() => handleEditStoryboard(navigation, this.state)}>

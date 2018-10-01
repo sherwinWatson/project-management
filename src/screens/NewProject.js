@@ -174,7 +174,7 @@ class NewProject extends React.Component {
               </View>
               <View style={{flexDirection: 'row', marginTop: margin.s24}}>
                 <View style={{flex: 1}}>
-                  <Text style={{}}>Tanggal Mulai</Text>
+                  <Text style={{}}>Start Date</Text>
                   <TouchableOpacity style={styles.dateInput} onPress={() => {
                     this.setState({
                       datePickerVisible: true,
@@ -187,7 +187,7 @@ class NewProject extends React.Component {
                 </View>
                 <View style={{width: margin.s8}}/>
                 <View style={{ flex: 1 }}>
-                  <Text style={{}}>Tanggal Selesai</Text>
+                  <Text style={{}}>End Date</Text>
                   <TouchableOpacity style={styles.dateInput} onPress={() => {
                     this.setState({
                       datePickerVisible: true,

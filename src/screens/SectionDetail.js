@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { headerConfig } from '../config/headerConfig'
 import {Button, StyleProvider, Container, List, ListItem, Thumbnail, Content, Icon} from 'native-base'
 import TitleView from '../components/TitleView'
@@ -25,16 +25,12 @@ class SectionDetail extends Component {
   }
 
   componentWillMount() {
-    const { dispatchLoadSection } = this.props
-    const { sectionId } = this.props.navigation.state.params
-
     // loadsection by section id
-    dispatchLoadSection(sectionId)
+    this.refreshTask();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { sectionId } = this.props.navigation.state.params
-    const { dispatchLoadSection, userSections } = this.props
+    const { userSections } = this.props
 
     // set data section by id to this state
     if (nextProps.section.section_id) {
@@ -48,8 +44,14 @@ class SectionDetail extends Component {
     }
 
     if (nextProps.userSections !== userSections) {
-      dispatchLoadSection(sectionId)
+      this.refreshTask();
     }
+  }
+
+  refreshTask = () => {
+    const { dispatchLoadSection } = this.props
+    const { sectionId } = this.props.navigation.state.params
+    dispatchLoadSection(sectionId)
   }
 
   updateTask = ({task}) => {
@@ -69,7 +71,7 @@ class SectionDetail extends Component {
         : require('./../img/no_avatar.png')
     }
 
-    const renderSelectedListItem = (data) => {
+    const renderSelectedUser = (data) => {
       return (
         <View style={{margin: margin.s12, alignItems: 'center'}}>
           <Thumbnail style={{width: 50, height: 50}} source={getThumbnail(data)} />
@@ -78,9 +80,14 @@ class SectionDetail extends Component {
       )
     }
 
+    const handleTaskPress = (task) => {
+      this.navigation.navigate('NewTask', { task: task, selectedUser: users, refreshTask: this.refreshTask });
+    }
+
     const renderSelectedTask = (task) => {
       return (
-        <View style={{flex: 1, flexDirection: 'row', marginVertical: margin.s8}}>
+        <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginVertical: margin.s8}}
+          onPress={() => this.handleTaskPress(task)}>
           <View style={{flex: 1, borderWidth: 0}}>
             <Text>{task.name}</Text>
           </View>
@@ -90,7 +97,7 @@ class SectionDetail extends Component {
           <View>
             <Text>{task.start_date}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       )
     }
 
@@ -118,7 +125,7 @@ class SectionDetail extends Component {
                     <List
                       horizontal={true}
                       dataArray={users}
-                      renderRow={renderSelectedListItem}
+                      renderRow={renderSelectedUser}
                     />
                   </View>
                 </View>
@@ -140,7 +147,7 @@ class SectionDetail extends Component {
           </Content>
           <ActionButton
             buttonColor={color.green}
-            onPress={() => navigation.navigate('NewTask', { sectionId: sectionId, updateTask: this.updateTask, sectionUsers: users})}
+            onPress={() => navigation.navigate('NewTask', { sectionId: sectionId, updateTask: this.updateTask, sectionUsers: users })}
           />
         </Container>
       </StyleProvider>
@@ -191,7 +198,7 @@ const styles = {
     borderColor: color.light_grey,
   },
   textCircleStyle: {
-    fontSize: 48,
+    fontSize: 42,
     alignSelf: 'center',
     color: color.black,
   },

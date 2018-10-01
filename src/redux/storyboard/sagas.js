@@ -275,8 +275,8 @@ export function* addTask(action) {
       data: {
         section_id: sectionId,
         name: name,
-        start_date: moment(startDate).format('YYYY-MM-DD'),
-        finish_date: moment(finishDate).format('YYYY-MM-DD'),
+        start_date: startDate.format('YYYY-MM-DD'),
+        finish_date: finishDate.format('YYYY-MM-DD'),
         status: status,
         member: member
       }
