@@ -53,6 +53,12 @@ import {
   ADD_USER_SECTION,
   ADD_USER_SECTION_SUCCESS,
   ADD_USER_SECTION_ERROR,
+  GET_USER_TASK,
+  GET_USER_TASK_SUCCESS,
+  GET_USER_TASK_ERROR,
+  MODIFY_TASK,
+  MODIFY_TASK_SUCCESS,
+  MODIFY_TASK_ERROR,
 } from './actions'
 
 const initialState = {
@@ -153,6 +159,22 @@ const initialState = {
     isUpdate: false,
   },
   userSections: {
+    result: {
+      data: [],
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
+  userTask: {
+    result: {
+      data: [],
+    },
+    refreshing: false,
+    error: null,
+    isUpdate: false,
+  },
+  modifyTask: {
     result: {
       data: [],
     },
@@ -307,6 +329,24 @@ export default (state = initialState, action) => {
 
     case ADD_USER_SECTION_ERROR:
       return handleRequestErrorReducer(state, action, 'userSections')
+
+    case GET_USER_TASK:
+      return handleRequestReducer(state, action, 'userTask')
+
+    case GET_USER_TASK_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'userTask')
+
+    case GET_USER_TASK_ERROR:
+      return handleRequestErrorReducer(state, action, 'userTask')
+    
+    case MODIFY_TASK:
+      return handleRequestReducer(state, action, 'modifyTask')
+
+    case MODIFY_TASK_SUCCESS:
+      return handleRequestSuccessReducer(state, action, 'modifyTask')
+
+    case MODIFY_TASK_ERROR:
+      return handleRequestErrorReducer(state, action, 'modifyTask')
 
     default:
       return state

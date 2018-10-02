@@ -51,6 +51,12 @@ import {
   ADD_USER_SECTION,
   ADD_USER_SECTION_SUCCESS,
   ADD_USER_SECTION_ERROR,
+  GET_USER_TASK,
+  GET_USER_TASK_SUCCESS,
+  GET_USER_TASK_ERROR,
+  MODIFY_TASK_SUCCESS,
+  MODIFY_TASK_ERROR,
+  MODIFY_TASK,
 } from './actions'
 
 export function* getStoryboard() {
@@ -89,15 +95,7 @@ export function* addStoryboard(action) {
 export function* modifyStoryboard(action) {
   try {
     const { id, name, description, startDate, finishDate } = action.payload
-    console.log('masuk ke saga modify storyboard')
-    console.log(id)
-    console.log('storyboards/' + id)
-    console.log({data: {
-      name: name,
-      description: description,
-      start_date: startDate.format('YYYY-MM-DD'),
-      finish_date: finishDate.format('YYYY-MM-DD'),
-    }})
+
     const response = yield axios({
       url: 'storyboards/' + id,
       method: 'post',
@@ -108,13 +106,8 @@ export function* modifyStoryboard(action) {
         finish_date: finishDate.format('YYYY-MM-DD'),
       }
     })
-    console.log('response saga')
-    console.log(response.data)
     yield put({ type: MODIFY_STORYBOARD_SUCCESS, payload: response.data })
   } catch (error) {
-    console.log('error saga')
-    console.log(error)
-    console.log()
     yield put({ type: MODIFY_STORYBOARD_ERROR, error })
   }
 }
@@ -283,8 +276,6 @@ export function* addTask(action) {
     })
     yield put({ type: ADD_TASK_SUCCESS, payload: response.data })
   } catch (error) {
-    console.log('error saga add task')
-    console.log(error.response)
     yield put({ type: ADD_TASK_ERROR, error })
   }
 }
@@ -344,6 +335,40 @@ export function* addUserSection(action) {
   }
 }
 
+export function* getUserTask(action) {
+  try{ 
+    const { taskId } = action.payload
+    const response = yield axios({
+      url: 'taskusers/tasks/' + taskId,
+      method: 'get',
+    })
+    yield put({ type: GET_USER_TASK_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: GET_USER_TASK_ERROR, error})
+  }
+}
+
+export function* modifyTask(action) {
+  try {
+    const { taskId, name, startDate, finishDate, status, member } = action.payload
+
+    const response = yield axios({
+      url: 'tasks/' + taskId,  // 32
+      method: 'POST',
+      data: {
+        name: name,
+        start_date: startDate.format('YYYY-MM-DD'),
+        finish_date: finishDate.format('YYYY-MM-DD'),
+        status: status,
+        member: member
+      }
+    })
+    yield put({ type: MODIFY_TASK_SUCCESS, payload: response.data })
+  } catch (error) {
+    yield put({ type: MODIFY_TASK_ERROR, error })
+  }
+}
+
 export function* watchStoryboard() {
   yield takeEvery(GET_STORYBOARD, getStoryboard)
   yield takeEvery(ADD_STORYBOARD, addStoryboard)
@@ -362,4 +387,6 @@ export function* watchStoryboard() {
   yield takeEvery(GET_USER_BY_CONTACT, getUserByContacts)
   yield takeEvery(ADD_STORYBOARD_BY_TEMPLATE, addStoryboardByTemplate)
   yield takeEvery(ADD_USER_SECTION, addUserSection)
+  yield takeEvery(GET_USER_TASK, getUserTask)
+  yield takeEvery(MODIFY_TASK, modifyTask)
 }

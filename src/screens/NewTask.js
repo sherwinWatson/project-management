@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleProvider, Container, Button, Content, Form, Item, Label, Input, Picker, Icon, List, Thumbnail } from 'native-base'
+import { StyleProvider, Container, Button, Content, Form, Item, Label, Input, Picker, Icon, List, Thumbnail, ListItem, Left, Body, Spinner } from 'native-base'
 import theme from './../styles/theme'
 import color from './../styles/color'
 import margin from './../styles/margin'
 import { headerConfig } from '../config/headerConfig';
 import moment from 'moment';
 import { Text, View, Alert, TouchableOpacity, FlatList } from 'react-native';
-import { addTask, getOneSection } from '../redux/storyboard/actions';
+import { addTask, getOneSection, getUserTask, modifyTask } from '../redux/storyboard/actions';
 import LoadingView from '../components/LoadingView';
 import { Map } from 'immutable'
 import CalendarPicker from 'react-native-calendar-picker';
 import IconDropdown from '../img/IconDropdown'
 import DialogView from './../components/DialogView'
+import IconClose from '../img/IconClose';
 
 class NewTask extends Component {
   static navigationOptions = headerConfig('', true);
@@ -22,40 +23,44 @@ class NewTask extends Component {
     this.state = {
       datePickerVisible: false,
       selectedDate: 1,
+      id: '',
       name: '',
       startDate: moment(),
       finishDate: moment().add(1, 'month'),
       status: 'start',
-      selectedUsers: [],
+      selectedUsers: Map(), 
       member: [],
     }
     this.handleUserSelected.bind(this)
   }
 
   componentWillMount(){
-    const { task, users } = this.props.navigation.state.params ? this.props.navigation.state.params : { task: null, users: [] }
-  
-    console.log('component will mount')
-    console.log(task.start_date)
-
-    
+    const { task, sectionUsers } = this.props.navigation.state.params ? this.props.navigation.state.params : { task: null, users: [] }
+      
     if (task) {
       this.setState({ 
+        id: task.task_id,
         name: task.name, 
-        // startDate: start_date,
-        // finishDate: finish_date,
+        startDate: moment(task.start_date),
+        finishDate: moment(task.finish_date),
         status: task.status,
+        availableUser: sectionUsers
       });
+
+      //GET USER TASK 
+      this.props.dispatchGetUserTask(task.task_id);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { error, task, refreshing, navigation, section } = this.props
+    const { error, task, refreshing, navigation, section, userTask, userTaskError, userTaskRefreshing, modifyTask, modifyTaskError, modifyTaskRefreshing } = this.props
+    const { selectedUsers } = this.state
 
+    // HANDLE ADD TASK
     //CEK ERROR AND DISPLAY IT
     if (nextProps.error !== error) {
       if (nextProps.error && nextProps.error.message) {
-        if (nextProps.error && nextProps.error.response && nextProps.error.response.data && nextProps.error.response.data.errors) {
+        if (nextProps.error.response && nextProps.error.response.data && nextProps.error.response.data.errors) {
           const key = Object.keys(nextProps.error.response.data.errors)[0];
           const message = nextProps.error.response.data.errors[key][0];
           Alert.alert( 'Cannot create Task', message)
@@ -65,18 +70,69 @@ class NewTask extends Component {
       }
     }
 
-    if (!nextProps.refreshing && !nextProps.error) {
-      // if success
-      navigation.goBack(null)
-      navigation.state.params.updateTask({ task: nextProps.task  });
+    if (nextProps.task != task) {
+      if (!nextProps.refreshing && !nextProps.error) {
+        // if success
+        navigation.goBack(null)
+        navigation.state.params.updateTask({ task: nextProps.task  });
+      }
+    }
+
+    //HANDLE TASK USER
+    if (nextProps.userTask != userTask) {
+      if (!nextProps.userTaskRefreshing && !nextProps.userTaskError) { 
+        nextProps.userTask.map((user, index) => { 
+          this.handleUserSelected(user);
+        });
+      }
+    }
+
+    // HANDLE UPDATE TASK
+    //CEK ERROR AND DISPLAY IT
+    if (nextProps.modifyTaskError !== modifyTask) {
+      if (nextProps.modifyTaskError && nextProps.modifyTaskError.message) {
+        if (nextProps.modifyTaskError.response && nextProps.modifyTaskError.response.data && nextProps.modifyTaskError.response.data.errors) {
+          const key = Object.keys(nextProps.modifyTaskError.response.data.errors)[0];
+          const message = nextProps.modifyTaskError.response.data.errors[key][0];
+          Alert.alert( 'Cannot create Task', message)
+        } else {
+          Alert.alert( 'Cannot create Task', nextProps.modifyTaskError.message)
+        }
+      }
+    }
+
+    if (nextProps.modifyTask != modifyTask) {
+      if (!nextProps.modifyTaskRefreshing && !nextProps.modifyTaskError) { // if success
+        navigation.goBack(null)
+        navigation.state.params.refreshTask();
+      }
     }
   }
 
+  handleUserSelected = (user) => { 
+    const { selectedUsers } = this.state 
+ 
+    const newerSelectedUsers = 
+      selectedUsers.has(user.user_id) ? 
+        selectedUsers.delete(user.user_id) : 
+          selectedUsers.set(user.user_id, user);
+ 
+    this.setState({selectedUsers: newerSelectedUsers}) 
+ 
+    let selectedToArray = [] 
+    newerSelectedUsers.map((item) => { 
+        selectedToArray.push(item) 
+      } 
+    ) 
+    
+    this.setState({member: selectedToArray}) 
+  } 
+
   render() {
-    const { navigation, dispatchAddTask, task, error, refreshing } = this.props
+    const { navigation, dispatchAddTask, dispatchModifyTask, task, error, refreshing, userTask, userTaskRefreshing, userTaskError, modifyTask, modifyTaskError, modifyTaskRefreshing } = this.props
     const { sectionId, sectionUsers } = navigation.state.params
     const { containerStyle, formStyle, listItemStyle, listStyle, userStyles, footerMenuStyle, thumbnailStyle, listSelectedStyle, labelStyle }  = styles
-    const { name, startDate, finishDate, status, selectedUsers, member, selectedDate, datePickerVisible } = this.state
+    const { id, name, startDate, finishDate, status, selectedUsers, member, selectedDate, datePickerVisible } = this.state
 
     const getThumbnail = (item) => {
       return item.imageUrl
@@ -84,66 +140,53 @@ class NewTask extends Component {
         : require('./../img/no_avatar.png')
     }
 
-    // const renderSelectedUser = () => {
-      
-    // }
+    const renderUser = ({item}) => {       
+      return ( 
+        <TouchableOpacity 
+          key={item.user_id} 
+          style={listSelectedStyle} 
+          onPress={() => { 
+            this.handleUserSelected(item) 
+          } 
+        }> 
+          <Thumbnail style={thumbnailStyle} source={getThumbnail(item)} /> 
+          <Text style={userStyles}>{item.name}</Text> 
+          { selectedUsers.has(item.user_id) ? <Icon name="md-checkmark" style={{color: color.green, fontSize: 16}}/> : <Text /> } 
+        </TouchableOpacity> 
+      )
+    }
 
-    // const renderRowAvailableUser = (data, s, index) => {
-    //   return (
-    //     <ListItem 
-    //       style={{ margin: margin.s12, borderBottomColor: color.darkText }} 
-    //       onPress={() => {
-    //         this.setState({member: [...member, {...data}]})
-    //         const newValues2 = sectionUsers.slice(parseInt(index, 10) + 1)
-    //         const newValues1 = sectionUsers.slice(0, parseInt(index, 10))
-    //         sectionUsers = newValues1.concat(newValues2)
-    //       }} 
-    //       avatar>
-    //       <Left>
-    //         <Thumbnail small source={getThumbnail(data)} />
-    //       </Left>
-    //       <View style={{
-    //         flexDirection: 'row',
-    //         flexShrink: 1,
-    //         justifyContent: 'space-between',
-    //         marginLeft: 10,
-    //       }}>
-    //         <Body style = {{
-    //           flexShrink: 1,
-    //           justifyContent: 'space-between'
-    //         }}>
-    //           <Text style={{ 
-    //             fontSize: 21,
-    //             marginBottom: margin.s8,
-    //             alignSelf: 'flex-start', 
-    //           }}>{data.name}</Text>
-    //         </Body>
-    //       </View>
-    //     </ListItem>
-    //   )
-    // }
+    const renderMultiSelectList = () => { 
+      _keyExtractor = (item, index) => item.user_id 
+      if (userTaskRefreshing) {
+        return <Spinner animating={userTaskRefreshing} color={color.light_grey} />
+      }
+      return ( 
+        <FlatList 
+          data={sectionUsers} 
+          extraData={selectedUsers} 
+          renderItem={renderUser} 
+          keyExtractor={_keyExtractor} 
+        /> 
+      ) 
+    } 
 
-    // const renderAvailableUser = () => {
-    //   <List
-    //     contentContainerStyle={{ flexGrow: 1 }}
-    //     removeClippedSubviews={false}
-    //     dataArray={sectionUsers}
-    //     renderRow={renderRowAvailableUser}
-    //   />
-    // }
-
-    const handleButtonFinish = () => {
+    const handleButtonFinish = () => { 
       if (moment(startDate.toISOString()).isAfter(moment(finishDate.toISOString()))) {
         this.dialog._show(null, 'Start date must earlier than end date')
       } else { 
-        dispatchAddTask(sectionId, name, startDate, finishDate, status, member);        
+        if (!id) {  // INSERT
+          dispatchAddTask(sectionId, name, startDate, finishDate, status, member);        
+        } else {  // UPDATE
+          dispatchModifyTask(id, name, startDate, finishDate, status, member);
+        }
       }
     }
 
     return (
       <StyleProvider style={theme}>
         <Container style={containerStyle}>
-          <LoadingView isShown={refreshing} noBack isModal={false} />
+          <LoadingView isShown={refreshing || modifyTaskRefreshing} noBack isModal={false} />
           <DialogView  ref={(ref) => {this.dialog = ref}}/>
           <Content contentContainerStyle={{ flexGrow: 1 }} >
             <Form style={formStyle}>
@@ -202,8 +245,9 @@ class NewTask extends Component {
 
               <View style={{margin: margin.s16}}>
                 <Text>Choose Person</Text>
-                {renderSelectedUser()}
-                {renderAvailableUser()}
+                { renderMultiSelectList() }
+                {/* {renderSelectedUser()}
+                {renderContentUser()} */}
               </View>
             </Form>
 
@@ -305,11 +349,23 @@ const mapStateToProps = (state) => ({
   refreshing: state.storyboard.addTask.refreshing,
   error: state.storyboard.addTask.error,
   section: state.storyboard.getOneSection.result.data,
+  userTask: state.storyboard.userTask.result.data,
+  userTaskRefreshing: state.storyboard.userTask.refreshing,
+  userTaskError: state.storyboard.userTask.error,
+  modifyTask: state.storyboard.modifyTask.result.data,
+  modifyTaskRefreshing: state.storyboard.modifyTask.refreshing,
+  modifyTaskError: state.storyboard.modifyTask.error,
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
   dispatchAddTask(sectionId, name, startDate, finishDate, status, member) {
     dispatch(addTask(sectionId, name, startDate, finishDate, status, member))
+  },
+  dispatchModifyTask(taskId, name, startDate, finishDate, status, member) {
+    dispatch(modifyTask(taskId, name, startDate, finishDate, status, member))
+  },
+  dispatchGetUserTask(taskId) {
+    dispatch(getUserTask(taskId))
   },
 });
 

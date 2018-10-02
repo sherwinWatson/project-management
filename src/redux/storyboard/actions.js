@@ -65,6 +65,15 @@ export const ADD_USER_SECTION = 'USER_SECTION::ADD'
 export const ADD_USER_SECTION_SUCCESS = 'USER_SECTION::ADD_SUCCESS'
 export const ADD_USER_SECTION_ERROR = 'USER_SECTION::ADD_ERROR'
 
+export const GET_USER_TASK = 'TASK::GET_USER_TASK'
+export const GET_USER_TASK_SUCCESS = 'TASK::GET_USER_TASK_SUCCESS'
+export const GET_USER_TASK_ERROR = 'TASK::GET_USER_TASK_ERROR'
+
+export const MODIFY_TASK = 'TASK::MODIFY_TASK';
+export const MODIFY_TASK_SUCCESS = 'TASK::MODIFY_TASK_SUCCESS';
+export const MODIFY_TASK_ERROR = 'TASK::MODIFY_TASK_ERROR';
+
+
 export const getStoryboard = () => {
   return {
     type: GET_STORYBOARD,
@@ -228,5 +237,28 @@ export const addUserSection = (sectionId, member) => {
       sectionId,
       member,
     },
+  }
+}
+
+export const getUserTask = (taskId) => {
+  return {
+    type: GET_USER_TASK,
+    payload: {
+      taskId
+    },
+  }
+}
+
+export const modifyTask = (taskId, name, startDate, finishDate, status, member) => {
+  return {
+    type: MODIFY_TASK,
+    payload: {
+      taskId,
+      name, 
+      startDate, 
+      finishDate, 
+      status, 
+      member
+    }
   }
 }

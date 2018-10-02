@@ -21,7 +21,7 @@ class SectionDetail extends Component {
       complete: '',
       users: [],
       tasks: [],
-    }
+    };
   }
 
   componentWillMount() {
@@ -81,13 +81,13 @@ class SectionDetail extends Component {
     }
 
     const handleTaskPress = (task) => {
-      this.navigation.navigate('NewTask', { task: task, selectedUser: users, refreshTask: this.refreshTask });
+      this.props.navigation.navigate('NewTask', { task: task, sectionUsers: users, refreshTask: this.refreshTask });
     }
 
     const renderSelectedTask = (task) => {
       return (
         <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginVertical: margin.s8}}
-          onPress={() => this.handleTaskPress(task)}>
+          onPress={() => handleTaskPress(task)}>
           <View style={{flex: 1, borderWidth: 0}}>
             <Text>{task.name}</Text>
           </View>
